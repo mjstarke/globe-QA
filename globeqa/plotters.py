@@ -6,7 +6,7 @@ from netCDF4 import Dataset
 import numpy as np
 from globeqa.observation import Observation
 from globeqa.tools import find_closest_gridbox, get_cdf_datetime
-from typing import List, Optional, Tuple, Any, Iterable
+from typing import List
 
 
 def plot_ggc(t: int, obs: List[Observation], cdf: Dataset) -> None:

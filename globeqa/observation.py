@@ -1,6 +1,6 @@
 from datetime import datetime
 import shapely.geometry as sgeom
-from typing import Optional, List, Any, Union
+from typing import Optional, List, Union
 
 
 class Observation:

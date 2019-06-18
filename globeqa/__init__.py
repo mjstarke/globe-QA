@@ -3,7 +3,6 @@
 """
 
 from . import observation
-from . import parsers
 from . import plotters
 from . import tools
 
