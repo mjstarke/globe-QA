@@ -8,7 +8,7 @@ class Observation:
                  feature: Optional[dict] = None, protocol: Optional[str] = None):
         """
         An Observation object represents a single GLOBE observation.  Initialization processes either a line from a CSV
-        file or a feature from a JSON object.
+        file or a feature from a JSON object.  The properties of the observation can be accessed by key (__getitem__).
         :param header: The header row from a CSV file.
         :param row: The observation row from a CSV file.
         :param feature: The JSON feature representing an observation.
@@ -236,7 +236,7 @@ class Observation:
 
     def flag(self, flag: Optional[str]) -> bool:
         """
-        Raises a flag for this observation.
+        Raises a flag for this observation if it has not already been raised.
         :param flag: The code for the flag to raise.  If None, no flag is added.
         :return: Whether the flag was actually added.  Duplicate flags will not be added.
         """
@@ -252,7 +252,6 @@ class Observation:
         :param land: The PreparedGeometry for checking whether the location is over land.
         """
         a = self.tcc
-        a = self.measured_dt
         a = self.elevation
         self._check_for_flags_datetime()
         self._check_for_flags_location(land)
@@ -384,7 +383,7 @@ class Observation:
             except ValueError:
                 self.flag(x + "I")
 
-    flag_definitions = dict(
+    _flag_definitions = dict(
             CI="Cloud cover is invalid (not a proper category)",
             CM="Cloud cover is coded as missing",
             CX="Cloud cover attribute is missing",
@@ -423,24 +422,17 @@ class Observation:
         )
 
     @property
+    def flag_definitions(self):
+        """
+        :return: A dictionary of (str, str) pairs where each key is the identifier for a flag that is described by its
+        value.
+        """
+        return self._flag_definitions
+
+    @property
     def flags_english(self) -> List[str]:
         """
         :returns: All flags for this observation converted to human-readable terms.
         """
         # Return the value corresponding to the key for each flag.
         return [self.flag_definitions[i] for i in self.flags]
-
-    # def check_key(self, key, must_exist: bool = False, valid: Optional[list] = None,
-    #               min: Optional[Any] = None, max: Optional[Any] = None):
-    #     try:
-    #         if valid is not None:
-    #             return self[key] in valid
-    #         else:
-    #             if (min is not None) and (self[key] < min):
-    #                 return False
-    #             if (max is not None) and (self[key] > max):
-    #                 return False
-    #     except KeyError:
-    #         return not must_exist
-    #
-    #     return True

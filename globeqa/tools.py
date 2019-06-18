@@ -18,12 +18,7 @@ def pp(obj):
     PrettyPrinter(indent=4).pprint(obj)
 
 
-def calc_local_midnight_utc_offset(lon: float):
-    return timedelta(hours=lon / 15.)
-
-
-def parse_csv(fp: str, count: int = 1e30, progress: Optional[int] = 25000,
-              protocol: Optional[str] = "sky_conditions") -> List[Observation]:
+def parse_csv(fp: str, count: int = 1e30, protocol: Optional[str] = "sky_conditions") -> List[Observation]:
     """
     Parse a CSV file containing GLOBE observations.
     :param fp: The path to the CSV file.
@@ -45,8 +40,6 @@ def parse_csv(fp: str, count: int = 1e30, progress: Optional[int] = 25000,
             observations.append(Observation(header, s, protocol=protocol))
             if len(observations) >= count:
                 break
-            # if (progress is not None) and (progress > 0) and (len(observations) % progress == 0):
-            #     print("--  Parsed {} observations...".format(len(observations)))
 
     return observations
 
