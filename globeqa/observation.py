@@ -187,11 +187,7 @@ class Observation:
         """
         CLOUD_TYPES = ["Cirrus", "Cirrocumulus", "Cumulus", "Altocumulus", "Stratus", "Nimbostratus", "Altostratus",
                        "Stratocumulus", "Cumulonimbus", "Cirrostratus"]
-        ret = []
-        for key in CLOUD_TYPES:
-            if self.soft_get(key) == "true":
-                ret.append(key)
-        return ret
+        return [key for key in CLOUD_TYPES if self.soft_get(key) == "true"]
 
     @property
     def obscurations(self) -> List[str]:
@@ -200,12 +196,7 @@ class Observation:
         """
         OBSCURATIONS = ["Fog", "Smoke", "Haze", "VolcanicAsh", "Dust", "Sand", "Spray", "HeavyRain", "HeavySnow",
                         "BlowingSnow"]
-        ret = []
-        for key in OBSCURATIONS:
-            if self.soft_get(key) == "true":
-                ret.append(key)
-        return ret
-        # return [key for key in OBSCURATIONS if self.soft_get(key) == "true"] TODO test this
+        return [key for key in OBSCURATIONS if self.soft_get(key) == "true"]
 
     def try_keys(self, keys: List[str]):
         """
