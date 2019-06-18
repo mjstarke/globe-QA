@@ -259,15 +259,23 @@ class Observation:
         self._check_for_flags_ranges()
 
     def _check_for_flags_datetime(self):
-        if self.measured_dt is not None:
-            if self.measured_dt > datetime.now():
+        """
+        Checks this observation for datetime flags: DF, DI, DM, DO, and DZ.
+        """
+        dt = self.measured_dt
+        if dt is not None:
+            if dt > datetime.now():
                 self.flag("DF")
-            if self.measured_dt.year < 1995:
+            if dt.year < 1995:
                 self.flag("DO")
-            if self.measured_dt.hour == 0 and self.measured_dt.minute == 0:
+            if dt.hour == 0 and dt.minute == 0:
                 self.flag("DZ")
 
     def _check_for_flags_location(self, land):
+        """
+        Checks this observation for flags associated with the location: LI, LW, and LZ.
+        :param land: The PreparedGeometry for determining whether the point is over land.
+        """
         if self.lat is not None and self.lon is not None:
             if not land.contains(sgeom.Point(self.lon, self.lat)):
                 self.flag("LW")
@@ -277,6 +285,9 @@ class Observation:
             self.flag("LI")
 
     def _check_for_flags_obscurations(self):
+        """
+        Checks this observation for flags associated with obscuration: HC, HO, OC, OM, OO, OT, and OX.
+        """
         if self["protocol"] == "sky_conditions":
             OBSCURATION_TYPES = ["Fog", "Smoke", "Haze", "VolcanicAsh", "Dust", "Sand", "Spray", "HeavyRain",
                                  "HeavySnow", "BlowingSnow"]
@@ -309,7 +320,9 @@ class Observation:
                 pass  # self.flag("HX") TODO decide whether this flag is necessary - is SkyClarity optional?
 
     def _check_for_flags_ranges(self):
-
+        """
+        Checks this observation for flags associated with miscellaneous ranges: MI, MR, NI, NR, TI, TM, TR, and TX.
+        """
         if self["protocol"] == "tree_heights":
             self.check_key_in_range("TreeHeightAvgM", 0., 99., "T", -99.)
 
