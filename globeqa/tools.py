@@ -292,26 +292,6 @@ def list_all_properties(observations: List[dict]) -> List[str]:
     return sorted(all_keys)
 
 
-def count_flags(obs: List[dict]) -> Dict[str, int]:
-    """
-    Finds and counts flags in the observations.
-    :param obs: The observations.
-    :return: A dictionary of (flag, count) pairs.
-    """
-    flag_counts = dict()
-
-    print("--  Searching observations...")
-    for ob in tqdm(obs):
-        flags = ob["flags"].split()
-        for flag in flags:
-            try:
-                flag_counts[flag] += 1
-            except KeyError:
-                flag_counts[flag] = 1
-
-    return flag_counts
-
-
 # def do_daily(interpret_flags: bool = False) -> None:
 #     """
 #     Downloads, parses, and quality-checks yesterday's observations.
