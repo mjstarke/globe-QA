@@ -242,7 +242,6 @@ class Observation:
         Calls all properties and methods that could raise flags.
         :param land: The PreparedGeometry for checking whether the location is over land.
         """
-        a = self.tcc
         a = self.elevation
         self._check_for_flags_datetime()
         self._check_for_flags_location(land)
@@ -277,11 +276,13 @@ class Observation:
 
     def _check_for_flags_obscurations(self):
         """
-        Checks this observation for flags associated with obscuration: HC, HO, OC, OM, OO, OT, and OX.
+        Checks this observation for flags associated with obscuration: HC, HO, OC, OM, OO, OT, and OX.  Because .tcc
+        will also be accessed, flags CI, CM and CX could also be raised.
         """
         if self["protocol"] == "sky_conditions":
             OBSCURATION_TYPES = ["Fog", "Smoke", "Haze", "VolcanicAsh", "Dust", "Sand", "Spray", "HeavyRain",
                                  "HeavySnow", "BlowingSnow"]
+
             num_obscurations = 0
             for key in OBSCURATION_TYPES:
                 if self.soft_get(key) == "true":
@@ -292,14 +293,17 @@ class Observation:
             elif num_obscurations > 2:
                 self.flag("OM")
 
+            # If num_obscurations and tcc disagree, raise a flag.
             if (num_obscurations > 0) and (self.tcc != "obscured"):
                 self.flag("OO")
             elif (num_obscurations == 0) and (self.tcc == "obscured"):
                 self.flag("OX")
 
-            if ((num_obscurations > 0) or (self.tcc == "obscured")) and (len(self.cloud_types) > 0):
+            # If they do agree that there is obscuration, but cloud types are still being reported, raise a flag.
+            elif ((num_obscurations > 0) or (self.tcc == "obscured")) and (len(self.cloud_types) > 0):
                 self.flag("OC")
 
+            # If haze as obscuration and sky clarity disagree, raise a flag.
             try:
                 if self.soft_get("Haze") == "true":
                     if self["SkyClarity"] != "extremely hazy":
