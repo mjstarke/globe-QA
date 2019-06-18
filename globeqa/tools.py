@@ -220,10 +220,15 @@ def find_closest_gridbox(cdf: Dataset, t: datetime, lat: float, lon: float) -> T
     return int(time_index), int(lat_index), int(lon_index)
 
 
-def prepare_earth_geometry(geometry_resolution: str):
-    # Preparations necessary for determining whether a point is over land or water.
-    # This code may need to download a ZIP containing Earth geometry data the first time it runs.
-    # Code borrowed from   https://stackoverflow.com/a/48062502
+def prepare_earth_geometry(geometry_resolution: str = "50m"):
+    """
+    Preparations necessary for determining whether a point is over land or water.
+    This code may need to download a ZIP containing Earth geometry data the first time it runs.
+    Code borrowed from   https://stackoverflow.com/a/48062502
+    :param geometry_resolution: The resolution of the NaturalEarth shapereader to use.  Valid values are '10m', '50m'
+    or '110m'.
+    :return: The PreparedGeometry object that can be used for point-land checking.
+    """
     print("--  Preparing Earth geometry...")
     land_shp_fname = shpreader.natural_earth(resolution=geometry_resolution, category='physical', name='land')
     land_geom = unary_union(list(shpreader.Reader(land_shp_fname).geometries()))
@@ -232,7 +237,12 @@ def prepare_earth_geometry(geometry_resolution: str):
     return land
 
 
-def do_quality_check(obs: List[Observation], land):
+def do_quality_check(obs: List[Observation], land=None):
+    """
+    Perform quality checks on the obsevations.
+    :param obs: The observations.
+    :param land: The PreparedGeometry for land checking.  If None, land check will not be performed.
+    """
     print("--  Performing quality check...")
     for o in tqdm(range(len(obs))):
         ob = obs[o]

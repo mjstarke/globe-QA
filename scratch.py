@@ -18,6 +18,6 @@ fpGEOS_Jan = "/Users/mjstarke/Documents/GLOBE_B/G5GMAO.cldtt.201801.nc4"
 
 # do JSON
 obs = tools.parse_json(fpSC)
-land = tools.prepare_earth_geometry("50m")
+land = None  # tools.prepare_earth_geometry("50m")
 tools.do_quality_check(obs, land)
 tools.print_flag_summary(obs)
