@@ -6,16 +6,18 @@ from netCDF4 import Dataset
 import numpy as np
 from globeqa.observation import Observation
 from globeqa.tools import find_closest_gridbox, get_cdf_datetime
-from typing import List
+from typing import List, Optional
 
 
-def plot_ggc(t: int, obs: List[Observation], cdf: Dataset) -> None:
+def plot_ggc(t: int, obs: List[Observation], cdf: Dataset, save_path: Optional[str]) -> None:
     """
     Plots GEOS data and GLOBE observations on one plot.
     :param t: The time index to use.  The actual time will be pulled from cdf["time"].
     :param obs: The observations to plot.
     :param cdf: The NetCDF dataset to pull cloud data from.
-    :return: None.  The file is saved to images/.
+    :param save_path: If a string, the path to which the image will be saved; the figure will not be displayed
+    interactively.  If None, the plot is shown interactively.
+    :return: None.  The file is saved to save_path.
     """
 
     # Set figure size and create an axis with a Plate-Carrée projection.
@@ -91,18 +93,25 @@ def plot_ggc(t: int, obs: List[Observation], cdf: Dataset) -> None:
         datetime.strftime(window_start, "%Y-%m-%d  %H%MZ"),
         datetime.strftime(window_end, "%Y-%m-%d  %H%MZ")))
 
-    print("--- Finalizing and showing plot...")
+    print("--- Finalizing plot...")
     plt.tight_layout()
-    plt.savefig("images/GG{:0>4}__{}".format(t, datetime.strftime(window_center, "%Y%m%d_%H%MZ")))
-    plt.close()
+
+    if save_path is None:
+        plt.show()
+    else:
+        plt.savefig(save_path)
+        plt.close()
+
     print("--- Plotting completed.")
 
 
-def plot_geo_hm(obs: List[Observation], cdf: Dataset):
+def plot_geo_hm(obs: List[Observation], cdf: Dataset, save_path: Optional[str]):
     """
     Plots a geographic heatmap of the given observations.
     :param obs: The observations to plot
     :param cdf: The NetCDF dataset that contains the lat/lons.
+    :param save_path: If a string, the path to which the image will be saved; the figure will not be displayed
+    interactively.  If None, the plot is shown interactively.
     """
 
     # Create lists of x and y points for the observations of interest.
@@ -150,11 +159,20 @@ def plot_geo_hm(obs: List[Observation], cdf: Dataset):
 
     # Set title, use the space, and show.
     plt.title(r"Geographic distribution of GLOBE cloud observations in 2018, in (1.25$^{o}$ x 1.00$^{o}$) bins (logarithmic fill)")
+
+    print("--- Finalizing plot...")
     plt.tight_layout()
-    plt.show()
+
+    if save_path is None:
+        plt.show()
+    else:
+        plt.savefig(save_path)
+        plt.close()
+
+    print("--- Plotting completed.")
 
 
-def plot_cat_hm(obs, cdf, progress=1000):
+def plot_cat_hm(obs, cdf, save_path: Optional[str] = None, progress=1000):
     histo = np.zeros((7, 6))
 
     obs_categories = ["obscured", "overcast", "broken", "scattered", "isolated", "few", "none"]
@@ -213,11 +231,20 @@ def plot_cat_hm(obs, cdf, progress=1000):
 
     ax.set_title("GEOS vs. GLOBE total cloud cover (TCC) at GLOBE observation sites for 2018")
     fig.tight_layout()
-    plt.show()
-    print("--- Histogram ready.")
+
+    print("--- Finalizing plot...")
+    plt.tight_layout()
+
+    if save_path is None:
+        plt.show()
+    else:
+        plt.savefig(save_path)
+        plt.close()
+
+    print("--- Plotting completed.")
 
 
-def plot_tcc_scatter(obs, cdf, progress=1000):
+def plot_tcc_scatter(obs, cdf, save_path: Optional[str] = None, progress=1000):
     x = []
     y = []
     obs_categories = ["none", "few", "isolated", "scattered", "broken", "overcast", "obscured"]
@@ -249,5 +276,13 @@ def plot_tcc_scatter(obs, cdf, progress=1000):
     ax.set_xticklabels(obs_categories)
     ax.set_yticks(obs_values)
 
-    fig.tight_layout()
-    plt.show()
+    print("--- Finalizing plot...")
+    plt.tight_layout()
+
+    if save_path is None:
+        plt.show()
+    else:
+        plt.savefig(save_path)
+        plt.close()
+
+    print("--- Plotting completed.")

@@ -1,0 +1,17 @@
+from globeqa import *
+from netCDF4 import Dataset
+from os import chdir
+
+fpLC = "/Users/mjstarke/Documents/GLOBE_A/land_covers_20181001_20190531.json"
+fpMM = "/Users/mjstarke/Documents/GLOBE_A/mosquito_habitat_mapper_20170501_20190531.json"
+fpSC = "/Users/mjstarke/Documents/GLOBE_A/sky_conditions_20170101_20190531.json"
+fpTH = "/Users/mjstarke/Documents/GLOBE_A/tree_heights_20190323_20190531.json"
+
+fpSC_2018 = "/Users/mjstarke/Documents/GLOBE_B/GLOBE_Cloud_2018.csv"
+fpGEOS_Jan = "/Users/mjstarke/Documents/GLOBE_B/G5GMAO.cldtt.201801.nc4"
+
+# Plot GLOBE obs on GEOS output
+cdf = Dataset(fpGEOS_Jan)
+obs = tools.parse_csv(fpSC_2018)
+
+plotters.plot_ggc(0, obs, cdf, "/Users/mjstarke/Documents/GLOBE_B/images/GG0000.png")
