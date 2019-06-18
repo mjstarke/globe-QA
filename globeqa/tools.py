@@ -38,8 +38,9 @@ def parse_csv(fp: str, count: int = 1e30, progress: Optional[int] = 25000,
     with open(fp, "r") as f:
         header = f.readline().split(',')
         header = [h.strip() for h in header]
+        line_count = sum(1 for i in open(fp, 'rb'))
         print("--  Reading CSV file...")
-        for line in tqdm(f):
+        for line in tqdm(f, total=line_count):
             s = line.split(',')
             observations.append(Observation(header, s, protocol=protocol))
             if len(observations) >= count:
