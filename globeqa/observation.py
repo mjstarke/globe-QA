@@ -205,6 +205,7 @@ class Observation:
             if self.soft_get(key) == "true":
                 ret.append(key)
         return ret
+        # return [key for key in OBSCURATIONS if self.soft_get(key) == "true"] TODO test this
 
     def try_keys(self, keys: List[str]):
         """

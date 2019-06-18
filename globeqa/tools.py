@@ -9,6 +9,7 @@ from pprint import PrettyPrinter
 from shapely.ops import unary_union
 from shapely.prepared import prep
 from shutil import copyfileobj
+from tqdm import tqdm
 from typing import List, Dict, Optional, Union, Tuple
 from urllib.request import urlopen
 
@@ -37,13 +38,14 @@ def parse_csv(fp: str, count: int = 1e30, progress: Optional[int] = 25000,
     with open(fp, "r") as f:
         header = f.readline().split(',')
         header = [h.strip() for h in header]
-        for line in f:
+        print("--  Reading CSV file...")
+        for line in tqdm(f):
             s = line.split(',')
             observations.append(Observation(header, s, protocol=protocol))
             if len(observations) >= count:
                 break
-            if (progress is not None) and (progress > 0) and (len(observations) % progress == 0):
-                print("--  Parsed {} observations...".format(len(observations)))
+            # if (progress is not None) and (progress > 0) and (len(observations) % progress == 0):
+            #     print("--  Parsed {} observations...".format(len(observations)))
 
     return observations
 
@@ -77,17 +79,17 @@ def download_from_api(protocols: List[str], start: date, end: Optional[date] = N
 
     if check_existing:
         if isfile(download_dest):
-            print("--- Download will not be attempted as the file already exists locally.")
+            print("--  Download will not be attempted as the file already exists locally.")
             return download_dest
 
     try:
-        print("--- Downloading from API...")
-        print("--- {}".format(download_src))
+        print("--  Downloading from API...")
+        print("--  {}".format(download_src))
         with closing(urlopen(download_src)) as r:
             with open(download_dest, 'wb') as f:
                 copyfileobj(r, f)
-        print("--- Download successful.  Saved to:")
-        print("--- {}".format(download_dest))
+        print("--  Download successful.  Saved to:")
+        print("--  {}".format(download_dest))
     except Exception as e:
         print("(x) Download failed:")
         print(e)
@@ -95,26 +97,25 @@ def download_from_api(protocols: List[str], start: date, end: Optional[date] = N
     return download_dest
 
 
-def parse_json(fp: str, progress: Optional[int] = 25000) -> List[Observation]:
+def parse_json(fp: str) -> List[Observation]:
     """
     Parses a JSON file and returns its features converted to observations.
     :param fp: The path to the JSON file.
-    :param progress: The interval between progress updates.  If None, no progress updates will be printed.  Default
-    25000.
     :returns: The features of the JSON.
     """
-    print("--- Reading JSON from {}...".format(fp))
+    print("--  Reading JSON from {}...".format(fp))
     with open(fp, "r") as f:
-        raw = json.loads(f.read())
+        g = f.read()
+        print("--  Interpreting file as JSON...")
+        raw = json.loads(g)
 
-    print("--- Parsing JSON as observations...")
+    print("--  Parsing JSON as observations...")
     ret = []
-    for o in range(len(raw["features"])):
+    for o in tqdm(range(len(raw["features"]))):
         ob = raw["features"][o]
         ret.append(Observation(feature=ob))
-        if (o is not None) and (o % progress == 0):
-            print("-- Parsed {} observations...".format(o))
     return ret
+    # return [Observation(feature=ob) for ob in raw["features"]]
 
 
 def print_flag_summary(obs: List[Observation]) -> Dict[str, int]:
@@ -124,7 +125,7 @@ def print_flag_summary(obs: List[Observation]) -> Dict[str, int]:
     :return: The dictionary of (flag, count) pairs for each flag found at least once.
     """
     flag_counts = dict(total=len(obs))
-    print("--- Enumerating flags...")
+    print("--  Enumerating flags...")
     for ob in obs:
         for flag in ob.flags:
             try:
@@ -132,7 +133,7 @@ def print_flag_summary(obs: List[Observation]) -> Dict[str, int]:
             except KeyError:
                 flag_counts[flag] = 1
 
-    print("--- Flag counts are as follows:")
+    print("--  Flag counts are as follows:")
     for k in sorted(flag_counts.keys()):
         v = flag_counts[k]
         print("{:5}  {:>6}  {:7.2%}".format(k, v, v / len(obs)))
@@ -153,7 +154,7 @@ def filter_by_flag(obs: List[Observation], specs: Union[bool, Dict[str, bool]] =
     """
     if type(specs) == dict:
         ret = []
-        for ob in obs:
+        for ob in tqdm(obs):
             for k, v in specs.items():
                 if ob.has_flag(k) == v:
                     ret.append(ob)
@@ -229,21 +230,19 @@ def prepare_earth_geometry(geometry_resolution: str):
     # Preparations necessary for determining whether a point is over land or water.
     # This code may need to download a ZIP containing Earth geometry data the first time it runs.
     # Code borrowed from   https://stackoverflow.com/a/48062502
-    print("--- Preparing Earth geometry...")
+    print("--  Preparing Earth geometry...")
     land_shp_fname = shpreader.natural_earth(resolution=geometry_resolution, category='physical', name='land')
     land_geom = unary_union(list(shpreader.Reader(land_shp_fname).geometries()))
     land = prep(land_geom)
-    print("--- Earth geometry prepared.")
+    print("--  Earth geometry prepared.")
     return land
 
 
-def do_quality_check(obs: List[Observation], land, progress_interval: int = 10000):
-    print("--- Performing quality check...")
-    for o in range(len(obs)):
+def do_quality_check(obs: List[Observation], land):
+    print("--  Performing quality check...")
+    for o in tqdm(range(len(obs))):
         ob = obs[o]
         ob.check_for_flags(land)
-        if o % progress_interval == 0:
-            print("--- {:7.2%}   Checked {} observations...".format(o / len(obs), o))
 
 
 def print_all_values(obs: List[Observation], key: str) -> None:
@@ -258,7 +257,8 @@ def print_all_values(obs: List[Observation], key: str) -> None:
     unique_values = []
     unique_counts = []
 
-    for ob in obs:
+    print("--  Searching observations...")
+    for ob in tqdm(obs):
         if key in ob:
             value = ob[key]
             found_obs.append(ob)
@@ -283,7 +283,8 @@ def list_all_properties(observations: List[dict]) -> List[str]:
     :return: A sorted list of all properties that occur at least once in the observations.
     """
     all_keys = []
-    for ob in observations:
+    print("--  Searching observations...")
+    for ob in tqdm(observations):
         for key in ob["properties"]:
             if key not in all_keys:
                 all_keys.append(key)
@@ -299,7 +300,8 @@ def count_flags(obs: List[dict]) -> Dict[str, int]:
     """
     flag_counts = dict()
 
-    for ob in obs:
+    print("--  Searching observations...")
+    for ob in tqdm(obs):
         flags = ob["flags"].split()
         for flag in flags:
             try:
