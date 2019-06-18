@@ -1,6 +1,5 @@
 from globeqa import *
 from netCDF4 import Dataset
-from os import chdir
 
 fpLC = "/Users/mjstarke/Documents/GLOBE_A/land_covers_20181001_20190531.json"
 fpMM = "/Users/mjstarke/Documents/GLOBE_A/mosquito_habitat_mapper_20170501_20190531.json"

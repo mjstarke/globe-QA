@@ -6,8 +6,16 @@ from typing import Optional, List, Union
 class Observation:
     def __init__(self, header: Optional[List[str]] = None, row: Optional[List[str]] = None,
                  feature: Optional[dict] = None, protocol: Optional[str] = None):
+        """
+        An Observation object represents a single GLOBE observation.  Initialization processes either a line from a CSV
+        file or a feature from a JSON object.
+        :param header: The header row from a CSV file.
+        :param row: The observation row from a CSV file.
+        :param feature: The JSON feature representing an observation.
+        :param protocol: The protocol that the CSV file is derived from.
+        """
 
-        if header is not None and row is not None:
+        if header is not None and row is not None and protocol is not None:
             self._raw = dict(protocol=protocol)
             self.fromAPI = False
 
@@ -25,7 +33,7 @@ class Observation:
             self._raw["Observation Longitude"] = feature["geometry"]["coordinates"][0]
 
         else:
-            raise ValueError("Either 'feature' or both 'header' and 'row' must be provided.")
+            raise ValueError("Either 'feature' or all of ('header', 'row', and 'protocol') must be provided.")
 
         self.flags = []
 
