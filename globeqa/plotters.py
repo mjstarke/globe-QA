@@ -6,6 +6,7 @@ from netCDF4 import Dataset
 import numpy as np
 from globeqa.observation import Observation
 from globeqa.tools import find_closest_gridbox, get_cdf_datetime
+from tqdm import tqdm
 from typing import List, Optional
 
 
@@ -66,7 +67,7 @@ def plot_ggc(t: int, obs: List[Observation], cdf: Dataset, save_path: Optional[s
     # Find observations to plot.
     print("--- Searching for valid observations...")
     # Look through each observation.
-    for ob in obs:
+    for ob in tqdm(obs):
         # Verify that the observation is plottable.
         if ob.lat is not None and ob.lon is not None and ob.measured_dt is not None and ob.tcc is not None:
             # Verify that the ob is inside the three-hour window.
@@ -119,7 +120,8 @@ def plot_geo_hm(obs: List[Observation], cdf: Dataset, save_path: Optional[str]):
     y = []
 
     # Search through the list of observations for what can be plotted.
-    for ob in obs:
+    print("--- Filtering observations...")
+    for ob in tqdm(obs):
         if ob.lat is not None and ob.lon is not None:
             x.append(ob.lon)
             y.append(ob.lat)
@@ -180,7 +182,7 @@ def plot_cat_hm(obs, cdf, save_path: Optional[str] = None, progress=1000):
     geos_categories = ["clear", "few", "isolated", "scattered", "broken", "overcast"]
 
     print("--- Histogramming observations...")
-    for o in range(len(obs)):
+    for o in tqdm(range(len(obs))):
         ob = obs[o]
         if ob.tcc is not None and ob.lat is not None and ob.lon is not None and ob.measured_dt is not None:
             # Get the index of the observation's tcc.
@@ -251,7 +253,7 @@ def plot_tcc_scatter(obs, cdf, save_path: Optional[str] = None, progress=1000):
     obs_values = [0.00, 0.05, 0.175, 0.375, 0.70, 0.95, 1.00]
 
     print("--- Processing observations for scatterplot...")
-    for o in range(len(obs)):
+    for o in tqdm(range(len(obs))):
         ob = obs[o]
         if ob.tcc is not None and ob.lat is not None and ob.lon is not None and ob.measured_dt is not None:
             # Get the index of the observation's tcc.

@@ -9,16 +9,14 @@ fpTH = "/Users/mjstarke/Documents/GLOBE_A/tree_heights_20190323_20190531.json"
 fpSC_2018 = "/Users/mjstarke/Documents/GLOBE_B/GLOBE_Cloud_2018.csv"
 fpGEOS_Jan = "/Users/mjstarke/Documents/GLOBE_B/G5GMAO.cldtt.201801.nc4"
 
-# Plot GLOBE obs on GEOS output
-# cdf = Dataset(fpGEOS_Jan)
-# obs = tools.parse_csv(fpSC_2018)
-#
-# plotters.plot_ggc(0, obs, cdf, "/Users/mjstarke/Documents/GLOBE_B/images/GG0000.png")
+def do_ggc():
+    cdf = Dataset(fpGEOS_Jan)
+    obs = tools.parse_csv(fpSC_2018)
 
-obs = tools.parse_json(fpSC)
-cdf = Dataset(fpGEOS_Jan)
-obs_csv = tools.parse_csv(fpSC_2018)
+    plotters.plot_ggc(0, obs, cdf, "/Users/mjstarke/Documents/GLOBE_B/images/GG0000.png")
 
-land = tools.prepare_earth_geometry("50m")
-
-tools.print_flag_summary(obs)
+def do_sc_flags():
+    obs = tools.parse_json(fpSC)
+    land = tools.prepare_earth_geometry("50m")
+    tools.do_quality_check(obs, land)
+    tools.print_flag_summary(obs)
