@@ -237,10 +237,11 @@ class Observation:
         else:
             return False
 
-    def check_for_flags(self, land):
+    def check_for_flags(self, land=None):
         """
         Calls all properties and methods that could raise flags.
-        :param land: The PreparedGeometry for checking whether the location is over land.
+        :param land: The PreparedGeometry for checking whether the location is over land. If None, determination of
+        whether a location is a water will be ignored.
         """
         a = self.elevation
         self._check_for_flags_datetime()
@@ -261,14 +262,16 @@ class Observation:
             if dt.hour == 0 and dt.minute == 0:
                 self.flag("DZ")
 
-    def _check_for_flags_location(self, land):
+    def _check_for_flags_location(self, land=None):
         """
         Checks this observation for flags associated with the location: LI, LW, and LZ.
-        :param land: The PreparedGeometry for determining whether the point is over land.
+        :param land: The PreparedGeometry for determining whether the point is over land.  If None, whether the location
+        is not over water will not be checked (flag LW will not be raised).
         """
         if self.lat is not None and self.lon is not None:
-            if not land.contains(sgeom.Point(self.lon, self.lat)):
-                self.flag("LW")
+            if land is not None:
+                if not land.contains(sgeom.Point(self.lon, self.lat)):
+                    self.flag("LW")
             if self.lat == 0. and self.lon == 0.:
                 self.flag("LZ")
         else:
