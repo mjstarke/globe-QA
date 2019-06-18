@@ -1,6 +1,6 @@
 import cartopy.io.shapereader as shpreader
 from contextlib import closing
-from datetime import date, datetime, time, timezone, timedelta
+from datetime import date, datetime, timedelta
 import json
 from netCDF4 import Dataset
 from globeqa.observation import Observation
@@ -21,14 +21,14 @@ def calc_local_midnight_utc_offset(lon: float):
     return timedelta(hours=lon / 15.)
 
 
-def parse_csv(fp: str, count: int = 1e30, progress: int = 25000,
+def parse_csv(fp: str, count: int = 1e30, progress: Optional[int] = 25000,
               protocol: Optional[str] = "sky_conditions") -> List[Observation]:
     """
     Parse a CSV file containing GLOBE observations.
     :param fp: The path to the CSV file.
     :param count: The maximum number of observations to parse.  Default 1e30.
     :param progress: The interval at which to print progress updates.  Larger values cause less frequent updates. If
-    not greater than zero, no progress updates will be printed.  Default 25000.
+    None, no progress updates will be printed.  Default 25000.
     :param protocol: The protocol that the CSV file comes from.  Default 'sky_conditions'.
     :return: The observations.
     """
@@ -42,7 +42,7 @@ def parse_csv(fp: str, count: int = 1e30, progress: int = 25000,
             observations.append(Observation(header, s, protocol=protocol))
             if len(observations) >= count:
                 break
-            if (progress > 0) and (len(observations) % progress == 0):
+            if (progress is not None) and (progress > 0) and (len(observations) % progress == 0):
                 print("--  Parsed {} observations...".format(len(observations)))
 
     return observations
@@ -95,10 +95,12 @@ def download_from_api(protocols: List[str], start: date, end: Optional[date] = N
     return download_dest
 
 
-def parse_json(fp: str) -> List[Observation]:
+def parse_json(fp: str, progress: Optional[int] = 25000) -> List[Observation]:
     """
     Parses a JSON file and returns its features converted to observations.
     :param fp: The path to the JSON file.
+    :param progress: The interval between progress updates.  If None, no progress updates will be printed.  Default
+    25000.
     :returns: The features of the JSON.
     """
     print("--- Reading JSON from {}...".format(fp))
@@ -106,14 +108,20 @@ def parse_json(fp: str) -> List[Observation]:
         raw = json.loads(f.read())
 
     print("--- Parsing JSON as observations...")
-    return [Observation(feature=ob) for ob in raw["features"]]
+    ret = []
+    for o in range(len(raw["features"])):
+        ob = raw["features"][o]
+        ret.append(Observation(feature=ob))
+        if (o is not None) and (o % progress == 0):
+            print("-- Parsed {} observations...".format(o))
+    return ret
 
 
-
-def print_flag_summary(obs: List[Observation]) -> None:
+def print_flag_summary(obs: List[Observation]) -> Dict[str, int]:
     """
     Pretty-prints a summary of all flags for the observations.
     :param obs: The observations to analyze.
+    :return: The dictionary of (flag, count) pairs for each flag found at least once.
     """
     flag_counts = dict(total=len(obs))
     print("--- Enumerating flags...")
@@ -128,6 +136,8 @@ def print_flag_summary(obs: List[Observation]) -> None:
     for k in sorted(flag_counts.keys()):
         v = flag_counts[k]
         print("{:5}  {:>6}  {:7.2%}".format(k, v, v / len(obs)))
+
+    return flag_counts
 
 
 def filter_by_flag(obs: List[Observation], specs: Union[bool, Dict[str, bool]] = True) -> List[Observation]:
@@ -152,6 +162,7 @@ def filter_by_flag(obs: List[Observation], specs: Union[bool, Dict[str, bool]] =
         return [ob for ob in obs if ob.flagged == specs]
     else:
         raise TypeError("Argument 'specs' must be either Dict[str, bool] or bool.")
+
 
 def get_cdf_datetime(cdf: Dataset, index: int) -> datetime:
     """
@@ -192,27 +203,24 @@ def find_closest_gridbox(cdf: Dataset, t: datetime, lat: float, lon: float) -> T
     # determine which index to use.
     lat_diff = lat - first_lat
     lat_index = round(lat_diff / lat_step)
-    lat_size = cdf["lat"].shape[0]
 
     # As above.
     first_lon = cdf["lon"][0]
     lon_step = cdf["lon"][1] - first_lon
     lon_diff = lon - first_lon
     lon_index = round(lon_diff / lon_step)
-    lon_size = cdf["lon"].shape[0]
 
     # Compose the string that represents the first datetime, then convert it to a datetime.
     begin_datetime_string = "{}{:0>6}".format(cdf["time"].begin_date, cdf["time"].begin_time)
     begin_datetime = datetime.strptime(begin_datetime_string, "%Y%m%d%H%M%S")
-    # Deterime the step between indicies.
+    # Determine the step between indices.
     time_step = cdf["time"][1]
-    # Find the difference between the point time and a first time.  Conver this from a datetime to an integer
+    # Find the difference between the point time and a first time.  Convert this from a datetime to an integer
     # number of minutes.
     time_diff = t - begin_datetime
     time_diff_minutes = time_diff / timedelta(seconds=60)
     # Divide by the step size to determine which index to use.
     time_index = round(time_diff_minutes / time_step)
-    time_size = cdf["time"].shape[0]
 
     return int(time_index), int(lat_index), int(lon_index)
 
@@ -302,15 +310,15 @@ def count_flags(obs: List[dict]) -> Dict[str, int]:
     return flag_counts
 
 
-def do_daily(interpret_flags: bool = False) -> None:
-    """
-    Downloads, parses, and quality-checks yesterday's observations.
-    :param interpret_flags: Whether to interpret the quality flags and convert them to English.
-    :return: A list of all observation indices that were flagged by the quality checker.
-    """
-    # Download yesterday's GLOBE observations.
-    fp = download_from_api(["sky_conditions", "land_covers", "mosquito_habitat_mapper", "tree_heights"],
-                           date.today() - timedelta(1), download_dest="SC_LC_MHM_TH__%S.json")
-
-    # Open and parse that file.
-    observations = parse_json(fp)
+# def do_daily(interpret_flags: bool = False) -> None:
+#     """
+#     Downloads, parses, and quality-checks yesterday's observations.
+#     :param interpret_flags: Whether to interpret the quality flags and convert them to English.
+#     :return: A list of all observation indices that were flagged by the quality checker.
+#     """
+#     # Download yesterday's GLOBE observations.
+#     fp = download_from_api(["sky_conditions", "land_covers", "mosquito_habitat_mapper", "tree_heights"],
+#                            date.today() - timedelta(1), download_dest="SC_LC_MHM_TH__%S.json")
+#
+#     # Open and parse that file.
+#     observations = parse_json(fp)
