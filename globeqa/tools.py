@@ -185,7 +185,7 @@ def get_cdf_datetime(cdf: Dataset, index: int) -> datetime:
 
 def find_closest_gridbox(cdf: Dataset, t: datetime, lat: float, lon: float) -> Tuple[int, int, int]:
     """
-    Find the indicies of the closest gridbox to a given point.
+    Find the indices of the closest gridbox to a given point.
 
     :param cdf: A NetCDF4 dataset.
     :param t: The datetime of the point.
@@ -196,7 +196,7 @@ def find_closest_gridbox(cdf: Dataset, t: datetime, lat: float, lon: float) -> T
     approximates the point.
     """
 
-    # Find first latitude and the step between indicies.
+    # Find first latitude and the step between indices.
     first_lat = cdf["lat"][0]
     lat_step = cdf["lat"][1] - first_lat
     # Find the difference between the point latitude and the first latitude.  Divide this by the step size to
