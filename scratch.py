@@ -17,7 +17,7 @@ plotters.plot_ggc(0, obs, cdf, "/Users/mjstarke/Documents/GLOBE_B/images/GG0000.
 
 
 # do JSON
-obs = tools.parse_json(fpSC)
-land = tools.prepare_earth_geometry("50m")
-tools.do_quality_check(obs, land)
-tools.print_flag_summary(obs)
+# obs = tools.parse_json(fpSC)
+# land = tools.prepare_earth_geometry("50m")
+# tools.do_quality_check(obs, land)
+# tools.print_flag_summary(obs)

@@ -1,6 +1,7 @@
 import cartopy.crs as ccrs
+from cartopy.feature.nightshade import Nightshade
 from datetime import datetime, timedelta
-import matplotlib
+from matplotlib.cm import get_cmap
 import matplotlib.pyplot as plt
 from netCDF4 import Dataset
 import numpy as np
@@ -52,7 +53,7 @@ def plot_ggc(t: int, obs: List[Observation], cdf: Dataset, save_path: Optional[s
     # in a list to create a two-dimensional array-like. Known design issue with MPL that probably won't be fixed.
 
     # For now, we use the cmap to get the color, and wrap it in the call to scatter().
-    cmap = matplotlib.cm.get_cmap("Blues_r")
+    cmap = get_cmap("Blues_r")
 
     scatter = dict(
         none=dict(x=[], y=[], marker="P", color=cmap(0.00)),
@@ -87,9 +88,14 @@ def plot_ggc(t: int, obs: List[Observation], cdf: Dataset, save_path: Optional[s
             ax.scatter(data["x"], data["y"], 200, c=[data["color"]],  edgecolors="black", zorder=9,
                        marker=data["marker"])
 
+    # Add day/night terminator.  This goes on top of the scatter so that the points will have the same color as the
+    # GEOS fill.
+    ax.add_feature(Nightshade(window_center, alpha=0.2))
+
     # Title the plot.  Include specific timestamp of the GEOS data and the three-hour window surrounding it for the
     # observations.
-    plt.title("GEOS-5 total cloud fraction for {} (shaded)\nGLOBE observations from {} through {} (letters)".format(
+    plt.title("""GEOS-5 total cloud fraction for {} (shaded)
+    GLOBE observations from {} through {} (plus marks; X marks for obscured)""".format(
         datetime.strftime(window_center, "%Y-%m-%d  %H%MZ"),
         datetime.strftime(window_start, "%Y-%m-%d  %H%MZ"),
         datetime.strftime(window_end, "%Y-%m-%d  %H%MZ")))
