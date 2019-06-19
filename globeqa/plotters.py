@@ -85,12 +85,13 @@ def plot_ggc(t: int, obs: List[Observation], cdf: Dataset, save_path: Optional[s
     for k, data in scatter.items():
         # Do not plot if there is no data.
         if len(data["x"]) > 0:
-            ax.scatter(data["x"], data["y"], 200, c=[data["color"]],  edgecolors="black", zorder=9,
+            ax.scatter(data["x"], data["y"], 200, c=[data["color"]],  edgecolors="black", zorder=5,
                        marker=data["marker"])
 
     # Add day/night terminator.  This goes on top of the scatter so that the points will have the same color as the
     # GEOS fill.
-    ax.add_feature(Nightshade(window_center, alpha=0.2))
+    # noinspection PyTypeChecker
+    ax.add_feature(Nightshade(window_center, alpha=0.2), zorder=20)
 
     # Title the plot.  Include specific timestamp of the GEOS data and the three-hour window surrounding it for the
     # observations.
