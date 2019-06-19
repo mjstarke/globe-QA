@@ -55,6 +55,7 @@ def plot_ggc(t: int, obs: List[Observation], cdf: Dataset, save_path: Optional[s
     # For now, we use the cmap to get the color, and wrap it in the call to scatter().
     cmap = get_cmap("Blues_r")
 
+    # Each entry is a specification for how a particular type of observation should be plotted.
     scatter = dict(
         none=dict(x=[], y=[], marker="P", color=cmap(0.00)),
         few=dict(x=[], y=[], marker="P", color=cmap(0.05)),
@@ -88,8 +89,9 @@ def plot_ggc(t: int, obs: List[Observation], cdf: Dataset, save_path: Optional[s
             ax.scatter(data["x"], data["y"], 200, c=[data["color"]],  edgecolors="black", zorder=5,
                        marker=data["marker"])
 
-    # Add day/night terminator.  This goes on top of the scatter so that the points will have the same color as the
-    # GEOS fill.
+    # Add day/night terminator.  zorder puts this on top of the scatter so that the points will have the same color as
+    # the GEOS fill after being shaded.  Noinspection since the type of the first argument to Nightshade is specified
+    # incorrectly.
     # noinspection PyTypeChecker
     ax.add_feature(Nightshade(window_center, alpha=0.2), zorder=20)
 
@@ -116,7 +118,7 @@ def plot_ggc(t: int, obs: List[Observation], cdf: Dataset, save_path: Optional[s
 def plot_geo_hm(obs: List[Observation], cdf: Dataset, save_path: Optional[str]):
     """
     Plots a geographic heatmap of the given observations.
-    :param obs: The observations to plot
+    :param obs: The observations to plot.
     :param cdf: The NetCDF dataset that contains the lat/lons.
     :param save_path: If a string, the path to which the image will be saved; the figure will not be displayed
     interactively.  If None, the plot is shown interactively.
