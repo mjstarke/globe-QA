@@ -214,16 +214,32 @@ class Observation:
         """
         return len(self.flags) > 0
 
-    def flag(self, flag: Optional[str]) -> bool:
+    def flag(self, flag: Optional[str], set_raised: bool = True) -> bool:
         """
         Raises a flag for this observation if it has not already been raised.
         :param flag: The code for the flag to raise.  If None, no flag is added.
-        :return: Whether the flag was actually added.  Duplicate flags will not be added.
+        :param set_raised: Whether to raise or lower this flag.  Default True (raise).
+        :return: Whether the flag was actually raised/lowered (i.e., it wasn't already raised/lowered).
         """
-        if (flag is not None) and (flag not in self.flags):
-            self.flags.append(flag)
-            return True
+
+        # If flag is None, do nothing.
+        if flag is None:
+            return False
+        # If we are trying to raise a flag...
+        if set_raised:
+            # If the flag is not already raised, raise it.
+            if flag not in self.flags:
+                self.flags.append(flag)
+                return True
+            # Otherwise, do nothing.
+            return False
+        # If we are tring to lower a flag...
         else:
+            # If the flag is raised, lower it.
+            if flag is self.flags:
+                self.flags.remove(flag)
+                return True
+            # Otherwise, do nothing.
             return False
 
     def check_for_flags(self, land=None):
