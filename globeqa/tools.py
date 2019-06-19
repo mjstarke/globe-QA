@@ -5,7 +5,6 @@ import json
 from netCDF4 import Dataset
 from globeqa.observation import Observation
 from os.path import isfile
-from pprint import PrettyPrinter
 from shapely.ops import unary_union
 from shapely.prepared import prep
 from shutil import copyfileobj
@@ -14,30 +13,30 @@ from typing import List, Dict, Optional, Union, Tuple
 from urllib.request import urlopen
 
 
-def pp(obj):
-    PrettyPrinter(indent=4).pprint(obj)
-
-
 def parse_csv(fp: str, count: int = 1e30, protocol: Optional[str] = "sky_conditions") -> List[Observation]:
     """
     Parse a CSV file containing GLOBE observations.
     :param fp: The path to the CSV file.
     :param count: The maximum number of observations to parse.  Default 1e30.
-    :param progress: The interval at which to print progress updates.  Larger values cause less frequent updates. If
-    None, no progress updates will be printed.  Default 25000.
     :param protocol: The protocol that the CSV file comes from.  Default 'sky_conditions'.
     :return: The observations.
     """
 
+    # Prepare to collect observations.
     observations = []
     with open(fp, "r") as f:
+        # Set aside the header, split it, and strip each piece.
         header = f.readline().split(',')
         header = [h.strip() for h in header]
+        # Determine number of lines for tqdm.
         line_count = sum(1 for i in open(fp, 'rb'))
         print("--  Reading CSV file...")
+        # Loop through each line.
         for line in tqdm(f, total=line_count):
+            # Split the line and create an Observation for it.
             s = line.split(',')
             observations.append(Observation(header, s, protocol=protocol))
+            # If limited by count, check here.
             if len(observations) >= count:
                 break
 
@@ -62,28 +61,35 @@ def download_from_api(protocols: List[str], start: date, end: Optional[date] = N
     if end is None:
         end = start
 
+    # Create a string that represents the protcol part of the query.
     protocol_string = "".join(["protocols={}&".format(protocol) for protocol in protocols])
+    # Create the full download link.
     download_src = "https://api.globe.gov/search/v1/measurement/protocol/measureddate/?{}startdate={}&enddate={" \
                    "}&geojson=TRUE&sample=FALSE "
     download_src = download_src.format(protocol_string, start.strftime("%Y-%m-%d"), end.strftime("%Y-%m-%d"))
 
+    # Replace % indicators in the destination string with their respective variable values.
     download_dest = download_dest.replace("%P", "__".join(protocols))
     download_dest = download_dest.replace("%S", start.strftime("%Y%m%d"))
     download_dest = download_dest.replace("%E", end.strftime("%Y%m%d"))
 
+    # Check if file already exists at the destination.  If a file by the target name already exists, skip download.
     if check_existing:
         if isfile(download_dest):
             print("--  Download will not be attempted as the file already exists locally.")
             return download_dest
 
+    # Try to download from the API.
     try:
         print("--  Downloading from API...")
         print("--  {}".format(download_src))
+        # Open the target URL, open the local file, and copy.
         with closing(urlopen(download_src)) as r:
             with open(download_dest, 'wb') as f:
                 copyfileobj(r, f)
         print("--  Download successful.  Saved to:")
         print("--  {}".format(download_dest))
+    # In the event of a failure, print the error.
     except Exception as e:
         print("(x) Download failed:")
         print(e)
