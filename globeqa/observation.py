@@ -231,7 +231,7 @@ class Observation:
         :param flag: The code for the flag to raise.  If None, no flag is added.
         :return: Whether the flag was actually added.  Duplicate flags will not be added.
         """
-        if (flag not in self.flags) and (flag is not None):
+        if (flag is not None) and (flag not in self.flags):
             self.flags.append(flag)
             return True
         else:
