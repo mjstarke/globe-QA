@@ -128,7 +128,7 @@ class Observation:
     @property
     def elevation(self) -> Optional[float]:
         """
-        :return: The elvation of this observation, or None if it is missing or invalid.
+        :return: The elevation of this observation, or None if it is missing or invalid.
         """
         val = self.get_float(["elevation", "Observation Elevation"], "EX", "EI")
         if not (-300. <= val <= 6000.):
@@ -430,7 +430,7 @@ class Observation:
     @property
     def flags_english(self) -> List[str]:
         """
-        :returns: All flags for this observation converted to human-readable terms.
+        :return: All flags for this observation converted to human-readable terms.
         """
         # Return the value corresponding to the key for each flag.
         return [self.flag_definitions[i] for i in self.flags]
