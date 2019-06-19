@@ -310,17 +310,3 @@ def list_all_properties(observations: List[dict]) -> List[str]:
                 all_keys.append(key)
 
     return sorted(all_keys)
-
-
-# def do_daily(interpret_flags: bool = False) -> None:
-#     """
-#     Downloads, parses, and quality-checks yesterday's observations.
-#     :param interpret_flags: Whether to interpret the quality flags and convert them to English.
-#     :return: A list of all observation indices that were flagged by the quality checker.
-#     """
-#     # Download yesterday's GLOBE observations.
-#     fp = download_from_api(["sky_conditions", "land_covers", "mosquito_habitat_mapper", "tree_heights"],
-#                            date.today() - timedelta(1), download_dest="SC_LC_MHM_TH__%S.json")
-#
-#     # Open and parse that file.
-#     observations = parse_json(fp)
