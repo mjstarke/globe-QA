@@ -115,6 +115,8 @@ def parse_json(fp: str) -> List[Observation]:
         ob = raw["features"][o]
         ret.append(Observation(feature=ob))
     return ret
+
+    # Although this works and may be more efficient, I'm not sure how to make it work with tqdm...
     # return [Observation(feature=ob) for ob in raw["features"]]
 
 
@@ -126,6 +128,7 @@ def print_flag_summary(obs: List[Observation]) -> Dict[str, int]:
     """
     flag_counts = dict(total=len(obs))
     print("--  Enumerating flags...")
+    # tqdm not used here because this is a surprisingly fast process.
     for ob in obs:
         for flag in ob.flags:
             try:
@@ -152,22 +155,29 @@ def filter_by_flag(obs: List[Observation], specs: Union[bool, Dict[str, bool]] =
     flags must be absent.  Default True.
     :return: The filtered observations.
     """
+    # If specs is a dict...
     if type(specs) == dict:
         ret = []
+        # For each observation...
         for ob in tqdm(obs):
+            # For each specification k=v, k is the flag and v is whether it must be present or absent.
             for k, v in specs.items():
+                # If the flag is present or absent as required, add this ob to the list.
                 if ob.has_flag(k) == v:
                     ret.append(ob)
         return ret
+    # If specs is a bool, just return those obs which have or do not have flags.
     elif type(specs) == bool:
         return [ob for ob in obs if ob.flagged == specs]
+    # If not a dict or bool, raise an error.
     else:
         raise TypeError("Argument 'specs' must be either Dict[str, bool] or bool.")
 
 
 def get_cdf_datetime(cdf: Dataset, index: int) -> datetime:
     """
-    Creates a datetime that represents the time at the given index of cdf["time"].
+    Creates a datetime that represents the time at the given index of cdf["time"].  This assumes that cdf["time"] is
+    minutes since the beginning of the run, which means that begin_date and begin_time are also supplied by ["time"].
     :param cdf: The CDF Dataset.
     :param index: The time index to process.
     :return: The actual datetime that corresponds to the given index.
@@ -186,15 +196,13 @@ def get_cdf_datetime(cdf: Dataset, index: int) -> datetime:
 
 def find_closest_gridbox(cdf: Dataset, t: datetime, lat: float, lon: float) -> Tuple[int, int, int]:
     """
-    Find the indices of the closest gridbox to a given point.
-
+    Find the indices of the closest gridbox to a given point in spacetime.
     :param cdf: A NetCDF4 dataset.
     :param t: The datetime of the point.
     :param lat: The signed latitude of the point in degrees.
     :param lon: The signed longitude of the point in degrees.
-
     :return: The indices for time, latitude, and longitude, respectively, of the gridbox that most closely
-    approximates the point.
+    approximates the point in the dataset.
     """
 
     # Find first latitude and the step between indices.
@@ -232,7 +240,7 @@ def prepare_earth_geometry(geometry_resolution: str = "50m"):
     This code may need to download a ZIP containing Earth geometry data the first time it runs.
     Code borrowed from   https://stackoverflow.com/a/48062502
     :param geometry_resolution: The resolution of the NaturalEarth shapereader to use.  Valid values are '10m', '50m'
-    or '110m'.
+    or '110m'.  Default '50m'.
     :return: The PreparedGeometry object that can be used for point-land checking.
     """
     print("--  Preparing Earth geometry...")
@@ -251,13 +259,15 @@ def do_quality_check(obs: List[Observation], land=None):
     """
     print("--  Performing quality check...")
     for o in tqdm(range(len(obs))):
-        ob = obs[o]
-        ob.check_for_flags(land)
+        obs[o].check_for_flags(land)
 
 
 def print_all_values(obs: List[Observation], key: str) -> None:
     """
-    Prints all values that are paired with a given key at least once in the observations.
+    Prints all values that are paired with a given key at least once in the observations.  For instance, checking a
+    boolean key should result in something like:
+      329 occurrences:   True
+     2971 occurrences:   False
     :param obs: The observations.
     :param key: The key to evaluate.
     :return: None.  Prints results directly.
