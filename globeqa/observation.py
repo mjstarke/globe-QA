@@ -100,30 +100,19 @@ class Observation:
                 self.flag("DI")
                 return None
 
-    def try_float(self, key: str) -> Optional[float]:
-        """
-        Attempts to float the given key from the raw observation data.
-        :param key: The key to float.
-        :return: The floated key, or None if the key could not be floated.
-        """
-        try:
-            return float(self._raw[key])
-        except ValueError:
-            return None
-
     @property
     def lat(self) -> Optional[float]:
         """
         :return: The latitude of this observation, or None if the latitude is invalid.
         """
-        return self.try_float("Observation Latitude")
+        return self.get_float("Observation Latitude", "LM", "LI")
 
     @property
     def lon(self) -> Optional[float]:
         """
         :return: The longitude of this observation, or None if it is missing or invalid.
         """
-        return self.try_float("Observation Longitude")
+        return self.get_float("Observation Longitude", "LM", "LI")
 
     @property
     def elevation(self) -> Optional[float]:
