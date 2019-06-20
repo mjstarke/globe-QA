@@ -262,48 +262,21 @@ def do_quality_check(obs: List[Observation], land=None):
         obs[o].check_for_flags(land)
 
 
-def print_all_values(obs: List[Observation], key: str) -> None:
+def find_all_values(obs: List[Observation], attribute: str) -> Dict[str, int]:
     """
-    Prints all values that are paired with a given key at least once in the observations.  For instance, checking a
-    boolean key should result in something like:
-      329 occurrences:   True
-     2971 occurrences:   False
+    Finds all possible values for a given attribute in the observations.
     :param obs: The observations.
-    :param key: The key to evaluate.
-    :return: None.  Prints results directly.
+    :param attribute: The attribute to find values for.
+    :return: A dictionary of (value, count) pairs, each indicating that the given attribute had the value 'value' count
+    times in the observations.  If an observation does not have a particular attribute, it contributes nothing to this
+    returned dictionary.
     """
-    found_values = []
-    found_obs = []
-    unique_values = []
-    unique_counts = []
-
-    print("--  Searching observations...")
-    for ob in tqdm(obs):
-        if key in ob:
-            value = ob[key]
-            found_obs.append(ob)
-            found_values.append(value)
-            if value not in unique_values:
-                unique_values.append(value)
-                unique_counts.append(1)
-            else:
-                i = unique_values.index(value)
-                unique_counts[i] += 1
-
-    print("{} of {} observations had the key '{}'.".format(len(found_values), len(obs), key))
-    print("Unique values for the key follow:")
-    for i in range(len(unique_values)):
-        print("{:6} occurrences:   {}".format(unique_counts[i], unique_values[i]))
-
-
-def find_all_values(obs: List[Observation], key: str) -> Dict[str, int]:
-
     ret = dict()
 
     print("--  Searching observations...")
     for ob in tqdm(obs):
-        if key in ob:
-            val = ob[key]
+        if attribute in ob:
+            val = ob[attribute]
             try:
                 ret[val] += 1
             except KeyError:
@@ -326,3 +299,52 @@ def find_all_attributes(observations: List[dict]) -> List[str]:
                 all_keys.append(key)
 
     return sorted(all_keys)
+
+
+def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bool = True) -> None:
+    """
+    Pretty-prints the contents of a dictionary.
+    :param d:  The dictionary to assess.
+    :param print_percent:  Whether to calculate percentages that each value makes up of the whole.  Fails if any values
+    in d are not numeric.  Default True.
+    :param print_total:  Whether to print a row at the end for the sum of all the values.  Fails if any values in d are
+    not numeric.  Default True.
+    :return: None.  The results are printed in three columns: key, value, percentage (if do_percent).  The columns are
+    automatically sized so that two spaces exist between them.
+    """
+    # Keep track of the longest string representations of the key column and value column.
+    longest_key_len = 0
+    longest_val_len = 0
+    # Keep track of the sum of the values.
+    total = 0
+    # For each k,v pair...
+    for k, v in d.items():
+        # Update longest k,v length if necessary.
+        longest_key_len = max(longest_key_len, len(repr(k)))
+        longest_val_len = max(longest_val_len, len(repr(v)))
+        # Accumulate to total if necessary.
+        if print_percent or print_total:
+            total += v
+
+    # Create a formattable string based on the longest k,v lengths.
+    fmt = "{:%K}  {:%V}".replace("%K", str(longest_key_len)).replace("%V", str(longest_val_len))
+
+    # If we do want to print percentages, we need to add to the fmt string, and add an extra parameter to .format().
+    if print_percent:
+        fmt += "  {:7.2%}"
+        # For each k,v, print its formatted row.
+        for k, v in d.items():
+            print(fmt.format(k, v, v / total))
+
+        if print_total:
+            print()
+            print(fmt.format("", total, 1.))
+
+    # As above, but with percentages.
+    else:
+        for k, v in d.items():
+            print(fmt.format(k, v))
+
+        if print_total:
+            print()
+            print(fmt.format("", total))
