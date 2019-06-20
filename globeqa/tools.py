@@ -120,13 +120,13 @@ def parse_json(fp: str) -> List[Observation]:
     # return [Observation(feature=ob) for ob in raw["features"]]
 
 
-def print_flag_summary(obs: List[Observation]) -> Dict[str, int]:
+def get_flag_counts(obs: List[Observation]) -> Dict[str, int]:
     """
-    Pretty-prints a summary of all flags for the observations.
+    Gets a summary of all flags for the given observations.
     :param obs: The observations to analyze.
     :return: The dictionary of (flag, count) pairs for each flag found at least once.
     """
-    flag_counts = dict(total=len(obs))
+    flag_counts = dict()
     print("--  Enumerating flags...")
     # tqdm not used here because this is a surprisingly fast process.
     for ob in obs:
@@ -135,11 +135,6 @@ def print_flag_summary(obs: List[Observation]) -> Dict[str, int]:
                 flag_counts[flag] += 1
             except KeyError:
                 flag_counts[flag] = 1
-
-    print("--  Flag counts are as follows:")
-    for k in sorted(flag_counts.keys()):
-        v = flag_counts[k]
-        print("{:5}  {:>6}  {:7.2%}".format(k, v, v / len(obs)))
 
     return flag_counts
 
