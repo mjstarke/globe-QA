@@ -439,3 +439,10 @@ class Observation:
         """
         # Return the value corresponding to the key for each flag.
         return [self.flag_definitions[i] for i in self.flags]
+
+    @property
+    def keys(self):
+        """
+        :return: Gets all the keys associated with this observation.
+        """
+        return self._raw.keys()

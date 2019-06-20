@@ -296,16 +296,16 @@ def print_all_values(obs: List[Observation], key: str) -> None:
         print("{:6} occurrences:   {}".format(unique_counts[i], unique_values[i]))
 
 
-def list_all_properties(observations: List[dict]) -> List[str]:
+def find_all_attributes(observations: List[dict]) -> List[str]:
     """
-    Generates a sorted list of all properties that occur at least once in the observations.
+    Generates a sorted list of all attributes that occur at least once in the observations.
     :param observations: The observations.
-    :return: A sorted list of all properties that occur at least once in the observations.
+    :return: A sorted list of all attributes that occur at least once in the observations.
     """
     all_keys = []
     print("--  Searching observations...")
     for ob in tqdm(observations):
-        for key in ob["properties"]:
+        for key in ob.keys:
             if key not in all_keys:
                 all_keys.append(key)
 
