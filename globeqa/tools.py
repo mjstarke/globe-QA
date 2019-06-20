@@ -348,3 +348,24 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
         if print_total:
             print()
             print(fmt.format("", total))
+
+
+def bin_cloud_fraction(fraction: float) -> str:
+    """
+    Bins a cloud fraction into a GLOBE cloud cover category.
+    :param fraction: The cloud fraction, from 0.0 (clear) to 1.0 (overcast).
+    :return: A string describing the cloud cover: one of [none, few, isolated, scattered, broken, overcast].
+    """
+    if not (0.0 <= fraction <= 1.0):
+        raise ValueError("Cloud fraction must be between 0.0 and 1.0 (inclusive).")
+
+    bins = dict(none=0.00,
+                few=0.10,
+                isolated=0.25,
+                scattered=0.50,
+                broken=0.90,
+                overcast=1.00)
+
+    for k, v in bins.items():
+        if fraction <= v:
+            return k
