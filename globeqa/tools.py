@@ -296,6 +296,22 @@ def print_all_values(obs: List[Observation], key: str) -> None:
         print("{:6} occurrences:   {}".format(unique_counts[i], unique_values[i]))
 
 
+def find_all_values(obs: List[Observation], key: str) -> Dict[str, int]:
+
+    ret = dict()
+
+    print("--  Searching observations...")
+    for ob in tqdm(obs):
+        if key in ob:
+            val = ob[key]
+            try:
+                ret[val] += 1
+            except KeyError:
+                ret[val] = 1
+
+    return ret
+
+
 def find_all_attributes(observations: List[dict]) -> List[str]:
     """
     Generates a sorted list of all attributes that occur at least once in the observations.
