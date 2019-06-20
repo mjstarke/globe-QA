@@ -441,8 +441,16 @@ class Observation:
         return [self.flag_definitions[i] for i in self.flags]
 
     @property
-    def keys(self):
+    def keys(self) -> List[str]:
         """
         :return: Gets all the keys associated with this observation.
         """
         return self._raw.keys()
+
+    @property
+    def source(self) -> str:
+        """
+        :return: Gets the source of this observation.
+        """
+        # TODO make this work for CSV files too
+        return self["DataSource"]
