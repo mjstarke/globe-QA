@@ -290,7 +290,7 @@ class Observation:
 
     def _check_for_flags_obscurations(self):
         """
-        Checks this observation for flags associated with obscuration: HC, HO, OC, OM, OO, OT, and OX.  Because .tcc
+        Checks this observation for flags associated with obscuration: HC, HO, OC, OD, OO, OR, and OX.  Because .tcc
         will also be accessed, flags CI, CM and CX could also be raised.
         """
         if self["protocol"] == "sky_conditions":
@@ -303,9 +303,9 @@ class Observation:
                     num_obscurations += 1
 
             if num_obscurations == 2:
-                self.flag("OT")
+                self.flag("OD")
             elif num_obscurations > 2:
-                self.flag("OM")
+                self.flag("OR")
 
             # If num_obscurations and tcc disagree, raise a flag.
             if (num_obscurations > 0) and (self.tcc != "obscured"):
@@ -417,10 +417,10 @@ class Observation:
             NI="Contrail count is invalid (not a number)",
             NR="Contrail count outside of normal range (0 - 19)",
             OC="Obscuration reported but cloud types also reported",
-            OM="More than two obscurations reported",
+            OD="Two obscurations reported",
             OO="Obscuration types selected but cover not obscured",
             OP="Spray reported possibly over land",
-            OT="Two obscurations reported",
+            OR="More than two obscurations reported",
             OX="Obscured cover reported but obscuration type missing",
             TI="Tree height is invalid (not a number)",
             TM="Tree height is coded as missing",
