@@ -269,14 +269,20 @@ class Observation:
 
     def _check_for_flags_location(self, land=None):
         """
-        Checks this observation for flags associated with the location: LI, LW, and LZ.
+        Checks this observation for flags associated with the location: LI, LW, and LZ.  Additionally check if spray was
+        reported over land (flag OP).
         :param land: The PreparedGeometry for determining whether the point is over land.  If None, whether the location
-        is not over water will not be checked (flag LW will not be raised).
+        is not over water will not be checked (flags LW and OP will not be raised).
         """
         if self.lat is not None and self.lon is not None:
             if land is not None:
+                # If the point is not on land, flag LW.
                 if not land.contains(sgeom.Point(self.lon, self.lat)):
                     self.flag("LW")
+                # If the point is on land but sea spray was reported, flag OP.
+                elif self.soft_get("Spray") == "true":
+                    self.flag("OP")
+
             if self.lat == 0. and self.lon == 0.:
                 self.flag("LZ")
         else:
@@ -413,6 +419,7 @@ class Observation:
             OC="Obscuration reported but cloud types also reported",
             OM="More than two obscurations reported",
             OO="Obscuration types selected but cover not obscured",
+            OP="Spray reported possibly over land",
             OT="Two obscurations reported",
             OX="Obscured cover reported but obscuration type missing",
             TI="Tree height is invalid (not a number)",
