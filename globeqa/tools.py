@@ -30,9 +30,8 @@ def parse_csv(fp: str, count: int = 1e30, protocol: Optional[str] = "sky_conditi
         header = [h.strip() for h in header]
         # Determine number of lines for tqdm.
         line_count = sum(1 for i in open(fp, 'rb'))
-        print("--  Reading CSV file...")
         # Loop through each line.
-        for line in tqdm(f, total=line_count):
+        for line in tqdm(f, total=line_count, desc="Reading CSV file"):
             # Split the line and create an Observation for it.
             s = line.split(',')
             observations.append(Observation(header, s, protocol=protocol))
@@ -109,9 +108,8 @@ def parse_json(fp: str) -> List[Observation]:
         print("--  Interpreting file as JSON...")
         raw = json.loads(g)
 
-    print("--  Parsing JSON as observations...")
     ret = []
-    for o in tqdm(range(len(raw["features"]))):
+    for o in tqdm(range(len(raw["features"])), desc="Parsing JSON as observations"):
         ob = raw["features"][o]
         ret.append(Observation(feature=ob))
     return ret
@@ -154,7 +152,7 @@ def filter_by_flag(obs: List[Observation], specs: Union[bool, Dict[str, bool]] =
     if type(specs) == dict:
         ret = []
         # For each observation...
-        for ob in tqdm(obs):
+        for ob in tqdm(obs, desc="Filtering observations by flag"):
             # For each specification k=v, k is the flag and v is whether it must be present or absent.
             for k, v in specs.items():
                 # If the flag is present or absent as required, add this ob to the list.
@@ -252,8 +250,7 @@ def do_quality_check(obs: List[Observation], land=None):
     :param obs: The observations.
     :param land: The PreparedGeometry for land checking.  If None, land check will not be performed.
     """
-    print("--  Performing quality check...")
-    for o in tqdm(range(len(obs))):
+    for o in tqdm(range(len(obs)), desc="Performing quality check"):
         obs[o].check_for_flags(land)
 
 
@@ -268,8 +265,7 @@ def find_all_values(obs: List[Observation], attribute: str) -> Dict[str, int]:
     """
     ret = dict()
 
-    print("--  Searching observations...")
-    for ob in tqdm(obs):
+    for ob in tqdm(obs, desc="Sifting observations"):
         if attribute in ob:
             val = ob[attribute]
             try:
@@ -287,8 +283,7 @@ def find_all_attributes(observations: List[dict]) -> List[str]:
     :return: A sorted list of all attributes that occur at least once in the observations.
     """
     all_keys = []
-    print("--  Searching observations...")
-    for ob in tqdm(observations):
+    for ob in tqdm(observations, desc="Sifting observations"):
         for key in ob.keys:
             if key not in all_keys:
                 all_keys.append(key)
@@ -377,16 +372,14 @@ def filter_by_datetime(obs: List[Observation], earliest: Optional[datetime] = No
     """
     first_acceptable_index = 0
     if earliest is not None:
-        print("-- First cut...")
-        for o in tqdm(range(len(obs))):
+        for o in tqdm(range(len(obs)), desc="Cutting for early date"):
             if obs[o].measured_dt >= earliest:
                 first_acceptable_index = o
                 break
 
     last_acceptable_index = None
     if latest is not None:
-        print("-- Second cut...")
-        for o in tqdm(range(len(obs[first_acceptable_index:]))):
+        for o in tqdm(range(len(obs[first_acceptable_index:])), desc="Cutting for late date"):
             if obs[o].measured_dt > latest:
                 last_acceptable_index = o
                 break
