@@ -34,7 +34,7 @@ def plot_ggc(t: int, obs: List[Observation], cdf: Dataset, save_path: Optional[s
     xx, yy = np.meshgrid(cdf["lon"], cdf["lat"])
 
     # Fill-contour the cloud data.  Levels chosen are the cutoff points for GLOBE cloud cover categories.
-    print("--- Plotting GEOS-5 fill...")
+    print("--- Plotting GEOS fill...")
     cf_sky = ax.contourf(xx, yy, cdf["CLDTT"][t], cmap="Blues_r", levels=[0.0, 0.1, 0.25, 0.5, 0.9, 1.0])
 
     # Add colorbar.  Ticks are as above.
@@ -97,7 +97,7 @@ def plot_ggc(t: int, obs: List[Observation], cdf: Dataset, save_path: Optional[s
 
     # Title the plot.  Include specific timestamp of the GEOS data and the three-hour window surrounding it for the
     # observations.
-    plt.title("""GEOS-5 total cloud fraction for {} (shaded)
+    plt.title("""GEOS total cloud fraction for {} (shaded)
     GLOBE observations from {} through {} (plus marks; X marks for obscured)""".format(
         datetime.strftime(window_center, "%Y-%m-%d  %H%MZ"),
         datetime.strftime(window_start, "%Y-%m-%d  %H%MZ"),
