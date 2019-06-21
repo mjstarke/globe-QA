@@ -389,5 +389,6 @@ def filter_by_datetime(obs: List[Observation], earliest: Optional[datetime] = No
         for o in tqdm(range(len(obs[first_acceptable_index:]))):
             if obs[o].measured_dt > latest:
                 last_acceptable_index = o
+                break
 
     return obs[first_acceptable_index:last_acceptable_index]
