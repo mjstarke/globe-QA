@@ -452,5 +452,8 @@ class Observation:
         """
         :return: Gets the source of this observation.
         """
-        # TODO make this work for CSV files too
-        return self["DataSource"]
+        try:
+            return self["DataSource"]
+        except KeyError:
+            return (("GLOBE-trained " if self["Is GLOBE Trained"] == "1" else "") +
+                    ("citizen science" if self["is Citizen Science"] == "1" else "")).strip()
