@@ -385,3 +385,13 @@ def filter_by_datetime(obs: List[Observation], earliest: Optional[datetime] = No
                 break
 
     return obs[first_acceptable_index:last_acceptable_index]
+
+
+def filter_by_hour(obs: List[Observation], hours: List[int]) -> List[Observation]:
+    """
+    Filters a list of observations by the hour of measurement.
+    :param obs: The observations.
+    :param hours: The hours that shall pass the filter.
+    :return: The observations that passed the filter.
+    """
+    return [ob for ob in obs if ob.measured_dt.hour in hours]
