@@ -258,6 +258,7 @@ class Observation:
         """
         Checks this observation for datetime flags: DF, DI, DM, DO, and DZ.
         """
+        # Retrieving the datetime could raise DI or DM flags.
         dt = self.measured_dt
         if dt is not None:
             if dt > datetime.now():
@@ -285,13 +286,15 @@ class Observation:
 
             if self.lat == 0. and self.lon == 0.:
                 self.flag("LZ")
+        # If lat or lon is invalid, flag LI.
         else:
             self.flag("LI")
 
     def _check_for_flags_obscurations(self):
         """
         Checks this observation for flags associated with obscuration: HC, HO, OC, OD, OO, OR, and OX.  Because .tcc
-        will also be accessed, flags CI, CM and CX could also be raised.
+        will also be accessed, flags CI, CM and CX could also be raised.  Flag OP is raised in _check_for_flags_location
+        because it requires the land check.
         """
         if self["protocol"] == "sky_conditions":
             OBSCURATION_TYPES = ["Fog", "Smoke", "Haze", "VolcanicAsh", "Dust", "Sand", "Spray", "HeavyRain",
