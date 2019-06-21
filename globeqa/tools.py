@@ -364,3 +364,30 @@ def bin_cloud_fraction(fraction: float) -> str:
     for k, v in bins.items():
         if fraction <= v:
             return k
+
+
+def filter_by_datetime(obs: List[Observation], earliest: Optional[datetime] = None, latest: Optional[datetime] = None
+                       ) -> List[Observation]:
+    """
+    Filters a list of observations to a certain datetime range, assuming chronology of the observations.
+    :param obs: The observations.
+    :param earliest: The earliest datetime that an observation may have to pass the filter.
+    :param latest: The latest datetime that an observation may have to pass the filter.
+    :return: The observations that passed the filter.
+    """
+    first_acceptable_index = 0
+    if earliest is not None:
+        print("-- First cut...")
+        for o in range(len(obs)):
+            if obs[o].measured_dt >= earliest:
+                first_acceptable_index = o
+                break
+
+    last_acceptable_index = None
+    if latest is not None:
+        print("-- Second cut...")
+        for o in range(len(obs[first_acceptable_index:])):
+            if obs[o].measured_dt > latest:
+                last_acceptable_index = o
+
+    return obs[first_acceptable_index:last_acceptable_index]
