@@ -378,7 +378,7 @@ def filter_by_datetime(obs: List[Observation], earliest: Optional[datetime] = No
     first_acceptable_index = 0
     if earliest is not None:
         print("-- First cut...")
-        for o in range(len(obs)):
+        for o in tqdm(range(len(obs))):
             if obs[o].measured_dt >= earliest:
                 first_acceptable_index = o
                 break
@@ -386,7 +386,7 @@ def filter_by_datetime(obs: List[Observation], earliest: Optional[datetime] = No
     last_acceptable_index = None
     if latest is not None:
         print("-- Second cut...")
-        for o in range(len(obs[first_acceptable_index:])):
+        for o in tqdm(range(len(obs[first_acceptable_index:]))):
             if obs[o].measured_dt > latest:
                 last_acceptable_index = o
 
