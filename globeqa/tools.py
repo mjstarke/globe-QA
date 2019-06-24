@@ -32,12 +32,12 @@ def parse_csv(fp: str, count: int = 1e30, protocol: Optional[str] = "sky_conditi
         line_count = sum(1 for i in open(fp, 'rb'))
         # Loop through each line.
         for line in tqdm(f, total=line_count, desc="Reading CSV file"):
+            # If limited by count, exit.
+            if len(observations) >= count:
+                break
             # Split the line and create an Observation for it.
             s = line.split(',')
             observations.append(Observation(header, s, protocol=protocol))
-            # If limited by count, check here.
-            if len(observations) >= count:
-                break
 
     return observations
 
@@ -195,7 +195,7 @@ def find_closest_gridbox(cdf: Dataset, t: datetime, lat: float, lon: float) -> T
     :param lat: The signed latitude of the point in degrees.
     :param lon: The signed longitude of the point in degrees.
     :return: The indices for time, latitude, and longitude, respectively, of the gridbox that most closely
-    approximates the point in the dataset.
+    approximates the point in the dataset.  There is no guarantee that these indices are valid for the dataset.
     """
 
     # Find first latitude and the step between indices.
@@ -236,6 +236,9 @@ def prepare_earth_geometry(geometry_resolution: str = "50m"):
     or '110m'.  Default '50m'.
     :return: The PreparedGeometry object that can be used for point-land checking.
     """
+    if geometry_resolution not in ["10m", "50m", "110m"]:
+        raise ValueError("Argument 'geometry_resolution' must be either '10m', '50m', or '110m'.")
+
     print("--  Preparing Earth geometry...")
     land_shp_fname = shpreader.natural_earth(resolution=geometry_resolution, category='physical', name='land')
     land_geom = unary_union(list(shpreader.Reader(land_shp_fname).geometries()))
@@ -300,8 +303,11 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
     :param print_total:  Whether to print a row at the end for the sum of all the values.  Fails if any values in d are
     not numeric.  Default True.
     :return: None.  The results are printed in three columns: key, value, percentage (if do_percent).  The columns are
-    automatically sized so that two spaces exist between them.
+    automatically sized so that two spaces exist between them.  If d contains no keys, nothing is printed.
     """
+    if len(d.keys()) == 0:
+        return None
+
     # Keep track of the longest string representations of the key column and value column.
     longest_key_len = 0
     longest_val_len = 0
@@ -348,11 +354,12 @@ def bin_cloud_fraction(fraction: float, clip: bool = False) -> str:
     :param clip: Whether to force fraction into the range 0.0 to 1.0.  ValueError will not be raised in this case.
     Default False.
     :return: A string describing the cloud cover: one of [none, few, isolated, scattered, broken, overcast].
+    :raises: ValueError if fraction is not in the range 0.0 to 1.0, unless clip is True.
     """
     if clip:
         fraction = min(max(fraction, 0.0), 1.0)
     elif not (0.0 <= fraction <= 1.0):
-        raise ValueError("Cloud fraction must be between 0.0 and 1.0 (inclusive).")
+        raise ValueError("Argument 'fraction' must be between 0.0 and 1.0 (inclusive).")
 
     bins = dict(none=0.00,
                 few=0.10,
@@ -379,7 +386,7 @@ def filter_by_datetime(obs: List[Observation], earliest: Optional[datetime] = No
     :raises: ValueError if earliest is after latest.
     """
     if earliest >= latest:
-        raise ValueError("'earliest' must not be after 'latest'.")
+        raise ValueError("Argument 'earliest' must not be after argument 'latest'.")
 
     if earliest is None and latest is None:
         return obs
