@@ -1,5 +1,4 @@
 from globeqa import *
-import matplotlib.pyplot as plt
 import numpy as np
 from scratch_vars import *
 
