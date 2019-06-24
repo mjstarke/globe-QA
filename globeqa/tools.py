@@ -429,7 +429,7 @@ def do_daily(download_folder: str = "", download_file: str = "SC_LC_MHM_TH__%S.j
     observations = parse_json(fp)
 
     if len(observations) == 0:
-        print("/!\\ The API returned no observations from yesterday.")
+        print("/!\\ The downloaded JSON contains no observations.")
         return
 
     # Perform quality checking.
