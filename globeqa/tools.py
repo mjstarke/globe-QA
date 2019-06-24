@@ -361,30 +361,41 @@ def bin_cloud_fraction(fraction: float) -> str:
             return k
 
 
-def filter_by_datetime(obs: List[Observation], earliest: Optional[datetime] = None, latest: Optional[datetime] = None
-                       ) -> List[Observation]:
+def filter_by_datetime(obs: List[Observation], earliest: Optional[datetime] = None, latest: Optional[datetime] = None,
+                       assume_chronology: bool = True) -> List[Observation]:
     """
     Filters a list of observations to a certain datetime range, assuming chronology of the observations.
     :param obs: The observations.
     :param earliest: The earliest datetime that an observation may have to pass the filter.
     :param latest: The latest datetime that an observation may have to pass the filter.
+    :param assume_chronology: Whether the observations are in ascending chronological order.  If set to True when the
+    observations are NOT in strictly chronological order, arbitrary returns will result.  Default True.
     :return: The observations that passed the filter.
     """
-    first_acceptable_index = 0
-    if earliest is not None:
-        for o in tqdm(range(len(obs)), desc="Cutting for early date"):
-            if obs[o].measured_dt >= earliest:
-                first_acceptable_index = o
-                break
+    if assume_chronology:
+        first_acceptable_index = 0
+        if earliest is not None:
+            for o in tqdm(range(len(obs)), desc="Cutting for early date"):
+                if obs[o].measured_dt >= earliest:
+                    first_acceptable_index = o
+                    break
 
-    last_acceptable_index = None
-    if latest is not None:
-        for o in tqdm(range(len(obs[first_acceptable_index:])), desc="Cutting for late date"):
-            if obs[o].measured_dt > latest:
-                last_acceptable_index = o
-                break
+        last_acceptable_index = None
+        if latest is not None:
+            for o in tqdm(range(len(obs[first_acceptable_index:])), desc="Cutting for late date"):
+                if obs[o].measured_dt > latest:
+                    last_acceptable_index = o
+                    break
 
-    return obs[first_acceptable_index:last_acceptable_index]
+        return obs[first_acceptable_index:last_acceptable_index]
+
+    else:
+        ret = []
+        for ob in tqdm(obs, desc="Filtering observations by datetime"):
+            if earliest <= ob.measured_dt <= latest:
+                ret.append(ob)
+
+        return ret
 
 
 def filter_by_hour(obs: List[Observation], hours: List[int]) -> List[Observation]:
