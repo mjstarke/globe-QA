@@ -437,3 +437,38 @@ def pie_dict(d: dict, keys=None, colors=None):
     plt.tight_layout()
     plt.show()
     return ax
+
+
+def stacked_bars(x, ys, labels, colors, legend: bool = True, **kwargs):
+    """
+    Creates a stacked bar chart.
+    :param x: The horizontal positions of the bars
+    :param ys: A list of lists of heights for the bars.
+    :param labels: A list of legend labels corresponding to the lists of y value lists.
+    :param colors: A list of colors corresponding to the lists of y value lists.
+    :param legend: Whether to draw the legend.  Default True.
+    :param kwargs: kwargs are passed to bar().
+    :return: The axis on which the bar was plotted.
+    :raises: ValueError if ys, labels, and colors are not all the same length, or if the elements of y do not all have
+    the same length as x.
+    """
+    for y in ys:
+        if len(y) != len(x):
+            raise ValueError("All sets of y values must be equal in length to 'x'.")
+    if not (len(ys) == len(labels) == len(colors)):
+        raise ValueError("'y', 'labels', and 'colors' must be equal in length.")
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+
+    artists = []
+    prev_y = None
+    for i in range(len(ys)):
+        y = np.array(ys[i])
+        bar = ax.bar(x, y, color=colors[i], bottom=prev_y, **kwargs)
+        artists.append(bar)
+        prev_y = y if prev_y is None else prev_y + y
+
+    if legend:
+        ax.legend(artists, labels)
+    return ax
