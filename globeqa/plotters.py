@@ -217,7 +217,7 @@ def plot_cat_hm(obs, cdf, save_path: Optional[str] = None, progress=1000):
     print("--- Readying plot...")
     # Set up a figure and axis.
     fig, ax = plt.subplots()
-    im = ax.imshow(histo, cmap="summer_r")
+    ax.imshow(histo, cmap="summer_r")
 
     # Specifically show all ticks.
     ax.set_xticks(np.arange(len(geos_categories)))
@@ -232,14 +232,12 @@ def plot_cat_hm(obs, cdf, save_path: Optional[str] = None, progress=1000):
     ax.set_ylabel("GLOBE observation TCC category")
 
     # Rotate the tick labels and set their alignment.
-    plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
-             rotation_mode="anchor")
+    plt.setp(ax.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
 
     # Loop over data dimensions and create text annotations.
     for i in range(len(obs_categories)):
         for j in range(len(geos_categories)):
-            text = ax.text(j, i, int(histo[i, j]),
-                           ha="center", va="center", color="k")
+            ax.text(j, i, int(histo[i, j]), ha="center", va="center", color="k")
 
     ax.set_title("GEOS vs. GLOBE total cloud cover (TCC) at GLOBE observation sites for 2018")
     fig.tight_layout()
