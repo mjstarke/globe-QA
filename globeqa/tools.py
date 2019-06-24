@@ -376,7 +376,14 @@ def filter_by_datetime(obs: List[Observation], earliest: Optional[datetime] = No
     :param assume_chronology: Whether the observations are in ascending chronological order.  If set to True when the
     observations are NOT in strictly chronological order, arbitrary returns will result.  Default True.
     :return: The observations that passed the filter.
+    :raises: ValueError if earliest is after latest.
     """
+    if earliest >= latest:
+        raise ValueError("'earliest' must not be after 'latest'.")
+
+    if earliest is None and latest is None:
+        return obs
+
     if assume_chronology:
         first_acceptable_index = 0
         if earliest is not None:
