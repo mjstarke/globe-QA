@@ -427,17 +427,21 @@ def filter_by_hour(obs: List[Observation], hours: List[int]) -> List[Observation
     return [ob for ob in obs if ob.measured_dt.hour in hours]
 
 
-def do_daily(download_folder: str = "", download_file: str = "SC_LC_MHM_TH__%S.json"):
+def process_one_day(download_folder: str = "", download_file: str = "SC_LC_MHM_TH__%S.json", day: date = None):
     """
-    Downloads, parses, and quality-checks yesterday's observations.
+    Downloads, parses, and quality-checks one day's observations.
     :param download_folder: The folder to download the JSON file to.
     :param download_file: The name that the JSON file should have.  Certain % codes are replaced; see
     download_from_api().
-    :return: A summary of all flags raised; see get_flag_counts().
+    :param day: The day to process.  Default None, which is treated as yesterday.
+    :return: The list of observations.
     """
+    if day is None:
+        day = date.today() - timedelta(1)
+
     # Download yesterday's GLOBE observations.
     fp = download_from_api(["sky_conditions", "land_covers", "mosquito_habitat_mapper", "tree_heights"],
-                           date.today() - timedelta(1), download_dest=join(download_folder, download_file))
+                           day, download_dest=join(download_folder, download_file))
 
     # Open and parse that file.
     observations = parse_json(fp)
