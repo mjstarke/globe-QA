@@ -318,3 +318,61 @@ def fig_pc(figsize: Tuple[float, float] = (18, 9), coast_color: str = "#aaaaaa",
         ax.add_feature(OCEAN)
 
     return ax
+
+
+def annotated_heatmap(data: np.ndarray, x_ticks: List[str], y_ticks: List[str], save_path: Optional[str] = None,
+                      text_formatter: str = "{:.0f}", **kwargs):
+    """
+    Creates a simple annotated heatmap.
+    :param data: A two-dimensional array of data for which to create a heatmap.  It will be automatically transposed for
+    imshow().
+    :param x_ticks: The list of tick labels along the x axis.  Must have length data.shape[0].
+    :param y_ticks: The list of tick labels along the y axis.  Must have length data.shape[1].
+    :param save_path: If None, the plot will be shown interactively.  If a file path, the plot will instead be saved to
+    that location.  Defualt None.
+    :param text_formatter: The format string for the annotations.  Default '{:.0f}', which produces integers.
+    :param kwargs: kwargs are passed to imshow().
+    :return: The axis of the drawn plot.
+    :raises: ValueError if data is not 2-dimensional, or if lengths of x_ticks and y_ticks do not match data.shape.
+    """
+    if len(data.shape) != 2:
+        raise ValueError("'data' must be two-dimensional.")
+    if (len(x_ticks), len(y_ticks)) != data.shape:
+        raise ValueError("(len(x_ticks), len(y_ticks)) must equal data.shape.")
+
+    data = data.T
+
+    print("--  Readying plot...")
+    # Set up a figure and axis.
+    fig, ax = plt.subplots()
+    ax.imshow(data, **kwargs)
+
+    # Specifically show all ticks.
+    ax.set_xticks(np.arange(len(x_ticks)))
+    ax.set_yticks(np.arange(len(y_ticks)))
+
+    # Label each ticks with the appropriate categories.
+    ax.set_xticklabels(x_ticks)
+    ax.set_yticklabels(y_ticks)
+
+    # Rotate the tick labels and set their alignment.
+    plt.setp(ax.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
+
+    # Loop over data dimensions and create text annotations.
+    for i in range(len(y_ticks)):
+        for j in range(len(x_ticks)):
+            ax.text(j, i, text_formatter.format(data[i, j]), ha="center", va="center", color="k")
+
+    fig.tight_layout()
+
+    print("--  Finalizing plot...")
+    plt.tight_layout()
+
+    if save_path is None:
+        plt.show()
+    else:
+        plt.savefig(save_path)
+        plt.close()
+
+    print("--  Plotting completed.")
+    return ax
