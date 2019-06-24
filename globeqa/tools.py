@@ -428,6 +428,10 @@ def do_daily(download_folder: str = "", download_file: str = "SC_LC_MHM_TH__%S.j
     # Open and parse that file.
     observations = parse_json(fp)
 
+    if len(observations) == 0:
+        print("/!\\ The API returned no observations from yesterday.")
+        return
+
     # Perform quality checking.
     land = prepare_earth_geometry()
     do_quality_check(observations, land)
@@ -435,4 +439,5 @@ def do_daily(download_folder: str = "", download_file: str = "SC_LC_MHM_TH__%S.j
     # Summarize flags.
     flag_summary = get_flag_counts(observations)
     pretty_print_dictionary(flag_summary)
-    return flag_summary
+
+    return observations
