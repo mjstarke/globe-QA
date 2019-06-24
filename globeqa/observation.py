@@ -415,10 +415,10 @@ class Observation:
             LW="Location may be over water",
             LZ="Location is at 0 N, 0 E",
             MI="Mosquito larvae count is invalid (not a number or app range)",
-            MR="Mosquito larvae count (specific) outside of normal range (0 - 199)",
+            MR="Mosquito larvae count outside of expected range (0 - 199)",
             MX="Mosquito larvae count attribute is missing",
             NI="Contrail count is invalid (not a number)",
-            NR="Contrail count outside of normal range (0 - 19)",
+            NR="Contrail count outside of expected range (0 - 19)",
             OC="Obscuration reported but cloud types also reported",
             OD="Two obscurations reported",
             OO="Obscuration types selected but cover not obscured",
@@ -427,7 +427,7 @@ class Observation:
             OX="Obscured cover reported but obscuration type missing",
             TI="Tree height is invalid (not a number)",
             TM="Tree height is coded as missing",
-            TR="Tree height outside of normal range (0m - 199m)",
+            TR="Tree height outside of expected range (0m - 199m)",
             TX="Tree height attribute is missing",
 
             # The following flags are defined, but not yet implemented:
