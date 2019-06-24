@@ -381,3 +381,33 @@ def annotated_heatmap(data: np.ndarray, x_ticks: List[str], y_ticks: List[str], 
 
     print("--  Plotting completed.")
     return ax
+
+
+def scatter_obs(obs: List[Observation], ax, bubble_alpha: float = 0.05, point_size: int = 20, bubble_size: int = 800,
+                **kwargs):
+    """
+    Scatters observations on a map, surrounding each point by a transparent bubble.  Overlapping bubbles will become
+    progressively more saturated, qualitatively indicating spatial concentration.
+    :param obs: The observations to scatter.
+    :param ax: The axis to plot on.
+    :param bubble_alpha: The alpha of the bubble.  Default 0.05.  If None, no bubble is drawn.
+    :param point_size: The size of the point markers.  Default 20.
+    :param bubble_size: The size of the bubbles.  Defualt 800.
+    :param kwargs: kwargs are passed to scatter().  The size kwarg (s) should not be passed as it is specified by
+    point_size and bubble_size.
+    :return: The PathCollection for the point scatter (not the bubble scatter).
+    """
+    x = []
+    y = []
+
+    for ob in tqdm(obs, desc="Preparing observations"):
+        if ob.lat is not None and ob.lon is not None:
+            x.append(ob.lon)
+            y.append(ob.lat)
+
+    # Scatter.  Insert precise point and larger, transparent circles to indicate density.
+    artist = ax.scatter(x, y, point_size, **kwargs)
+    if bubble_alpha is not None:
+        ax.scatter(x, y, bubble_size, alpha=bubble_alpha, **kwargs)
+
+    return artist
