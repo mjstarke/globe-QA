@@ -321,7 +321,8 @@ def fig_pc(figsize: Tuple[float, float] = (18, 9), coast_color: str = "#aaaaaa",
 
 
 def annotated_heatmap(data: np.ndarray, x_ticks: List[str], y_ticks: List[str], save_path: Optional[str] = None,
-                      text_formatter: str = "{:.0f}", **kwargs):
+                      text_formatter: str = "{:.0f}", text_color: str = "white", high_text_color: str = "black",
+                      text_color_threshold: float = np.inf, **kwargs):
     """
     Creates a simple annotated heatmap.
     :param data: A two-dimensional array of data for which to create a heatmap.  It will be automatically transposed for
@@ -331,6 +332,11 @@ def annotated_heatmap(data: np.ndarray, x_ticks: List[str], y_ticks: List[str], 
     :param save_path: If None, the plot will be shown interactively.  If a file path, the plot will instead be saved to
     that location.  Defualt None.
     :param text_formatter: The format string for the annotations.  Default '{:.0f}', which produces integers.
+    :param text_color: The color for the cell labels.  Default 'white'.
+    :param high_text_color: The color for the cell labels if the corresponding value is greater than
+    text_color_threshold. Default 'black'.
+    :param text_color_threshold: The threshold at which to switch from text_color to high_text_color.  Default np.inf
+    (which means that text_color is used everywhere).
     :param kwargs: kwargs are passed to imshow().
     :return: The axis of the drawn plot.
     :raises: ValueError if data is not 2-dimensional, or if lengths of x_ticks and y_ticks do not match data.shape.
@@ -361,9 +367,8 @@ def annotated_heatmap(data: np.ndarray, x_ticks: List[str], y_ticks: List[str], 
     # Loop over data dimensions and create text annotations.
     for i in range(len(y_ticks)):
         for j in range(len(x_ticks)):
-            ax.text(j, i, text_formatter.format(data[i, j]), ha="center", va="center", color="k")
-
-    fig.tight_layout()
+            ax.text(j, i, text_formatter.format(data[i, j]), ha="center", va="center",
+                    color=text_color if data[i, j] < text_color_threshold else high_text_color)
 
     print("--  Finalizing plot...")
     plt.tight_layout()
