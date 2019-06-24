@@ -411,3 +411,29 @@ def scatter_obs(obs: List[Observation], ax, bubble_alpha: float = 0.05, point_si
         ax.scatter(x, y, bubble_size, alpha=bubble_alpha, **kwargs)
 
     return artist
+
+
+def pie_dict(d: dict, keys=None, colors=None):
+    """
+    Creates a pie chart using a dictionary, and labels each slice with its value and percentage contribution.
+    :param d: The dictionary to plot.  All values must be numeric.
+    :param keys: The keys to plot, and the order in which to plot them.  If None, d.keys() is called instead and the
+    order will be arbitrary.
+    :param colors: The colors to plot with; one for each key.  Default None, which lets matplotlib set default colors.
+    :return: The axis on which the pie is plotted.
+    """
+    if keys is None:
+        keys = list(d.keys())
+
+    values = [d[key] for key in keys]
+    total = sum(values)
+    labels = ["{}\n{}\n{:.2%}".format(k, d[k], d[k] / total) for k in keys]
+
+    fig = plt.figure(figsize=(12, 9))
+    ax = fig.add_subplot(111)
+
+    ax.pie(values, labels=labels, colors=colors)
+
+    plt.tight_layout()
+    plt.show()
+    return ax
