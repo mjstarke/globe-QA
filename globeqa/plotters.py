@@ -1,5 +1,6 @@
 import cartopy.crs as ccrs
 from cartopy.feature.nightshade import Nightshade
+from cartopy.feature import LAND, OCEAN
 from datetime import datetime, timedelta
 from matplotlib.cm import get_cmap
 import matplotlib.pyplot as plt
@@ -8,7 +9,7 @@ import numpy as np
 from globeqa.observation import Observation
 from globeqa.tools import find_closest_gridbox, get_cdf_datetime
 from tqdm import tqdm
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 
 def plot_ggc(t: int, obs: List[Observation], cdf: Dataset, save_path: Optional[str]) -> None:
@@ -297,3 +298,25 @@ def plot_tcc_scatter(obs, cdf, save_path: Optional[str] = None, progress=1000):
         plt.close()
 
     print("--- Plotting completed.")
+
+
+def fig_pc(figsize: Tuple[float, float] = (18, 9), coast_color: str = "#aaaaaa", color_bg: bool = True):
+    """
+    Creates a cartopy figure using the PlateCarree projection.
+    :param figsize: The size of the figure for matplotlib (usually in inches).  Default (18, 9).
+    :param coast_color: The color of the coastlines.  Default '#aaaaaa' (light grey).
+    :param color_bg: Whether to color the background (blue for ocean, orange for land).  Default True.
+    :return: The axis for the figure.
+    """
+    # Create a figure and axis with cartopy projection.
+    plt.figure(figsize=figsize)
+    ax = plt.axes(projection=ccrs.PlateCarree())
+
+    # Render coastlines in grey so they don't stand out too much.
+    ax.coastlines(color=coast_color)
+
+    if color_bg:
+        ax.add_feature(LAND)
+        ax.add_feature(OCEAN)
+
+    return ax
