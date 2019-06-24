@@ -4,7 +4,7 @@ from datetime import date, datetime, timedelta
 import json
 from netCDF4 import Dataset
 from globeqa.observation import Observation
-from os.path import isfile
+from os.path import isfile, join
 from shapely.ops import unary_union
 from shapely.prepared import prep
 from shutil import copyfileobj
@@ -395,3 +395,28 @@ def filter_by_hour(obs: List[Observation], hours: List[int]) -> List[Observation
     :return: The observations that passed the filter.
     """
     return [ob for ob in obs if ob.measured_dt.hour in hours]
+
+
+def do_daily(download_folder: str = "", download_file: str = "SC_LC_MHM_TH__%S.json"):
+    """
+    Downloads, parses, and quality-checks yesterday's observations.
+    :param download_folder: The folder to download the JSON file to.
+    :param download_file: The name that the JSON file should have.  Certain % codes are replaced; see
+    download_from_api().
+    :return: A summary of all flags raised; see get_flag_counts().
+    """
+    # Download yesterday's GLOBE observations.
+    fp = download_from_api(["sky_conditions", "land_covers", "mosquito_habitat_mapper", "tree_heights"],
+                           date.today() - timedelta(1), download_dest=join(download_folder, download_file))
+
+    # Open and parse that file.
+    observations = parse_json(fp)
+
+    # Perform quality checking.
+    land = prepare_earth_geometry()
+    do_quality_check(observations, land)
+
+    # Summarize flags.
+    flag_summary = get_flag_counts(observations)
+    pretty_print_dictionary(flag_summary)
+    return flag_summary
