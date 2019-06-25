@@ -294,7 +294,8 @@ def find_all_attributes(observations: List[dict]) -> List[str]:
     return sorted(all_keys)
 
 
-def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bool = True) -> None:
+def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bool = True,
+                            set_total: Optional[float] = None) -> None:
     """
     Pretty-prints the contents of a dictionary.
     :param d:  The dictionary to assess.
@@ -302,24 +303,29 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
     in d are not numeric.  Default True.
     :param print_total:  Whether to print a row at the end for the sum of all the values.  Fails if any values in d are
     not numeric.  Default True.
+    :param set_total:  If None, the sum of all values in the dictionary will be calculated and used as the total for the
+    purpose of computing percentage contributions.  If a number, specifies what total to use instead.  Default None.
     :return: None.  The results are printed in three columns: key, value, percentage (if do_percent).  The columns are
     automatically sized so that two spaces exist between them.  If d contains no keys, nothing is printed.
+    :raises: ZeroDivisionError if set_total is zero.
     """
     if len(d.keys()) == 0:
         return None
+    if set_total == 0:
+        raise ZeroDivisionError("Argument 'set_total' must not be zero.")
 
     # Keep track of the longest string representations of the key column and value column.
     longest_key_len = 0
     longest_val_len = 0
     # Keep track of the sum of the values.
-    total = 0
+    total = 0 if set_total is None else set_total
     # For each k,v pair...
     for k, v in d.items():
         # Update longest k,v length if necessary.
         longest_key_len = max(longest_key_len, len(repr(k)))
         longest_val_len = max(longest_val_len, len(repr(v)))
         # Accumulate to total if necessary.
-        if print_percent or print_total:
+        if (set_total is not None) and (print_percent or print_total):
             total += v
 
     # Create a formattable string based on the longest k,v lengths.
