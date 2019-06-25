@@ -343,6 +343,9 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
         if (set_total is not None) and (print_percent or print_total):
             total += val
 
+    # The length of the total also needs to be included in the val column width determination.
+    longest_val_len = max(len(str(total)), longest_val_len)
+
     # Create a formattable string based on the longest k,v lengths.
     fmt = "{:%K}  {:%V}".replace("%K", str(longest_key_len)).replace("%V", str(longest_val_len))
 
