@@ -145,6 +145,19 @@ class Observation:
             self.flag(flag_invalid)
             return None
 
+    def sum_keys(self, keys: List[str]) -> Optional[float]:
+        """
+        Gets the sum of the values of the given keys for this observation.
+        :param keys: The keys to look for.
+        :return: The sum of the keys' values as long as at least one of them was a valid float; otherwise, None.
+        """
+        total = None
+        for key in keys:
+            val = self.get_float(key)
+            if val is not None:
+                total = val if total is None else total + val
+        return total
+
     @property
     def tcc(self) -> Optional[str]:
         """
@@ -168,6 +181,30 @@ class Observation:
         else:
             self.flag("CX")
             return None
+
+    @property
+    def tcc_aqua(self) -> Optional[float]:
+        """
+        :return: Gets the total cloud cover (sum of each level) as reported by Aqua.  Returns None if Aqua is not
+        matched to this observation.
+        """
+        return self.sum_keys(["Aqua Low Cloud Cover", "Aqua Mid Cloud Cover", "Aqua High Cloud Cover"])
+
+    @property
+    def tcc_terra(self) -> Optional[float]:
+        """
+        :return: Gets the total cloud cover (sum of each level) as reported by Terra.  Returns None if Terra is not
+        matched to this observation.
+        """
+        return self.sum_keys(["Terra Low Cloud Cover", "Terra Mid Cloud Cover", "Terra High Cloud Cover"])
+
+    @property
+    def tcc_geo(self) -> Optional[float]:
+        """
+        :return: Gets the total cloud cover (sum of each level) as reported by a geostationary satellite.  Returns None
+        if there is no geostationary satellite matched to this observation.
+        """
+        return self.sum_keys(["GEO Low Cloud", "GEO Mid Cloud", "GEO High Cloud"])
 
     @property
     def cloud_types(self) -> List[str]:
