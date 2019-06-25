@@ -298,12 +298,16 @@ def plot_tcc_scatter(obs, cdf, save_path: Optional[str] = None, progress=1000):
     print("--- Plotting completed.")
 
 
-def fig_pc(figsize: Tuple[float, float] = (18, 9), coast_color: str = "#aaaaaa", color_bg: bool = True):
+def fig_pc(figsize: Tuple[float, float] = (18, 9), coast_color: str = "#aaaaaa", color_bg: bool = True,
+           set_limits_explicitly: bool = True):
     """
     Creates a cartopy figure using the PlateCarree projection.
     :param figsize: The size of the figure for matplotlib (usually in inches).  Default (18, 9).
     :param coast_color: The color of the coastlines.  Default '#aaaaaa' (light grey).
     :param color_bg: Whether to color the background (blue for ocean, orange for land).  Default True.
+    :param set_limits_explicitly: Whether to explicitly set the limits to include the entire Earth.  This is necessary
+    so that cartopy doesn't resize the limits arbitrarily after a scatter plot.  This should have no effect on other
+    plots.  Default True.
     :return: The axis for the figure.
     """
     # Create a figure and axis with cartopy projection.
@@ -316,6 +320,10 @@ def fig_pc(figsize: Tuple[float, float] = (18, 9), coast_color: str = "#aaaaaa",
     if color_bg:
         ax.add_feature(LAND)
         ax.add_feature(OCEAN)
+
+    if set_limits_explicitly:
+        ax.set_xlim(-180, 180)
+        ax.set_ylim(-90, 90)
 
     return ax
 
