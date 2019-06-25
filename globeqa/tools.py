@@ -296,10 +296,11 @@ def find_all_attributes(observations: List[dict]) -> List[str]:
 
 def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bool = True,
                             total: Optional[float] = None, sort: bool = True,
-                            key_order: Optional[Iterable] = None) -> None:
+                            key_order: Optional[Iterable] = None,
+                            min_column_widths: Tuple[int, int, int] = (0, 0, 0)) -> None:
     """
     Pretty-prints the contents of a dictionary.
-    :param d:  The dictionary to assess.
+    :param d: The dictionary to assess.
     :param print_percent: Whether to calculate percentages that each value makes up of the whole.  Fails if any values
     in d are not numeric.  Default True.
     :param print_total: Whether to print a row at the end for the sum of all the values.  Fails if any values in d are
@@ -309,10 +310,16 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
     :param sort: If True, keys will be sorted before printing.  If False, key ordering is arbitrary unless key_order is
     specified.  Default True.
     :param key_order: A list depicting the order in which to print the keys.  Overrides sort.  Default None.
+    :param min_column_widths: A triple of the minimum widths of the three printed columns (key, value, and percentage,
+    respectively).  Default (0, 0, 0).
     :return: None.  The results are printed in three columns: key, value, percentage (if do_percent).  The columns are
     automatically sized so that two spaces exist between them.  If d contains no keys, nothing is printed.
+    :raises: ValueError if min_column_widths does not have length 3.
     :raises: ZeroDivisionError if total is zero (whether set explicitly or calculated automatically).
     """
+    if len(min_column_widths) != 3:
+        raise ValueError("Argument 'min_column_widths' must have length 3.")
+
     # If there are no keys in the dictionary, there's nothing to do.
     if len(d.keys()) == 0:
         return None
@@ -331,7 +338,7 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
 
     # If total is zero, we can't do percentage calculations.
     if print_percent and (total == 0):
-        raise ZeroDivisionError("Sum of values is 0; percentage contributions cannot be calcualted.")
+        raise ZeroDivisionError("Sum of values is 0; percentage contributions cannot be calculated.")
 
     # Generate contents of columns.
     column1 = [str(key) for key in keys]
@@ -346,12 +353,13 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
         column3.extend(["", "100.00%" if print_percent else ""])
 
     # Calculate the width that each column requires.
-    column1_width = max(len(a) for a in column1)
-    column2_width = max(len(a) for a in column2)
-    column3_width = max(len(a) for a in column3)
+    column1_width = max(max(len(a) for a in column1), min_column_widths[0])
+    column2_width = max(max(len(a) for a in column2), min_column_widths[1])
+    column3_width = max(max(len(a) for a in column3), min_column_widths[2])
 
     # Create the format string with appropriate column width.
-    fmt = "{:A}  {:>B}  {:C}".replace("A", str(column1_width)).replace("B", str(column2_width)).replace("C", str(column3_width))
+    fmt = "{:A}  {:>B}  {:C}".replace("A", str(column1_width)).replace("B", str(column2_width)).replace(
+        "C", str(column3_width))
 
     # Print each row.
     for a in range(len(column1)):
