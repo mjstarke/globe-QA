@@ -476,6 +476,6 @@ def process_one_day(download_folder: str = "", download_file: str = "SC_LC_MHM_T
 
     # Summarize flags.
     flag_summary = get_flag_counts(observations)
-    pretty_print_dictionary(flag_summary)
+    pretty_print_dictionary(flag_summary, total=len(observations))
 
     return observations
