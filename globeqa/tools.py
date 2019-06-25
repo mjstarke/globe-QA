@@ -9,7 +9,7 @@ from shapely.ops import unary_union
 from shapely.prepared import prep
 from shutil import copyfileobj
 from tqdm import tqdm
-from typing import List, Dict, Optional, Union, Tuple
+from typing import List, Dict, Optional, Union, Tuple, Iterable
 from urllib.request import urlopen
 
 
@@ -295,38 +295,53 @@ def find_all_attributes(observations: List[dict]) -> List[str]:
 
 
 def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bool = True,
-                            set_total: Optional[float] = None) -> None:
+                            set_total: Optional[float] = None, sort: bool = True,
+                            key_order: Optional[Iterable] = None) -> None:
     """
     Pretty-prints the contents of a dictionary.
     :param d:  The dictionary to assess.
-    :param print_percent:  Whether to calculate percentages that each value makes up of the whole.  Fails if any values
+    :param print_percent: Whether to calculate percentages that each value makes up of the whole.  Fails if any values
     in d are not numeric.  Default True.
-    :param print_total:  Whether to print a row at the end for the sum of all the values.  Fails if any values in d are
+    :param print_total: Whether to print a row at the end for the sum of all the values.  Fails if any values in d are
     not numeric.  Default True.
-    :param set_total:  If None, the sum of all values in the dictionary will be calculated and used as the total for the
+    :param set_total: If None, the sum of all values in the dictionary will be calculated and used as the total for the
     purpose of computing percentage contributions.  If a number, specifies what total to use instead.  Default None.
+    :param sort: If True, keys will be sorted before printing.  If False, key ordering is arbitrary unless key_order is
+    specified.  Default True.
+    :param key_order: A list depicting the order in which to print the keys.  Overrides sort.  Default None.
     :return: None.  The results are printed in three columns: key, value, percentage (if do_percent).  The columns are
     automatically sized so that two spaces exist between them.  If d contains no keys, nothing is printed.
     :raises: ZeroDivisionError if set_total is zero.
     """
+    # If there are no keys in the dictionary, there's nothing to do.
     if len(d.keys()) == 0:
         return None
+    # If total is zero, we can't do percentage calculations later.
     if set_total == 0:
         raise ZeroDivisionError("Argument 'set_total' must not be zero.")
+
+    if key_order is not None:
+        keys = key_order
+    elif sort:
+        keys = sorted(d.keys())
+    else:
+        keys = d.keys()
 
     # Keep track of the longest string representations of the key column and value column.
     longest_key_len = 0
     longest_val_len = 0
     # Keep track of the sum of the values.
     total = 0 if set_total is None else set_total
-    # For each k,v pair...
-    for k, v in d.items():
-        # Update longest k,v length if necessary.
-        longest_key_len = max(longest_key_len, len(repr(k)))
-        longest_val_len = max(longest_val_len, len(repr(v)))
+    # For each key...
+    for key in keys:
+        # Get the associated value.
+        val = d[key]
+        # Update longest key / val length if necessary.
+        longest_key_len = max(longest_key_len, len(repr(key)))
+        longest_val_len = max(longest_val_len, len(repr(val)))
         # Accumulate to total if necessary.
         if (set_total is not None) and (print_percent or print_total):
-            total += v
+            total += val
 
     # Create a formattable string based on the longest k,v lengths.
     fmt = "{:%K}  {:%V}".replace("%K", str(longest_key_len)).replace("%V", str(longest_val_len))
@@ -335,8 +350,8 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
     if print_percent:
         fmt += "  {:7.2%}"
         # For each k,v, print its formatted row.
-        for k, v in d.items():
-            print(fmt.format(k, v, v / total))
+        for key in keys:
+            print(fmt.format(key, d[key], d[key] / total))
 
         if print_total:
             print()
@@ -344,8 +359,8 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
 
     # As above, but with percentages.
     else:
-        for k, v in d.items():
-            print(fmt.format(k, v))
+        for key in keys:
+            print(fmt.format(key, d[key]))
 
         if print_total:
             print()
