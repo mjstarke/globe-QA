@@ -335,8 +335,8 @@ def annotated_heatmap(data: np.ndarray, x_ticks: List[str], y_ticks: List[str], 
     Creates a simple annotated heatmap.
     :param data: A two-dimensional array of data for which to create a heatmap.  It will be automatically transposed for
     imshow().
-    :param x_ticks: The list of tick labels along the x axis.  Must have length data.shape[0].
-    :param y_ticks: The list of tick labels along the y axis.  Must have length data.shape[1].
+    :param x_ticks: The list of tick labels along the x axis from left to right.  Must have length data.shape[0].
+    :param y_ticks: The list of tick labels along the y axis from bottom to top.  Must have length data.shape[1].
     :param save_path: If None, the plot will be shown interactively.  If a file path, the plot will instead be saved to
     that location.  Defualt None.
     :param text_formatter: The format string for the annotations.  Default '{:.0f}', which produces integers.
@@ -355,6 +355,9 @@ def annotated_heatmap(data: np.ndarray, x_ticks: List[str], y_ticks: List[str], 
         raise ValueError("(len(x_ticks), len(y_ticks)) must equal data.shape.")
 
     data = data.T
+
+    data = np.flipud(data)
+    y_ticks = y_ticks[::-1]
 
     print("--  Readying plot...")
     # Set up a figure and axis.
