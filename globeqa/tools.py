@@ -467,8 +467,7 @@ def process_one_day(download_folder: str = "", download_file: str = "SC_LC_MHM_T
     observations = parse_json(fp)
 
     if len(observations) == 0:
-        print("/!\\ The downloaded JSON contains no observations.")
-        return
+        raise ValueError("The JSON file at '{}' contains no observations.".format(fp))
 
     # Perform quality checking.
     land = prepare_earth_geometry()
