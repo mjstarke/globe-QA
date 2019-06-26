@@ -448,33 +448,47 @@ def pie_dict(d: dict, keys=None, colors=None):
 def stacked_bars(x, ys, labels, colors, legend: bool = True, **kwargs):
     """
     Creates a stacked bar chart.
-    :param x: The horizontal positions of the bars
-    :param ys: A list of lists of heights for the bars.
+    :param x: The horizontal positions of the bars.
+    :param ys: A list of lists of heights for the bars.  Each element of the outer list is a group of bars that all have
+    the same color; each element of the inner lists are the bars' heights.
     :param labels: A list of legend labels corresponding to the lists of y value lists.
     :param colors: A list of colors corresponding to the lists of y value lists.
     :param legend: Whether to draw the legend.  Default True.
-    :param kwargs: kwargs are passed to bar().
+    :param kwargs: kwargs are passed to bar().  kwargs 'color' and 'bottom' should not be passed.
     :return: The axis on which the bar was plotted.
     :raises: ValueError if ys, labels, and colors are not all the same length, or if the elements of y do not all have
     the same length as x.
     """
+    # For each group of bars...
     for y in ys:
+        # If the number of bars does not match the number of x positions, raise an error.
         if len(y) != len(x):
             raise ValueError("All sets of y values must be equal in length to 'x'.")
+    # If the number of bar GROUPS does not match the number of labels and colros, raise an error.
     if not (len(ys) == len(labels) == len(colors)):
         raise ValueError("'y', 'labels', and 'colors' must be equal in length.")
 
+    # Create a figure.
     fig = plt.figure()
     ax = fig.add_subplot(111)
 
+    # Collect artists for the legend.
     artists = []
+
+    # Keep track of the previous tops of the bars.
     prev_y = None
+
+    # For each group of bars...
     for i in range(len(ys)):
         y = np.array(ys[i])
+        # Plot the group of bars.
         bar = ax.bar(x, y, color=colors[i], bottom=prev_y, **kwargs)
         artists.append(bar)
+        # Set prev_y to the tops of these bars if this is the first group of bars; otherwise, add the heights of these
+        # bars to the previous value.
         prev_y = y if prev_y is None else prev_y + y
 
     if legend:
         ax.legend(artists, labels)
+
     return ax
