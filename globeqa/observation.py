@@ -358,15 +358,12 @@ class Observation:
                 self.flag("OC")
 
             # If haze as obscuration and sky clarity disagree, raise a flag.
-            try:
-                if self.soft_get("Haze") == "true":
-                    if self["SkyClarity"] != "extremely hazy":
-                        self.flag("HO")
-                else:
-                    if self["SkyClarity"] == "extremely hazy":
-                        self.flag("HC")
-            except KeyError:
-                pass  # self.flag("HX") TODO decide whether this flag is necessary - is SkyClarity optional?
+            haze = self.soft_get("Haze")
+            sky_clarity = self.soft_get("SkyClarity")
+            if (haze == "true") and (sky_clarity != "extremely hazy"):
+                self.flag("HO")
+            elif (haze != "true") and (sky_clarity == "extremely hazy"):
+                self.flag("HC")
 
     def _check_for_flags_ranges(self):
         """
@@ -378,9 +375,7 @@ class Observation:
         # Check mosquito larvae count.
         if self["protocol"] == "mosquito_habitat_mapper":
             val = self.soft_get("LarvaeCount")
-            if val is None:
-                pass  # self.flag("MX") TODO is this optional too?
-            else:
+            if val is not None:
                 try:
                     val = float(val)
                     if not (0 <= val <= 199):
@@ -447,13 +442,11 @@ class Observation:
             EX="Elevation attribute is missing",
             HC="Extreme haze reported in sky clarity but not as an obstruction",
             HO="Haze reported as an obstruction but not as extreme haze in sky clarity",
-            HX="Sky clarity is missing",
             LI="Location is not a valid lat-lon pair",
             LW="Location may be over water",
             LZ="Location is at 0 N, 0 E",
             MI="Mosquito larvae count is invalid (not a number or app range)",
             MR="Mosquito larvae count outside of expected range (0 - 199)",
-            MX="Mosquito larvae count attribute is missing",
             NI="Contrail count is invalid (not a number)",
             NR="Contrail count outside of expected range (0 - 19)",
             OC="Obscuration reported but cloud types also reported",
