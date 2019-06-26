@@ -369,7 +369,7 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
     column1 = [str(key) for key in keys]
     column2 = [str(d[key]) for key in keys]
     # Third column is blank if percent is not requested.
-    column3 = ["{:7.2%}".format(d[key] / total) if print_percent else "" for key in keys]
+    column3 = ["{:7.2%}".format(d[key] / total) for key in keys] if print_percent else [""] * len(keys)
 
     if (compressed is not None) and (compressed > 0):
         column1.extend(["", "(other)"])
