@@ -22,7 +22,7 @@ key_order = ["none", "clear", "isolated", "scattered", "broken", "overcast", "ob
 tools.pretty_print_dictionary(d, sorting=key_order)
 
 # Create the pie chart.
-ax = plotters.pie_dict(d, keys=key_order, colors=[
+ax = plotters.plot_dict_pie(d, keys=key_order, colors=[
     "#ff8800", "#8888ff", "#7777dd", "#6666bb", "#555599", "#444477", "#333366"
 ])
 

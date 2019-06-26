@@ -298,8 +298,8 @@ def plot_tcc_scatter(obs, cdf, save_path: Optional[str] = None, progress=1000):
     print("--- Plotting completed.")
 
 
-def fig_pc(figsize: Tuple[float, float] = (18, 9), coast_color: str = "#aaaaaa", color_bg: bool = True,
-           set_limits_explicitly: bool = True):
+def make_pc_fig(figsize: Tuple[float, float] = (18, 9), coast_color: str = "#aaaaaa", color_bg: bool = True,
+                set_limits_explicitly: bool = True):
     """
     Creates a cartopy figure using the PlateCarree projection.
     :param figsize: The size of the figure for matplotlib (usually in inches).  Default (18, 9).
@@ -328,9 +328,10 @@ def fig_pc(figsize: Tuple[float, float] = (18, 9), coast_color: str = "#aaaaaa",
     return ax
 
 
-def annotated_heatmap(data: np.ndarray, x_ticks: List[str], y_ticks: List[str], save_path: Optional[str] = None,
-                      text_formatter: str = "{:.0f}", text_color: str = "white", high_text_color: str = "black",
-                      text_color_threshold: float = np.inf, figsize: Optional[Tuple[float, float]] = None, **kwargs):
+def plot_annotated_heatmap(data: np.ndarray, x_ticks: List[str], y_ticks: List[str], save_path: Optional[str] = None,
+                           text_formatter: str = "{:.0f}", text_color: str = "white", high_text_color: str = "black",
+                           text_color_threshold: float = np.inf, figsize: Optional[Tuple[float, float]] = None,
+                           **kwargs):
     """
     Creates a simple annotated heatmap.
     :param data: A two-dimensional array of data for which to create a heatmap.  It will be automatically transposed for
@@ -396,7 +397,7 @@ def annotated_heatmap(data: np.ndarray, x_ticks: List[str], y_ticks: List[str], 
     return ax
 
 
-def scatter_obs(obs: List[Observation], ax, **kwargs):
+def plot_ob_scatter(obs: List[Observation], ax, **kwargs):
     """
     Scatters observations on a map.
     :param obs: The observations to scatter.
@@ -419,7 +420,7 @@ def scatter_obs(obs: List[Observation], ax, **kwargs):
     return ax.scatter(x, y, **kwargs)
 
 
-def pie_dict(d: dict, keys=None, colors=None):
+def plot_dict_pie(d: dict, keys=None, colors=None):
     """
     Creates a pie chart using a dictionary, and labels each slice with its value and percentage contribution.
     :param d: The dictionary to plot.  All values must be numeric.
@@ -445,7 +446,7 @@ def pie_dict(d: dict, keys=None, colors=None):
     return ax
 
 
-def stacked_bars(x, ys, labels, colors, legend: bool = True, **kwargs):
+def plot_stacked_bars(x, ys, labels, colors, legend: bool = True, **kwargs):
     """
     Creates a stacked bar chart.
     :param x: The horizontal positions of the bars.

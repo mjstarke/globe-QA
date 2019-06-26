@@ -12,7 +12,7 @@ path = tools.download_from_api(protocols, day)
 obs = tools.parse_json(path)
 
 # Create a figure and axis with cartopy projection.
-ax = plotters.fig_pc()
+ax = plotters.make_pc_fig()
 
 # Prepare to collect artists for the legend.
 artists = []
@@ -25,9 +25,9 @@ markers = ("^", "v", "X", "1")
 for a in range(4):
     # Get the observations that have that protocol.
     obs_from_protocol = [ob for ob in obs if ob["protocol"] == protocols[a]]
-    artists.append(plotters.scatter_obs(obs_from_protocol, ax, s=40, marker=markers[a], color=colors[a]))
+    artists.append(plotters.plot_ob_scatter(obs_from_protocol, ax, s=40, marker=markers[a], color=colors[a]))
     # Plot a transparent bubble so overlapping observations stand out.
-    plotters.scatter_obs(obs_from_protocol, ax, s=2000, marker=".", color=colors[a], alpha=0.04)
+    plotters.plot_ob_scatter(obs_from_protocol, ax, s=2000, marker=".", color=colors[a], alpha=0.04)
 
 # Add a legend.
 ax.legend(artists, protocols, loc="lower center")
