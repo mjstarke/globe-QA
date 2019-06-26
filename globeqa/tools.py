@@ -297,7 +297,8 @@ def find_all_attributes(observations: List[dict]) -> List[str]:
 
 def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bool = True,
                             total: Optional[float] = None, sorting: Union[None, str, Iterable] = "ka",
-                            min_column_widths: Tuple[int, int, int] = (0, 0, 0)) -> None:
+                            min_column_widths: Tuple[int, int, int] = (0, 0, 0),
+                            chop: Optional[float] = None) -> None:
     """
     Pretty-prints the contents of a dictionary.
     :param d: The dictionary to assess.
@@ -312,6 +313,8 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
     keys by their corresponding values ascending; "vd" sorts by values descending.  Default "ka".
     :param min_column_widths: A triple of the minimum widths of the three printed columns (key, value, and percentage,
     respectively).  Default (0, 0, 0).
+    :param chop: Only items in d whose values are greater than chop will be printed (although the chopped values will
+    still be included in the sum).  Default None, which will chop no items.
     :return: None.  The results are printed in three columns: key, value, percentage (if do_percent).  The columns are
     automatically sized so that two spaces exist between them.  If d contains no keys, nothing is printed.
     :raises: TypeError if sorting is a non-iterable non-string.
@@ -353,7 +356,11 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
 
     # If total is zero, we can't do percentage calculations.
     if print_percent and (total == 0):
-        raise ZeroDivisionError("Sum of values is 0; percentage contributions cannot be calculated.")
+        raise ZeroDivisionError("Total is 0; percentage contributions cannot be calculated.")
+
+    # Chop off low values if requested.
+    if chop is not None:
+        keys = [key for key in keys if d[key] > chop]
 
     # Generate contents of columns.
     column1 = [str(key) for key in keys]
