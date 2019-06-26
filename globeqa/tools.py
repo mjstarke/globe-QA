@@ -4,6 +4,7 @@ from datetime import date, datetime, timedelta
 import json
 from netCDF4 import Dataset
 from globeqa.observation import Observation
+from operator import itemgetter
 from os.path import isfile, join
 from shapely.ops import unary_union
 from shapely.prepared import prep
@@ -295,8 +296,7 @@ def find_all_attributes(observations: List[dict]) -> List[str]:
 
 
 def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bool = True,
-                            total: Optional[float] = None, sort: bool = True,
-                            key_order: Optional[Iterable] = None,
+                            total: Optional[float] = None, sorting: Union[None, str, Iterable] = "ka",
                             min_column_widths: Tuple[int, int, int] = (0, 0, 0)) -> None:
     """
     Pretty-prints the contents of a dictionary.
@@ -307,14 +307,15 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
     not numeric.  Default True.
     :param total: The number that will be printed if print_total or used to calculate percentage contributions if
     print_percent.  Default None, which automatically calculates total as the sum of dictionary values.
-    :param sort: If True, keys will be sorted before printing.  If False, key ordering is arbitrary unless key_order is
-    specified.  Default True.
-    :param key_order: A list depicting the order in which to print the keys.  Overrides sort.  Default None.
+    :param sorting: If an iterable, specifies the order in which the keys will be printed.  If None, key ordering will
+    be arbitrary (d.keys() is used).  If "ka", keys will be sorted ascending; "kd" sorts descending.  "va" will sort the
+    keys by their corresponding values ascending; "vd" sorts by values descending.  Default "ka".
     :param min_column_widths: A triple of the minimum widths of the three printed columns (key, value, and percentage,
     respectively).  Default (0, 0, 0).
     :return: None.  The results are printed in three columns: key, value, percentage (if do_percent).  The columns are
     automatically sized so that two spaces exist between them.  If d contains no keys, nothing is printed.
-    :raises: ValueError if min_column_widths does not have length 3.
+    :raises: TypeError if sorting is a non-iterable non-string.
+    :raises: ValueError if min_column_widths does not have length 3, or if sorting is an invalid string.
     :raises: ZeroDivisionError if total is zero (whether set explicitly or calculated automatically).
     """
     if len(min_column_widths) != 3:
@@ -324,13 +325,27 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
     if len(d.keys()) == 0:
         return None
 
-    # Use explicit key order if available; otherwise, use sorted or arbitrary ordering.
-    if key_order is not None:
-        keys = key_order
-    elif sort:
-        keys = sorted(d.keys())
-    else:
-        keys = d.keys()
+    # keys remains as this arbitrary list if sorting is None.
+    keys = d.keys()
+
+    if type(sorting) is str:
+        if sorting == "ka":
+            keys = sorted(d.keys())
+        elif sorting == "kd":
+            keys = sorted(d.keys())[::-1]
+        elif sorting in "va":
+            keys = [item[0] for item in sorted(d.items(), key=itemgetter(1))]
+        elif sorting in "vd":
+            keys = [item[0] for item in sorted(d.items(), key=itemgetter(1), reverse=True)]
+        else:
+            raise ValueError("Argument 'sorting' only accepts 'ka', 'kd', 'va', or 'vd' for strings.")
+    elif sorting is not None:
+        # If not None, sorting should be an iterable.  Test that here.
+        try:
+            _ = (e for e in d)
+        except TypeError:
+            raise TypeError("Argument 'sorting' must be None, 'ka', 'kd', 'va', 'vd', or an iterable.")
+        keys = sorting
 
     # Use explicitly set total if available; otherwise, calculate total.
     if total is None:
