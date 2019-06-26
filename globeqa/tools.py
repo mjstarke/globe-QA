@@ -298,7 +298,7 @@ def find_all_attributes(observations: List[dict]) -> List[str]:
 def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bool = True,
                             total: Optional[float] = None, sorting: Union[None, str, Iterable] = "ka",
                             min_column_widths: Tuple[int, int, int] = (0, 0, 0),
-                            chop: Optional[float] = None) -> None:
+                            compress_below: Optional[float] = None) -> None:
     """
     Pretty-prints the contents of a dictionary.
     :param d: The dictionary to assess.
@@ -313,8 +313,9 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
     keys by their corresponding values ascending; "vd" sorts by values descending.  Default "ka".
     :param min_column_widths: A triple of the minimum widths of the three printed columns (key, value, and percentage,
     respectively).  Default (0, 0, 0).
-    :param chop: Only items in d whose values are greater than chop will be printed (although the chopped values will
-    still be included in the sum).  Default None, which will chop no items.
+    :param compress_below: Items in d whose values are less than compress_below will be compressed into a single
+    "(other)" entry at the bottom of the table (unless the sum of these items is 0).  Default None, which compresses no
+    items.
     :return: None.  The results are printed in three columns: key, value, percentage (if do_percent).  The columns are
     automatically sized so that two spaces exist between them.  If d contains no keys, nothing is printed.
     :raises: TypeError if sorting is a non-iterable non-string.
@@ -359,8 +360,10 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
         raise ZeroDivisionError("Total is 0; percentage contributions cannot be calculated.")
 
     # Chop off low values if requested.
-    if chop is not None:
-        keys = [key for key in keys if d[key] > chop]
+    compressed = None
+    if compress_below is not None:
+        compressed = sum(d[key] for key in keys if d[key] < compress_below)
+        keys = [key for key in keys if d[key] >= compress_below]
 
     # Generate contents of columns.
     column1 = [str(key) for key in keys]
@@ -368,9 +371,14 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
     # Third column is blank if percent is not requested.
     column3 = ["{:7.2%}".format(d[key] / total) if print_percent else "" for key in keys]
 
+    if (compressed is not None) and (compressed > 0):
+        column1.extend(["", "(other)"])
+        column2.extend(["", str(compressed)])
+        column3.extend(["", "{:7.2%}".format(compressed / total) if print_percent else ""])
+
     # Add two more rows for total if requested.
     if print_total:
-        column1.extend(["", ""])
+        column1.extend(["", "(total)"])
         column2.extend(["", str(total)])
         column3.extend(["", "100.00%" if print_percent else ""])
 
