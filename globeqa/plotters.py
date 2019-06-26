@@ -396,18 +396,12 @@ def annotated_heatmap(data: np.ndarray, x_ticks: List[str], y_ticks: List[str], 
     return ax
 
 
-def scatter_obs(obs: List[Observation], ax, bubble_alpha: float = 0.05, point_size: int = 20, bubble_size: int = 800,
-                **kwargs):
+def scatter_obs(obs: List[Observation], ax, **kwargs):
     """
-    Scatters observations on a map, surrounding each point by a transparent bubble.  Overlapping bubbles will become
-    progressively more saturated, qualitatively indicating spatial concentration.
+    Scatters observations on a map.
     :param obs: The observations to scatter.
     :param ax: The axis to plot on.
-    :param bubble_alpha: The alpha of the bubble.  Default 0.05.  If None, no bubble is drawn.
-    :param point_size: The size of the point markers.  Default 20.
-    :param bubble_size: The size of the bubbles.  Defualt 800.
-    :param kwargs: kwargs are passed to scatter().  The size kwarg (s) should not be passed as it is specified by
-    point_size and bubble_size.
+    :param kwargs: kwargs are passed to scatter().
     :return: The PathCollection for the point scatter (not the bubble scatter).
     """
     x = []
@@ -418,12 +412,11 @@ def scatter_obs(obs: List[Observation], ax, bubble_alpha: float = 0.05, point_si
             x.append(ob.lon)
             y.append(ob.lat)
 
-    # Scatter.  Insert precise point and larger, transparent circles to indicate density.
-    artist = ax.scatter(x, y, point_size, **kwargs)
-    if bubble_alpha is not None:
-        ax.scatter(x, y, bubble_size, alpha=bubble_alpha, **kwargs)
+    # Set default size if none specified..
+    if "s" not in kwargs:
+        kwargs["s"] = 40
 
-    return artist
+    return ax.scatter(x, y, **kwargs)
 
 
 def pie_dict(d: dict, keys=None, colors=None):
