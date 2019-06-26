@@ -116,74 +116,6 @@ def plot_ggc(t: int, obs: List[Observation], cdf: Dataset, save_path: Optional[s
     print("--- Plotting completed.")
 
 
-def plot_geo_hm(obs: List[Observation], cdf: Dataset, save_path: Optional[str]):
-    """
-    Plots a geographic heatmap of the given observations.
-    :param obs: The observations to plot.
-    :param cdf: The NetCDF dataset that contains the lat/lons.
-    :param save_path: If a string, the path to which the image will be saved; the figure will not be displayed
-    interactively.  If None, the plot is shown interactively.
-    """
-
-    # Create lists of x and y points for the observations of interest.
-    x = []
-    y = []
-
-    # Search through the list of observations for what can be plotted.
-    print("--- Filtering observations...")
-    for ob in tqdm(obs):
-        if ob.lat is not None and ob.lon is not None:
-            x.append(ob.lon)
-            y.append(ob.lat)
-
-    # Create a 2D histogram.  Bin edges shouldn't be every lon and lat, as that would make bins too small (hence ::4).
-    histo, xedges, yedges = np.histogram2d(x, y, [cdf["lon"][::4], cdf["lat"][::4]])
-    # In order to use pcolormesh, we need to transpose the array.
-    histo = histo.T
-    # Take logarithm of the array.  Values naturally span multiple orders of magnitude.
-    histo = np.log10(histo)
-
-    # Create a figure and axis with cartopy projection.
-    plt.figure(figsize=(18, 9))
-    ax = plt.axes(projection=ccrs.PlateCarree())
-
-    # Render coastlines in grey so they don't stand out too much.
-    ax.coastlines(color="#aaaaaa")
-
-    # Convert the 1D lists of bin edges to 2D lists.
-    xx, yy = np.meshgrid(xedges, yedges)
-    # Plot as colormesh.
-    pcm = ax.pcolormesh(xx, yy, histo, cmap="plasma_r")
-
-    # Decide what values should be labeled on the colorbar.
-    highest = np.max(histo)
-    if highest > 500:
-        ticks = [1, 10, 100, 1000, 10000, 100000, 1000000]
-    elif highest > 50:
-        ticks = [1, 10, 50, 100, 500]
-    else:
-        ticks = [1, 3, 5, 10, 25, 50]
-
-    # Create colorbar with specific ticks.  We take the log of the ticks since the data is also logarithmic.
-    pcmcb = plt.colorbar(pcm, ticks=np.log10(ticks), fraction=0.025)
-    # Create tick labels to account for the logarithmic scaling.
-    pcmcb.set_ticklabels(ticks)
-
-    # Set title, use the space, and show.
-    plt.title(r"Geographic distribution of GLOBE cloud observations in 2018, in (1.25$^{o}$ x 1.00$^{o}$) bins (logarithmic fill)")
-
-    print("--- Finalizing plot...")
-    plt.tight_layout()
-
-    if save_path is None:
-        plt.show()
-    else:
-        plt.savefig(save_path)
-        plt.close()
-
-    print("--- Plotting completed.")
-
-
 def plot_cat_hm(obs, cdf, save_path: Optional[str] = None, progress=1000):
     histo = np.zeros((7, 6))
 
@@ -241,50 +173,6 @@ def plot_cat_hm(obs, cdf, save_path: Optional[str] = None, progress=1000):
 
     ax.set_title("GEOS vs. GLOBE total cloud cover (TCC) at GLOBE observation sites for 2018")
     fig.tight_layout()
-
-    print("--- Finalizing plot...")
-    plt.tight_layout()
-
-    if save_path is None:
-        plt.show()
-    else:
-        plt.savefig(save_path)
-        plt.close()
-
-    print("--- Plotting completed.")
-
-
-def plot_tcc_scatter(obs, cdf, save_path: Optional[str] = None, progress=1000):
-    x = []
-    y = []
-    obs_categories = ["none", "few", "isolated", "scattered", "broken", "overcast", "obscured"]
-    obs_values = [0.00, 0.05, 0.175, 0.375, 0.70, 0.95, 1.00]
-
-    print("--- Processing observations for scatterplot...")
-    for o in tqdm(range(len(obs))):
-        ob = obs[o]
-        if ob.tcc is not None and ob.lat is not None and ob.lon is not None and ob.measured_dt is not None:
-            # Get the index of the observation's tcc.
-            x.append(obs_values[obs_categories.index(ob.tcc)])
-
-            # Get the GEOS tcc at the observation.
-            try:
-                y.append(cdf["CLDTT"][find_closest_gridbox(cdf, ob.measured_dt, ob.lat, ob.lon)])
-            except IndexError:
-                x = x[:-1]
-                break
-
-        if o % progress == 0:
-            print("--  Processed {} observations...".format(o))
-
-    fig = plt.figure(figsize=(13.5, 9))
-    ax = fig.add_subplot(111)
-
-    ax.scatter(x, y, marker="+")
-
-    ax.set_xticks(obs_values)
-    ax.set_xticklabels(obs_categories)
-    ax.set_yticks(obs_values)
 
     print("--- Finalizing plot...")
     plt.tight_layout()
