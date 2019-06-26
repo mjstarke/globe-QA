@@ -435,10 +435,10 @@ def filter_by_datetime(obs: List[Observation], earliest: Optional[datetime] = No
     :return: The observations that passed the filter.
     :raises: ValueError if earliest is after latest.
     """
-    if earliest >= latest:
+    if earliest is not None and latest is not None and (earliest >= latest):
         raise ValueError("Argument 'earliest' must not be after argument 'latest'.")
 
-    if earliest is None and latest is None:
+    elif earliest is None and latest is None:
         return obs
 
     if assume_chronology:
