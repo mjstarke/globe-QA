@@ -48,6 +48,7 @@ def make_pc_fig(figsize: Tuple[float, float] = (18, 9), coast_color: str = "#aaa
 def plot_annotated_heatmap(data: np.ndarray, x_ticks: List[str], y_ticks: List[str], save_path: Optional[str] = None,
                            text_formatter: str = "{:.0f}", text_color: str = "white", high_text_color: str = "black",
                            text_color_threshold: float = np.inf, figsize: Optional[Tuple[float, float]] = None,
+                           labels: List[List[str]] = None,
                            **kwargs):
     """
     Creates a simple annotated heatmap.
@@ -65,6 +66,8 @@ def plot_annotated_heatmap(data: np.ndarray, x_ticks: List[str], y_ticks: List[s
     (which means that text_color is used everywhere).
     :param figsize: The size of the figure (passed to figure()).  Default None, which lets matplotlib decide.
     :param kwargs: kwargs are passed to imshow().
+    :param labels: Labels to use for the cells.  Default None, which instead uses text_formatter on the value of each
+    cell.
     :return: The axis of the drawn plot.
     :raises: ValueError if data is not 2-dimensional, or if lengths of x_ticks and y_ticks do not match data.shape.
     """
@@ -98,7 +101,8 @@ def plot_annotated_heatmap(data: np.ndarray, x_ticks: List[str], y_ticks: List[s
     # Loop over data dimensions and create text annotations.
     for i in range(len(y_ticks)):
         for j in range(len(x_ticks)):
-            ax.text(j, i, text_formatter.format(data[i, j]), ha="center", va="center",
+            text = text_formatter.format(data[i, j]) if labels is None else labels[j][i]
+            ax.text(j, i, text, ha="center", va="center",
                     color=text_color if data[i, j] < text_color_threshold else high_text_color)
 
     print("--  Finalizing plot...")
