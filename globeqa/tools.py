@@ -460,7 +460,8 @@ def filter_by_datetime(obs: List[Observation], earliest: Optional[datetime] = No
     Filters a list of observations to a certain datetime range, assuming chronology of the observations.
     :param obs: The observations.
     :param earliest: The earliest datetime that an observation may have to pass the filter.
-    :param latest: The latest datetime that an observation may have to pass the filter.
+    :param latest: The earliest datetime that an observation may have to NOT pass the filter - that is, observations
+    with a datetime equal to latest will NOT be included.
     :param assume_chronology: Whether the observations are in ascending chronological order.  If set to True when the
     observations are NOT in strictly chronological order, arbitrary returns will result.  Default True.
     :return: The observations that passed the filter.
@@ -483,7 +484,7 @@ def filter_by_datetime(obs: List[Observation], earliest: Optional[datetime] = No
         last_acceptable_index = None
         if latest is not None:
             for o in tqdm(range(len(obs[first_acceptable_index:])), desc="Cutting for late date"):
-                if obs[o].measured_dt > latest:
+                if obs[o].measured_dt >= latest:
                     last_acceptable_index = o
                     break
 
