@@ -1,6 +1,6 @@
 import cartopy.crs as ccrs
+from cartopy.feature import NaturalEarthFeature
 from cartopy.feature.nightshade import Nightshade
-from cartopy.feature import LAND, OCEAN
 from datetime import datetime, timedelta
 from matplotlib.cm import get_cmap
 import matplotlib.pyplot as plt
@@ -187,7 +187,8 @@ def plot_cat_hm(obs, cdf, save_path: Optional[str] = None, progress=1000):
 
 
 def make_pc_fig(figsize: Tuple[float, float] = (18, 9), coast_color: str = "#aaaaaa", color_bg: bool = True,
-                set_limits_explicitly: bool = True):
+                set_limits_explicitly: bool = True, land_color: Optional[str] = None,
+                ocean_color: Optional[str] = None):
     """
     Creates a cartopy figure using the PlateCarree projection.
     :param figsize: The size of the figure for matplotlib (usually in inches).  Default (18, 9).
@@ -196,6 +197,8 @@ def make_pc_fig(figsize: Tuple[float, float] = (18, 9), coast_color: str = "#aaa
     :param set_limits_explicitly: Whether to explicitly set the limits to include the entire Earth.  This is necessary
     so that cartopy doesn't resize the limits arbitrarily after a scatter plot.  This should have no effect on other
     plots.  Default True.
+    :param land_color: The color to fill land with.  Default None, which uses the default color.
+    :param ocean_color: The color to fill ocean with.  Default None, which uses the default color.
     :return: The axis for the figure.
     """
     # Create a figure and axis with cartopy projection.
@@ -205,9 +208,14 @@ def make_pc_fig(figsize: Tuple[float, float] = (18, 9), coast_color: str = "#aaa
     # Render coastlines in grey so they don't stand out too much.
     ax.coastlines(color=coast_color)
 
+    if land_color is None:
+        land_color = np.array([0.9375, 0.9375, 0.859375])
+    if ocean_color is None:
+        ocean_color = np.array([0.59375, 0.71484375, 0.8828125])
+
     if color_bg:
-        ax.add_feature(LAND)
-        ax.add_feature(OCEAN)
+        ax.add_feature(NaturalEarthFeature("physical", "land", "110m", facecolor=land_color, zorder=-1))
+        ax.add_feature(NaturalEarthFeature("physical", "ocean", "110m", facecolor=ocean_color, zorder=-1))
 
     if set_limits_explicitly:
         ax.set_xlim(-180, 180)
