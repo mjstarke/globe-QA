@@ -311,14 +311,14 @@ def find_all_values(obs: List[Observation], attribute: str) -> Dict[str, int]:
     return ret
 
 
-def find_all_attributes(observations: List[dict]) -> List[str]:
+def find_all_attributes(obs: List[dict]) -> List[str]:
     """
     Generates a sorted list of all attributes that occur at least once in the observations.
-    :param observations: The observations.
+    :param obs: The observations.
     :return: A sorted list of all attributes that occur at least once in the observations.
     """
     all_keys = []
-    for ob in tqdm(observations, desc="Sifting observations"):
+    for ob in tqdm(obs, desc="Sifting observations"):
         for key in ob.keys:
             if key not in all_keys:
                 all_keys.append(key)
@@ -511,9 +511,9 @@ def filter_by_hour(obs: List[Observation], hours: List[int]) -> List[Observation
 def process_one_day(download_folder: str = "", download_file: str = "SC_LC_MHM_TH__%S.json", day: date = None):
     """
     Downloads, parses, and quality-checks one day's observations.
-    :param download_folder: The folder to download the JSON file to.
+    :param download_folder: The folder to download the JSON file to.  Default "" (current working directory).
     :param download_file: The name that the JSON file should have.  Certain % codes are replaced; see
-    download_from_api().
+    download_from_api().  Default "SC_LC_MHM_TH__%S.json" (%S replaced by the date).
     :param day: The day to process.  Default None, which is treated as yesterday.
     :return: The list of observations.
     :raises: ValueError if the JSON file contains no observations.
