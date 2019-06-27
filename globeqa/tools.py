@@ -168,6 +168,35 @@ def filter_by_flag(obs: List[Observation], specs: Union[bool, Dict[str, bool]] =
         raise TypeError("Argument 'specs' must be either Dict[str, bool] or bool.")
 
 
+def filter_by_flag_sets(obs: List[Observation], all_of: Iterable[str] = (), none_of: Iterable[str] = (),
+                        any_of: Iterable[str] = ()) -> Iterable[Observation]:
+    """
+    Filters observations by whether they have or do not have certain combinations of flags.
+    :param obs: The observations to assess.
+    :param all_of: A list of flags that must all be present for an observation to pass.  Default (), which passes all
+    observations.
+    :param none_of: A list of flags that must all be absent for an observation to pass.  Default (), which passes all
+    observations.
+    :param any_of: A list of flags of which one must be present for an observation to pass.  Default (), which passes
+    all observations.  Passing only one flag to any_of has the same effect as instead appending that flag to all_of.
+    :return: An iterable of obs that have been filtered.
+    """
+    # Store only those obs which have at least one flag from any_of - that is, the intersection of actual flags and
+    # required flags has at least one item.
+    # Note that we must skip this check of any_of is empty - otherwise, nothing passes.
+    ret = [ob for ob in obs if len(set(ob.flags) & set(any_of)) > 0] if len(any_of) > 0 else [ob for ob in obs]
+
+    # Store only those obs which have all of the all_of flags - that is, the actual flags is a (not necessarily proper)
+    # superset of the required flags.
+    ret = [ob for ob in ret if set(ob.flags) >= set(all_of)]
+
+    # Store only those obs which have none of the none_of flags - that is, the intersection of actual flags and required
+    # flags is empty.
+    ret = [ob for ob in ret if len(set(ob.flags) & set(none_of)) == 0]
+
+    return ret
+
+
 def get_cdf_datetime(cdf: Dataset, index: int) -> datetime:
     """
     Creates a datetime that represents the time at the given index of cdf["time"].  This assumes that cdf["time"] is
