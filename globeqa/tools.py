@@ -61,7 +61,7 @@ def download_from_api(protocols: List[str], start: date, end: Optional[date] = N
     if end is None:
         end = start
 
-    # Create a string that represents the protcol part of the query.
+    # Create a string that represents the protocol part of the query.
     protocol_string = "".join(["protocols={}&".format(protocol) for protocol in protocols])
     # Create the full download link.
     download_src = "https://api.globe.gov/search/v1/measurement/protocol/measureddate/?{}startdate={}&enddate={" \
@@ -281,7 +281,7 @@ def prepare_earth_geometry(geometry_resolution: str = "50m"):
 
 def do_quality_check(obs: List[Observation], land=None):
     """
-    Perform quality checks on the obsevations.
+    Perform quality checks on the observations.
     :param obs: The observations.
     :param land: The PreparedGeometry for land checking.  If None, land check will not be performed.
     """

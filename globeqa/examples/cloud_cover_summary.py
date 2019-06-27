@@ -6,7 +6,7 @@ and plot a pie chart.
 from datetime import date
 from globeqa import tools, plotters
 
-# Download from the API.  Won't redownload if the file already exists locally.
+# Download from the API.  Won't re-download if the file already exists locally.
 path = tools.download_from_api(["sky_conditions"], date(2019, 5, 1), date(2019, 5, 31), check_existing=True)
 
 # Parse the downloaded file.

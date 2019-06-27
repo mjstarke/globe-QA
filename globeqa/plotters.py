@@ -48,7 +48,7 @@ def plot_ggc(t: int, obs: List[Observation], cdf: Dataset, save_path: Optional[s
 
     # Create a dictionary to contain points to plot and how to plot them (marker and value for color).
 
-    # Colormap must be retreived directly.  If we use cmap= and c= with scatter() later, MPL assumes, for whatever
+    # Colormap must be retrieved directly.  If we use cmap= and c= with scatter() later, MPL assumes, for whatever
     # reason, that c is actually an RGB/A tuple, despite the presence of cmap and the inappropriate length of c for an
     # RGB/A tuple.  The only foolproof way around this is to grab the cmap directly, call it, and then wrap the result
     # in a list to create a two-dimensional array-like. Known design issue with MPL that probably won't be fixed.
@@ -165,7 +165,7 @@ def plot_annotated_heatmap(data: np.ndarray, x_ticks: List[str], y_ticks: List[s
     :param x_ticks: The list of tick labels along the x axis from left to right.  Must have length data.shape[0].
     :param y_ticks: The list of tick labels along the y axis from bottom to top.  Must have length data.shape[1].
     :param save_path: If None, the plot will be shown interactively.  If a file path, the plot will instead be saved to
-    that location.  Defualt None.
+    that location.  Default None.
     :param text_formatter: The format string for the annotations.  Default '{:.0f}', which produces integers.
     :param text_color: The color for the cell labels.  Default 'white'.
     :param high_text_color: The color for the cell labels if the corresponding value is greater than
@@ -291,7 +291,7 @@ def plot_stacked_bars(x, ys, labels, colors, legend: bool = True, **kwargs):
         # If the number of bars does not match the number of x positions, raise an error.
         if len(y) != len(x):
             raise ValueError("All sets of y values must be equal in length to 'x'.")
-    # If the number of bar GROUPS does not match the number of labels and colros, raise an error.
+    # If the number of bar GROUPS does not match the number of labels and colors, raise an error.
     if not (len(ys) == len(labels) == len(colors)):
         raise ValueError("'y', 'labels', and 'colors' must be equal in length.")
 

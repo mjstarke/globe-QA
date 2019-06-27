@@ -41,7 +41,7 @@ class Observation:
     def __getitem__(self, item: str):
         """
         Attempts to get the requested key.  If the key verbatim does not exist, it will be prefixed with the protocol
-        name and retreival will be reattempted.  Failing that, a KeyError will be raised.
+        name and retrieval will be reattempted.  Failing that, a KeyError will be raised.
         """
         try:
             return self._raw[item]
@@ -271,7 +271,7 @@ class Observation:
                 return True
             # Otherwise, do nothing.
             return False
-        # If we are tring to lower a flag...
+        # If we are trying to lower a flag...
         else:
             # If the flag is raised, lower it.
             if flag is self.flags:
