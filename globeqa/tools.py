@@ -30,7 +30,7 @@ def parse_csv(fp: str, count: int = 1e30, protocol: Optional[str] = "sky_conditi
         header = f.readline().split(',')
         header = [h.strip() for h in header]
         # Determine number of lines for tqdm.
-        line_count = sum(1 for i in open(fp, 'rb'))
+        line_count = sum(1 for _ in open(fp, 'rb'))
         # Loop through each line.
         for line in tqdm(f, total=line_count, desc="Reading CSV file"):
             # If limited by count, exit.

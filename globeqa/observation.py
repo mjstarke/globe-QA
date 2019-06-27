@@ -286,7 +286,7 @@ class Observation:
         :param land: The PreparedGeometry for checking whether the location is over land. If None, determination of
         whether a location is a water will be ignored.
         """
-        a = self.elevation
+        _ = self.elevation
         self._check_for_flags_datetime()
         self._check_for_flags_location(land)
         self._check_for_flags_obscurations()
