@@ -148,6 +148,7 @@ def filter_by_flag(obs: List[Observation], specs: Union[bool, Dict[str, bool]] =
     flag.  Alternatively, specs can be True, meaning that at least one flag must be present, or False, meaning that all
     flags must be absent.  Default True.
     :return: The filtered observations.
+    :raises: TypeError if specs is neither a string or a dict of string,bool pairs.
     """
     # If specs is a dict...
     if type(specs) == dict:
@@ -265,6 +266,7 @@ def prepare_earth_geometry(geometry_resolution: str = "50m"):
     :param geometry_resolution: The resolution of the NaturalEarth shapereader to use.  Valid values are '10m', '50m'
     or '110m'.  Default '50m'.
     :return: The PreparedGeometry object that can be used for point-land checking.
+    :raises: ValueError if geometry_resolution is not '10m', '50m', or '110m'.
     """
     if geometry_resolution not in ["10m", "50m", "110m"]:
         raise ValueError("Argument 'geometry_resolution' must be either '10m', '50m', or '110m'.")
@@ -514,6 +516,7 @@ def process_one_day(download_folder: str = "", download_file: str = "SC_LC_MHM_T
     download_from_api().
     :param day: The day to process.  Default None, which is treated as yesterday.
     :return: The list of observations.
+    :raises: ValueError if the JSON file contains no observations.
     """
     if day is None:
         day = date.today() - timedelta(1)
