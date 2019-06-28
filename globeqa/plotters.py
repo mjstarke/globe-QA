@@ -51,14 +51,15 @@ def plot_annotated_heatmap(data: np.ndarray, x_ticks: List[str], y_ticks: List[s
                            labels: List[List[str]] = None,
                            **kwargs):
     """
-    Creates a simple annotated heatmap.
+    Creates a simple annotated heatmap.  Read how each parameter works carefully - ordering of lists is important.
     :param data: A two-dimensional array of data for which to create a heatmap.  It will be automatically transposed for
     imshow().
     :param x_ticks: The list of tick labels along the x axis from left to right.  Must have length data.shape[0].
     :param y_ticks: The list of tick labels along the y axis from bottom to top.  Must have length data.shape[1].
     :param save_path: If None, the plot will be shown interactively.  If a file path, the plot will instead be saved to
     that location.  Default None.
-    :param text_formatter: The format string for the annotations.  Default '{:.0f}', which produces integers.
+    :param text_formatter: The format string for the annotations.  Default '{:.0f}', which produces integers.  Ignored
+    if labels is not None.
     :param text_color: The color for the cell labels.  Default 'white'.
     :param high_text_color: The color for the cell labels if the corresponding value is greater than
     text_color_threshold. Default 'black'.
@@ -66,8 +67,9 @@ def plot_annotated_heatmap(data: np.ndarray, x_ticks: List[str], y_ticks: List[s
     (which means that text_color is used everywhere).
     :param figsize: The size of the figure (passed to figure()).  Default None, which lets matplotlib decide.
     :param kwargs: kwargs are passed to imshow().
-    :param labels: Labels to use for the cells.  Default None, which instead uses text_formatter on the value of each
-    cell.
+    :param labels: Labels to use for the cells.  It should be a list of lists of strings, such that labels[i][j]
+    corresponds to the cell in column i (from the left) and row j (from the bottom). Default None, which instead uses
+    text_formatter on the value of each cell.
     :return: The axis of the drawn plot.
     :raises: ValueError if data is not 2-dimensional, or if lengths of x_ticks and y_ticks do not match data.shape.
     """
@@ -98,10 +100,12 @@ def plot_annotated_heatmap(data: np.ndarray, x_ticks: List[str], y_ticks: List[s
     # Rotate the tick labels and set their alignment.
     plt.setp(ax.get_xticklabels(), rotation=45, ha="right", rotation_mode="anchor")
 
-    # Loop over data dimensions and create text annotations.
+    # Loop over data dimensions and create text annotations.  The exact ways that i and j are used here may seem
+    # arbitrary - it's due the transposition required by imshow() and the fact that labels is a list of lists, not an
+    # array.  I don't know exactly how this works, but it works.
     for i in range(len(y_ticks)):
         for j in range(len(x_ticks)):
-            text = text_formatter.format(data[i, j]) if labels is None else labels[j][i]
+            text = text_formatter.format(data[i, j]) if labels is None else labels[j][-i-1]
             ax.text(j, i, text, ha="center", va="center",
                     color=text_color if data[i, j] < text_color_threshold else high_text_color)
 
