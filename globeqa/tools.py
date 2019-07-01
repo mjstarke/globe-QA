@@ -170,7 +170,7 @@ def filter_by_flag(obs: List[Observation], specs: Union[bool, Dict[str, bool]] =
 
 
 def filter_by_flag_sets(obs: List[Observation], all_of: Iterable[str] = (), none_of: Iterable[str] = (),
-                        any_of: Iterable[str] = ()) -> Iterable[Observation]:
+                        any_of: Iterable[str] = ()) -> List[Observation]:
     """
     Filters observations by whether they have or do not have certain combinations of flags.
     :param obs: The observations to assess.
@@ -185,7 +185,7 @@ def filter_by_flag_sets(obs: List[Observation], all_of: Iterable[str] = (), none
     # Store only those obs which have at least one flag from any_of - that is, the intersection of actual flags and
     # required flags has at least one item.
     # Note that we must skip this check of any_of is empty - otherwise, nothing passes.
-    ret = [ob for ob in obs if len(set(ob.flags) & set(any_of)) > 0] if len(any_of) > 0 else [ob for ob in obs]
+    ret = [ob for ob in obs if len(set(ob.flags) & set(any_of)) > 0] if any_of else [ob for ob in obs]
 
     # Store only those obs which have all of the all_of flags - that is, the actual flags is a (not necessarily proper)
     # superset of the required flags.
