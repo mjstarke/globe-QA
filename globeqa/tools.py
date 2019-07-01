@@ -148,7 +148,7 @@ def filter_by_flag(obs: List[Observation], specs: Union[bool, Dict[str, bool]] =
     flag.  Alternatively, specs can be True, meaning that at least one flag must be present, or False, meaning that all
     flags must be absent.  Default True.
     :return: The filtered observations.
-    :raises: TypeError if specs is neither a string or a dict of string,bool pairs.
+    :raises TypeError: If specs is neither a string or a dict of string=bool pairs.
     """
     # If specs is a dict...
     if type(specs) == dict:
@@ -266,7 +266,7 @@ def prepare_earth_geometry(geometry_resolution: str = "50m"):
     :param geometry_resolution: The resolution of the NaturalEarth shapereader to use.  Valid values are '10m', '50m'
     or '110m'.  Default '50m'.
     :return: The PreparedGeometry object that can be used for point-land checking.
-    :raises: ValueError if geometry_resolution is not '10m', '50m', or '110m'.
+    :raises ValueError: If geometry_resolution is not '10m', '50m', or '110m'.
     """
     if geometry_resolution not in ["10m", "50m", "110m"]:
         raise ValueError("Argument 'geometry_resolution' must be either '10m', '50m', or '110m'.")
@@ -349,9 +349,9 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
     items.
     :return: None.  The results are printed in three columns: key, value, percentage (if do_percent).  The columns are
     automatically sized so that two spaces exist between them.  If d contains no keys, nothing is printed.
-    :raises: TypeError if sorting is a non-iterable non-string.
-    :raises: ValueError if min_column_widths does not have length 3, or if sorting is an invalid string.
-    :raises: ZeroDivisionError if total is zero (whether set explicitly or calculated automatically).
+    :raises TypeError: If sorting is a non-iterable non-string.
+    :raises ValueError: If min_column_widths does not have length 3, or if sorting is an invalid string.
+    :raises ZeroDivisionError: If total is zero (whether set explicitly or calculated automatically).
     """
     if len(min_column_widths) != 3:
         raise ValueError("Argument 'min_column_widths' must have length 3.")
@@ -435,7 +435,7 @@ def bin_cloud_fraction(fraction: float, clip: bool = False) -> str:
     :param clip: Whether to force fraction into the range 0.0 to 1.0.  ValueError will not be raised in this case.
     Default False.
     :return: A string describing the cloud cover: one of [none, few, isolated, scattered, broken, overcast].
-    :raises: ValueError if fraction is not in the range 0.0 to 1.0, unless clip is True.
+    :raises ValueError: If fraction is not in the range 0.0 to 1.0, unless clip is True.
     """
     if clip:
         fraction = min(max(fraction, 0.0), 1.0)
@@ -465,7 +465,7 @@ def filter_by_datetime(obs: List[Observation], earliest: Optional[datetime] = No
     :param assume_chronology: Whether the observations are in ascending chronological order.  If set to True when the
     observations are NOT in strictly chronological order, arbitrary returns will result.  Default True.
     :return: The observations that passed the filter.
-    :raises: ValueError if earliest is after latest.
+    :raises ValueError: If earliest is after latest.
     """
     if earliest is not None and latest is not None and (earliest >= latest):
         raise ValueError("Argument 'earliest' must not be after argument 'latest'.")
@@ -517,7 +517,7 @@ def process_one_day(download_folder: str = "", download_file: str = "SC_LC_MHM_T
     download_from_api().  Default "SC_LC_MHM_TH__%S.json" (%S replaced by the date).
     :param day: The day to process.  Default None, which is treated as yesterday.
     :return: The list of observations.
-    :raises: ValueError if the JSON file contains no observations.
+    :raises ValueError: If the JSON file contains no observations.
     """
     if day is None:
         day = date.today() - timedelta(1)

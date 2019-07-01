@@ -13,7 +13,7 @@ class Observation:
         :param row: The observation row from a CSV file.
         :param feature: The JSON feature representing an observation.
         :param protocol: The protocol that the CSV file is derived from.
-        :raises: ValueError if neither feature nor (header + row + protocol) are provided.
+        :raises ValueError: if neither feature nor (header + row + protocol) are provided.
         """
 
         if header is not None and row is not None and protocol is not None:

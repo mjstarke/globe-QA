@@ -74,7 +74,7 @@ def plot_annotated_heatmap(data: np.ndarray, x_ticks: List[str], y_ticks: List[s
     corresponds to the cell in column i (from the left) and row j (from the bottom). Default None, which instead uses
     text_formatter on the value of each cell.
     :return: The axis of the drawn plot.
-    :raises: ValueError if data is not 2-dimensional, or if lengths of x_ticks and y_ticks do not match data.shape.
+    :raises ValueError: If data is not 2-dimensional, or if lengths of x_ticks and y_ticks do not match data.shape.
     """
     if len(data.shape) != 2:
         raise ValueError("'data' must be two-dimensional.")
@@ -193,7 +193,7 @@ def plot_stacked_bars(x, ys, labels, colors, legend: bool = True, **kwargs):
     :param legend: Whether to draw the legend.  Default True.
     :param kwargs: kwargs are passed to bar().  kwargs 'color' and 'bottom' should not be passed.
     :return: The axis on which the bar was plotted.
-    :raises: ValueError if ys, labels, and colors are not all the same length, or if the elements of y do not all have
+    :raises ValueError: If ys, labels, and colors are not all the same length, or if the elements of y do not all have
     the same length as x.
     """
     # For each group of bars...
