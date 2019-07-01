@@ -29,15 +29,18 @@ def make_pc_fig(figsize: Tuple[float, float] = (18, 9), coast_color: str = "#aaa
     # Render coastlines in grey so they don't stand out too much.
     ax.coastlines(color=coast_color)
 
+    # Cartopy's default colors.
     if land_color is None:
         land_color = np.array([0.9375, 0.9375, 0.859375])
     if ocean_color is None:
         ocean_color = np.array([0.59375, 0.71484375, 0.8828125])
 
+    # Add and color background if requested.
     if color_bg:
         ax.add_feature(NaturalEarthFeature("physical", "land", "110m", facecolor=land_color, zorder=-1))
         ax.add_feature(NaturalEarthFeature("physical", "ocean", "110m", facecolor=ocean_color, zorder=-1))
 
+    # Set limits explicitly if requested.
     if set_limits_explicitly:
         ax.set_xlim(-180, 180)
         ax.set_ylim(-90, 90)
@@ -78,9 +81,12 @@ def plot_annotated_heatmap(data: np.ndarray, x_ticks: List[str], y_ticks: List[s
     if (len(x_ticks), len(y_ticks)) != data.shape:
         raise ValueError("(len(x_ticks), len(y_ticks)) must equal data.shape.")
 
+    # Transpose the data (required for imshow()).
     data = data.T
 
+    # Flip data upside down, so that options can be specified as if the data is in the first quadrant.
     data = np.flipud(data)
+    # Flip y_ticks.
     y_ticks = y_ticks[::-1]
 
     print("--  Readying plot...")
@@ -138,7 +144,7 @@ def plot_ob_scatter(obs: List[Observation], ax, **kwargs):
             x.append(ob.lon)
             y.append(ob.lat)
 
-    # Set default size if none specified..
+    # Set default size if none specified.  Default size is not be visible on a world map.
     if "s" not in kwargs:
         kwargs["s"] = 40
 
@@ -154,16 +160,21 @@ def plot_dict_pie(d: dict, keys=None, colors=None):
     :param colors: The colors to plot with; one for each key.  Default None, which lets matplotlib set default colors.
     :return: The axis on which the pie is plotted.
     """
+
+    # If no key order is specified, use an arbitrary list.
     if keys is None:
         keys = list(d.keys())
 
+    # Extract the values of d as a list and get the sum.
     values = [d[key] for key in keys]
     total = sum(values)
+
+    # Make labels three lines:  key, value, fraction of total.
     labels = ["{}\n{}\n{:.2%}".format(k, d[k], d[k] / total) for k in keys]
 
+    # Create figure and plot pie.
     fig = plt.figure(figsize=(12, 9))
     ax = fig.add_subplot(111)
-
     ax.pie(values, labels=labels, colors=colors)
 
     plt.tight_layout()
