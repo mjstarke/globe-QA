@@ -154,13 +154,15 @@ def plot_ob_scatter(obs: List[Observation], ax, **kwargs):
     return ax.scatter(x, y, **kwargs)
 
 
-def plot_dict_pie(d: dict, keys=None, colors=None):
+def plot_dict_pie(d: dict, keys=None, labels_include_values: bool = True, labels_include_percentages: bool = True,
+                  **kwargs):
     """
-    Creates a pie chart using a dictionary, and labels each slice with its value and percentage contribution.
+    Creates a pie chart using a dictionary, and labels each wedge with its value and percentage contribution.
     :param d: The dictionary to plot.  All values must be numeric.
     :param keys: The keys to plot, and the order in which to plot them.  If None, d.keys() is called instead and the
     order will be arbitrary.
-    :param colors: The colors to plot with; one for each key.  Default None, which lets matplotlib set default colors.
+    :param labels_include_values: Whether the wedge labels should include the values.  Default True.
+    :param labels_include_percentages: Whether the wedge labels should include percentages.  Default True.
     :return: The axis on which the pie is plotted.
     """
 
@@ -172,13 +174,16 @@ def plot_dict_pie(d: dict, keys=None, colors=None):
     values = [d[key] for key in keys]
     total = sum(values)
 
-    # Make labels three lines:  key, value, fraction of total.
-    labels = ["{}\n{}\n{:.2%}".format(k, d[k], d[k] / total) for k in keys]
+    # Make labels up to three lines:  key, value, fraction of total.
+    labels = [("{}".format(k)) +
+              ("\n{}".format(d[k]) if labels_include_values else "") +
+              ("\n{:.2%}".format(d[k] / total) if labels_include_percentages else "")
+              for k in keys]
 
     # Create figure and plot pie.
     fig = plt.figure(figsize=(12, 9))
     ax = fig.add_subplot(111)
-    ax.pie(values, labels=labels, colors=colors)
+    ax.pie(values, labels=labels, **kwargs)
 
     plt.tight_layout()
     plt.show()
