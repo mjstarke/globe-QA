@@ -493,7 +493,7 @@ def filter_by_datetime(obs: List[Observation], earliest: Optional[datetime] = No
     else:
         ret = []
         for ob in tqdm(obs, desc="Filtering observations by datetime"):
-            if earliest <= ob.measured_dt <= latest:
+            if earliest <= ob.measured_dt < latest:
                 ret.append(ob)
 
         return ret
