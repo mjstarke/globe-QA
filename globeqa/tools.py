@@ -247,7 +247,7 @@ def find_closest_gridbox(cdf: Dataset, t: datetime, lat: float, lon: float) -> T
     begin_datetime_string = "{}{:0>6}".format(cdf["time"].begin_date, cdf["time"].begin_time)
     begin_datetime = datetime.strptime(begin_datetime_string, "%Y%m%d%H%M%S")
     # Determine the step between indices.
-    time_step = cdf["time"][1]
+    time_step = cdf["time"][1] - cdf["time"][0]
     # Find the difference between the point time and a first time.  Convert this from a datetime to an integer
     # number of minutes.
     time_diff = t - begin_datetime
