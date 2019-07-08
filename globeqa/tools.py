@@ -541,3 +541,18 @@ def process_one_day(download_folder: str = "", download_file: str = "SC_LC_MHM_T
     pretty_print_dictionary(flag_summary, total=len(observations))
 
     return observations
+
+
+def filter_by_datetime_cdf(obs: List[Observation], cdf: Dataset, buffer: timedelta):
+    """
+    Filters a list of observations, returning only those which lie within the time span of the CDF with the given
+    buffer.
+    :param obs: A list of observations.
+    :param cdf: A NetCDF4 Dataset.
+    :param buffer: The amount of time on either side of the Dataset's begin and end time in which observation will still
+    pass the filter.
+    :return:
+    """
+    earliest = get_cdf_datetime(cdf, 0) - buffer
+    latest = get_cdf_datetime(cdf, -1) + buffer
+    return [ob for ob in obs if earliest <= ob.measured_dt < latest]
