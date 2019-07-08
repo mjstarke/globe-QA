@@ -51,7 +51,7 @@ def make_pc_fig(figsize: Tuple[float, float] = (18, 9), coast_color: str = "#aaa
 def plot_annotated_heatmap(data: np.ndarray, x_ticks: List[str], y_ticks: List[str], save_path: Optional[str] = None,
                            text_formatter: str = "{:.0f}", text_color: str = "white", high_text_color: str = "black",
                            text_color_threshold: float = np.inf, figsize: Optional[Tuple[float, float]] = None,
-                           labels: List[List[str]] = None,
+                           labels: List[List[str]] = None, ax=None,
                            **kwargs):
     """
     Creates a simple annotated heatmap.  Read how each parameter works carefully - ordering of lists is important.
@@ -68,11 +68,13 @@ def plot_annotated_heatmap(data: np.ndarray, x_ticks: List[str], y_ticks: List[s
     text_color_threshold. Default 'black'.
     :param text_color_threshold: The threshold at which to switch from text_color to high_text_color.  Default np.inf
     (which means that text_color is used everywhere).
-    :param figsize: The size of the figure (passed to figure()).  Default None, which lets matplotlib decide.
+    :param figsize: The size of the figure (passed to figure()).  Default None, which lets matplotlib decide.  Ignored
+    if ax is not None.
     :param kwargs: kwargs are passed to imshow().
     :param labels: Labels to use for the cells.  It should be a list of lists of strings, such that labels[i][j]
     corresponds to the cell in column i (from the left) and row j (from the bottom). Default None, which instead uses
     text_formatter on the value of each cell.
+    :param ax: The axis to use for plotting.  Default None, which automatically creates a new axis on a new figure.
     :return: The axis of the drawn plot.
     :raises ValueError: If data is not 2-dimensional, or if lengths of x_ticks and y_ticks do not match data.shape.
     """
@@ -91,8 +93,9 @@ def plot_annotated_heatmap(data: np.ndarray, x_ticks: List[str], y_ticks: List[s
 
     print("--  Readying plot...")
     # Set up a figure and axis.
-    fig = plt.figure(figsize=figsize)
-    ax = fig.add_subplot(111)
+    if ax is None:
+        fig = plt.figure(figsize=figsize)
+        ax = fig.add_subplot(111)
     ax.imshow(data, **kwargs)
 
     # Specifically show all ticks.
