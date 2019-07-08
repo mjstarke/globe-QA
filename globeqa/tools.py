@@ -455,7 +455,7 @@ def bin_cloud_fraction(fraction: float, clip: bool = False) -> str:
 
 
 def filter_by_datetime(obs: List[Observation], earliest: Optional[datetime] = None, latest: Optional[datetime] = None,
-                       assume_chronology: bool = True) -> List[Observation]:
+                       assume_chronology: bool = False) -> List[Observation]:
     """
     Filters a list of observations to a certain datetime range, assuming chronology of the observations.
     :param obs: The observations.
@@ -463,7 +463,7 @@ def filter_by_datetime(obs: List[Observation], earliest: Optional[datetime] = No
     :param latest: The earliest datetime that an observation may have to NOT pass the filter - that is, observations
     with a datetime equal to latest will NOT be included.
     :param assume_chronology: Whether the observations are in ascending chronological order.  If set to True when the
-    observations are NOT in strictly chronological order, arbitrary returns will result.  Default True.
+    observations are NOT in strictly chronological order, arbitrary returns will result.  Default False.
     :return: The observations that passed the filter.
     :raises ValueError: If earliest is after latest.
     """
