@@ -550,7 +550,8 @@ def filter_by_datetime_cdf(obs: List[Observation], cdf: Dataset, buffer: timedel
     :param obs: A list of observations.
     :param cdf: A NetCDF4 Dataset.
     :param buffer: The amount of time on either side of the Dataset's begin and end time in which observation will still
-    pass the filter.
+    pass the filter.  For instance, if buffer is 30 minutes, then observations will pass if they are between
+    (CDF begin datetime - 30 minutes) and (CDF end datetime + 30 minutes).
     :return:
     """
     earliest = get_cdf_datetime(cdf, 0) - buffer
