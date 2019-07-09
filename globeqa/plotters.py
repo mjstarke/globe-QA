@@ -7,33 +7,26 @@ from tqdm import tqdm
 from typing import List, Optional, Tuple
 
 
-def make_pc_fig(figsize: Tuple[float, float] = (18, 9), coast_color: str = "#aaaaaa", color_bg: bool = True,
-                set_limits_explicitly: bool = True, land_color: Optional[str] = None,
-                ocean_color: Optional[str] = None):
+def make_pc_fig(figsize: Tuple[float, float] = (18, 9), coast_color: str = "#444444", color_bg: bool = True,
+                set_limits_explicitly: bool = True, land_color: Optional[str] = "#999999",
+                ocean_color: Optional[str] = "#98B6E2"):
     """
     Creates a cartopy figure using the PlateCarree projection.
     :param figsize: The size of the figure for matplotlib (usually in inches).  Default (18, 9).
-    :param coast_color: The color of the coastlines.  Default '#aaaaaa' (light grey).
+    :param coast_color: The color of the coastlines.  Default '#444444' (dark grey).
     :param color_bg: Whether to color the background (blue for ocean, orange for land).  Default True.
     :param set_limits_explicitly: Whether to explicitly set the limits to include the entire Earth.  This is necessary
     so that cartopy doesn't resize the limits arbitrarily after a scatter plot.  This should have no effect on other
     plots.  Default True.
-    :param land_color: The color to fill land with.  Default None, which uses the default color.
-    :param ocean_color: The color to fill ocean with.  Default None, which uses the default color.
+    :param land_color: The color to fill land with.  Default '#999999' (medium grey).
+    :param ocean_color: The color to fill ocean with.  Default '#98B6E2' (bluish; Cartopy default).
     :return: The axis for the figure.
     """
     # Create a figure and axis with cartopy projection.
     plt.figure(figsize=figsize)
     ax = plt.axes(projection=ccrs.PlateCarree())
 
-    # Render coastlines in grey so they don't stand out too much.
     ax.coastlines(color=coast_color)
-
-    # Cartopy's default colors.
-    if land_color is None:
-        land_color = np.array([0.9375, 0.9375, 0.859375])
-    if ocean_color is None:
-        ocean_color = np.array([0.59375, 0.71484375, 0.8828125])
 
     # Add and color background if requested.
     if color_bg:
