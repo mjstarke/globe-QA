@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from tqdm import tqdm
 
-# Download yesterday's observations.
+# Download all sky_conditions observations from May.
 path = tools.download_from_api(["sky_conditions"], date(2019, 5, 1), date(2019, 5, 31))
 
 # Parse the downloaded file.
