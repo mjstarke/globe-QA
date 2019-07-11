@@ -212,18 +212,18 @@ class Observation:
         """
         :return:  Gets the list of cloud types reported in this observation.
         """
-        CLOUD_TYPES = ["Cirrus", "Cirrocumulus", "Cumulus", "Altocumulus", "Stratus", "Nimbostratus", "Altostratus",
+        cloud_types = ["Cirrus", "Cirrocumulus", "Cumulus", "Altocumulus", "Stratus", "Nimbostratus", "Altostratus",
                        "Stratocumulus", "Cumulonimbus", "Cirrostratus"]
-        return [key for key in CLOUD_TYPES if self.soft_get(key) == "true"]
+        return [key for key in cloud_types if self.soft_get(key) == "true"]
 
     @property
     def obscurations(self) -> List[str]:
         """
         :return:  Gets the list of obscurations reported in this observation.
         """
-        OBSCURATIONS = ["Fog", "Smoke", "Haze", "VolcanicAsh", "Dust", "Sand", "Spray", "HeavyRain", "HeavySnow",
+        obscurations = ["Fog", "Smoke", "Haze", "VolcanicAsh", "Dust", "Sand", "Spray", "HeavyRain", "HeavySnow",
                         "BlowingSnow"]
-        return [key for key in OBSCURATIONS if self.soft_get(key) == "true"]
+        return [key for key in obscurations if self.soft_get(key) == "true"]
 
     def try_keys(self, keys: List[str]):
         """
@@ -335,11 +335,11 @@ class Observation:
         because it requires the land check.
         """
         if self["protocol"] == "sky_conditions":
-            OBSCURATION_TYPES = ["Fog", "Smoke", "Haze", "VolcanicAsh", "Dust", "Sand", "Spray", "HeavyRain",
+            obscuration_types = ["Fog", "Smoke", "Haze", "VolcanicAsh", "Dust", "Sand", "Spray", "HeavyRain",
                                  "HeavySnow", "BlowingSnow"]
 
             num_obscurations = 0
-            for key in OBSCURATION_TYPES:
+            for key in obscuration_types:
                 if self.soft_get(key) == "true":
                     num_obscurations += 1
 
