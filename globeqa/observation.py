@@ -1,6 +1,6 @@
 from datetime import datetime
 import shapely.geometry as sgeom
-from typing import Optional, List, Union
+from typing import Optional, List, Union, Dict
 
 
 class Observation:
@@ -498,3 +498,16 @@ class Observation:
         except KeyError:
             return (("GLOBE-trained " if self["Is GLOBE Trained"] == "1" else "") +
                     ("citizen science" if self["is Citizen Science"] == "1" else "")).strip()
+
+    @property
+    def photo_urls(self) -> Dict[str, str]:
+        """
+        :return: Gets a dictionary of direction=url pairs for each direction that has a photo for this observation.
+        """
+        ret = {}
+        for direction in ["South", "West", "North", "East", "Upward", "Downward"]:
+            try:
+                ret[direction] = self["{}PhotoUrl".format(direction)]
+            except KeyError:
+                pass
+        return ret
