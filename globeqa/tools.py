@@ -329,7 +329,7 @@ def find_all_attributes(obs: List[dict]) -> List[str]:
 def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bool = True,
                             total: Optional[float] = None, sorting: Union[None, str, Iterable] = "ka",
                             min_column_widths: Tuple[int, int, int] = (0, 0, 0),
-                            compress_below: Optional[float] = None) -> None:
+                            compress_below: Optional[float] = None) -> list:
     """
     Pretty-prints the contents of a dictionary.
     :param d: The dictionary to assess.
@@ -352,13 +352,15 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
     :raises TypeError: If sorting is a non-iterable non-string.
     :raises ValueError: If min_column_widths does not have length 3, or if sorting is an invalid string.
     :raises ZeroDivisionError: If total is zero (whether set explicitly or calculated automatically).
+    :return: The list of keys in the order that they were printed, or an empty list if no keys were printed.  Note that
+    the compression and total rows are not considered keys.
     """
     if len(min_column_widths) != 3:
         raise ValueError("Argument 'min_column_widths' must have length 3.")
 
     # If there are no keys in the dictionary, there's nothing to do.
     if len(d.keys()) == 0:
-        return None
+        return []
 
     # keys remains as this arbitrary list if sorting is None.
     keys = d.keys()
@@ -425,6 +427,8 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
     # Print each row.
     for a in range(len(column1)):
         print(fmt.format(column1[a], column2[a], column3[a]))
+
+    return list(keys)
 
 
 def bin_cloud_fraction(fraction: float, clip: bool = False) -> str:
