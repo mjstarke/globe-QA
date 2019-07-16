@@ -513,3 +513,10 @@ class Observation:
             except KeyError:
                 pass
         return ret
+
+    @property
+    def is_from_observer(self):
+        """
+        :return: Returns whether or not this observation comes from the GLOBE Observer app.
+        """
+        return self.source in ["GLOBE Observer App", "citizen science", "GLOBE-trained citizen science"]
