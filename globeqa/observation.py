@@ -505,6 +505,9 @@ class Observation:
     def photo_urls(self) -> Dict[str, str]:
         """
         :return: Gets a dictionary of direction=url pairs for each direction that has a photo for this observation.
+        Direction keys are be South, West, North, East, Upward, and Downward.  A key will be absent if no photo in that
+        direction exists.  The value of a given key is not guaranteed to be a valid url; in particular, the value may be
+        "rejected" if a photo was submitted but was rejected from the GLOBE database.
         """
         ret = {}
         for direction in ["South", "West", "North", "East", "Upward", "Downward"]:
