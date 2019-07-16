@@ -81,8 +81,10 @@ class Observation:
         """
         # Find or construct the string representing the datetime.
         try:
-            # sic: "Measurement" is misspelled in the file.
-            dtstring = "{}T{}".format(self["Measurment Date (UTC)"], self["Measurment Time (UTC)"])
+            # sic: "Measurement" may be misspelled in the file.
+            d = self.try_keys(["Measurment Date (UTC)", "Measurement Date (UTC)"])
+            t = self.try_keys(["Measurment Time (UTC)", "Measurement Time (UTC)"])
+            dtstring = "{}T{}".format(d, t)
         except KeyError:
             try:
                 dtstring = self["MeasuredAt"]
