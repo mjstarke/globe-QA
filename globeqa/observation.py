@@ -300,7 +300,8 @@ class Observation:
         :return: Gets the total cloud cover (sum of each level) as reported by Aqua.  Returns None if Aqua is not
         matched to this observation.
         """
-        return self.sum_keys(["Aqua Low Cloud Cover", "Aqua Mid Cloud Cover", "Aqua High Cloud Cover"])
+        s = self.sum_keys(["Aqua Low Cloud Cover", "Aqua Mid Cloud Cover", "Aqua High Cloud Cover"])
+        return s / 100. if s is not None else None
 
     @property
     def tcc_terra(self) -> Optional[float]:
@@ -308,7 +309,8 @@ class Observation:
         :return: Gets the total cloud cover (sum of each level) as reported by Terra.  Returns None if Terra is not
         matched to this observation.
         """
-        return self.sum_keys(["Terra Low Cloud Cover", "Terra Mid Cloud Cover", "Terra High Cloud Cover"])
+        s = self.sum_keys(["Terra Low Cloud Cover", "Terra Mid Cloud Cover", "Terra High Cloud Cover"])
+        return s / 100. if s is not None else None
 
     @property
     def tcc_geo(self) -> Optional[float]:
@@ -316,7 +318,8 @@ class Observation:
         :return: Gets the total cloud cover (sum of each level) as reported by a geostationary satellite.  Returns None
         if there is no geostationary satellite matched to this observation.
         """
-        return self.sum_keys(["GEO Low Cloud", "GEO Mid Cloud", "GEO High Cloud"])
+        s = self.sum_keys(["GEO Low Cloud", "GEO Mid Cloud", "GEO High Cloud"])
+        return s / 100. if s is not None else None
 
     @property
     def tcc_aqua_cc(self):
