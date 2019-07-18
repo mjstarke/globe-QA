@@ -51,6 +51,9 @@ class Observation:
     def __contains__(self, item):
         return self.soft_get(item) is not None
 
+    def __setitem__(self, key, value):
+        self._raw[key] = value
+
     def soft_get(self, item: str):
         """
         Attempts to get the requested key.  Unlike __getitem__, if a KeyError is raised, it will caught and ignored,
