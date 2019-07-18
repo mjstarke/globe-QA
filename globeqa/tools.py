@@ -584,7 +584,7 @@ def patch_obs(obs: List[Observation], fp: str, attribute: str, processor: Callab
         for line in tqdm(f, desc="Reading patch"):
             try:
                 ob_id, val = line.split(",")
-                patch[ob_id] = processor(val)
+                patch[ob_id] = processor(val[:-1])
             except ValueError:
                 pass
         f.close()
