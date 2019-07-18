@@ -10,7 +10,7 @@ from shapely.ops import unary_union
 from shapely.prepared import prep
 from shutil import copyfileobj
 from tqdm import tqdm
-from typing import List, Dict, Optional, Union, Tuple, Iterable
+from typing import List, Dict, Optional, Union, Tuple, Iterable, Callable, Any
 from urllib.request import urlopen
 
 
@@ -562,3 +562,35 @@ def filter_by_datetime_cdf(obs: List[Observation], cdf: Dataset, buffer: timedel
     earliest = get_cdf_datetime(cdf, 0) - buffer
     latest = get_cdf_datetime(cdf, -1) + buffer
     return [ob for ob in obs if earliest <= ob.measured_dt < latest]
+
+
+def patch_obs(obs: List[Observation], fp: str, attribute: str, processor: Callable[[str], Any] = lambda v: v):
+    """
+    Applies a patch to the observations.  The patch is a CSV file whose first column is either to observation ID or
+    number (whichever is present in the obs), and the second column is the value associated with that observation.
+    :param obs: The observations to patch.
+    :param fp: The path to the patch file.
+    :param attribute: The attribute to store the value to for each observation.
+    :param processor: The function used to process incoming values; i.e., float or int (as otherwise all values are
+    strings).  Default lambda v: v, which performs no processing.
+    :return: None.  Observations are modified in-place.  If the following patch file is used:
+        299023,foo
+        928302,bar
+    and attribute is "poo", then the observation with id 299023 will have ["poo"] == "foo" and the observation with id
+    928302 will have ["poo"] == "bar".
+    """
+    patch = dict()
+    with open(fp, "r") as f:
+        for line in tqdm(f, desc="Reading patch"):
+            try:
+                ob_id, val = line.split(",")
+                patch[ob_id] = processor(val)
+            except ValueError:
+                pass
+        f.close()
+
+    for ob in tqdm(obs, desc="Applying patch"):
+        try:
+            ob[attribute] = patch[ob_id]
+        except KeyError:
+            pass
