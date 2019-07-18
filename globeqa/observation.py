@@ -77,15 +77,16 @@ class Observation:
     def measured_dt(self) -> Optional[datetime]:
         """
         :return: The measurement datetime of this observation, or none if the date and/or time are recorded incorrectly.
-        Raises flag DX is the datetime is missing, and DI if the datetime is invalid or malformed.
+        Raises flag DX if the datetime is missing, and DI if the datetime is invalid or malformed.
         """
         # Find or construct the string representing the datetime.
-        try:
-            # sic: "Measurement" may be misspelled in the file.
-            d = self.try_keys(["Measurment Date (UTC)", "Measurement Date (UTC)"])
-            t = self.try_keys(["Measurment Time (UTC)", "Measurement Time (UTC)"])
+
+        # sic: "Measurement" may be misspelled in the file.
+        d = self.try_keys(["Measurment Date (UTC)", "Measurement Date (UTC)"])
+        t = self.try_keys(["Measurment Time (UTC)", "Measurement Time (UTC)"])
+        if d is not None and t is not None:
             dtstring = "{}T{}".format(d, t)
-        except KeyError:
+        else:
             try:
                 dtstring = self["MeasuredAt"]
             except KeyError:
