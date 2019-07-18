@@ -8,9 +8,6 @@ class CloudCover:
 
         self._val = val
 
-        cat_to_num = dict(none=0.00, clear=0.05, few=0.05, isolated=0.175, scattered=0.375, broken=0.70, overcast=0.95,
-                          obscured=0.95)
-
         if type(val) is str:
             try:
                 val = float(val)
@@ -19,16 +16,13 @@ class CloudCover:
 
         if type(val) is str:
             self._cat = val
-            try:
-                self._num = cat_to_num[val]
-            except KeyError:
-                raise ValueError("'{}' does not represent a valid category.".format(val))
+            self._num = self.cat_to_mid(val)
             self._mid = self._num
         elif type(val) is float:
             val = min(max(val, 0.0), 1.0)
             self._num = val
-            self._cat = self.bin_cloud_fraction(val)
-            self._mid = cat_to_num[self._cat]
+            self._cat = self.num_to_cat(val)
+            self._mid = self.cat_to_mid(self._cat)
         elif val is None:
             self._num = None
             self._cat = None
@@ -65,12 +59,19 @@ class CloudCover:
         """
         return self._val
 
-    def bin_cloud_fraction(self, fraction):
+    def num_to_cat(self, fraction):
         fraction = min(max(fraction, 0.0), 1.0)
         bins = dict(none=0.00, few=0.10, isolated=0.25, scattered=0.50, broken=0.90, overcast=1.00)
         for k, v in bins.items():
             if fraction <= v:
                 return k
+
+    def cat_to_mid(self, cat):
+        try:
+            return dict(none=0.00, clear=0.05, few=0.05, isolated=0.175, scattered=0.375, broken=0.70, overcast=0.95,
+                        obscured=0.95)[cat]
+        except KeyError:
+            raise ValueError("'{}' does not represent a valid cloud cover category.".format(cat))
 
 
 class Observation:
