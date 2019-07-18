@@ -591,6 +591,6 @@ def patch_obs(obs: List[Observation], fp: str, attribute: str, processor: Callab
 
     for ob in tqdm(obs, desc="Applying patch"):
         try:
-            ob[attribute] = patch[ob_id]
+            ob[attribute] = patch[ob.id]
         except KeyError:
             pass
