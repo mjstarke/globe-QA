@@ -319,6 +319,18 @@ class Observation:
         return self.sum_keys(["GEO Low Cloud", "GEO Mid Cloud", "GEO High Cloud"])
 
     @property
+    def tcc_aqua_cc(self):
+        return CloudCover(self.tcc_aqua)
+
+    @property
+    def tcc_terra_cc(self):
+        return CloudCover(self.tcc_terra)
+
+    @property
+    def tcc_geo_cc(self):
+        return CloudCover(self.tcc_geo)
+
+    @property
     def cloud_types(self) -> List[str]:
         """
         :return:  Gets the list of cloud types reported in this observation.
