@@ -325,16 +325,32 @@ class Observation:
         return s / 100. if s is not None else None
 
     @property
-    def tcc_aqua_cc(self):
-        return CloudCover(self.tcc_aqua)
+    def tcc_aqua_cat(self):
+        return self.bin_cloud_fraction(self.tcc_aqua) if self.tcc_aqua is not None else None
 
     @property
-    def tcc_terra_cc(self):
-        return CloudCover(self.tcc_terra)
+    def tcc_terra_cat(self):
+        return self.bin_cloud_fraction(self.tcc_terra) if self.tcc_terra is not None else None
 
     @property
-    def tcc_geo_cc(self):
-        return CloudCover(self.tcc_geo)
+    def tcc_geo_cat(self):
+        return self.bin_cloud_fraction(self.tcc_geo) if self.tcc_geo is not None else None
+
+    @staticmethod
+    def bin_cloud_fraction(fraction: float) -> str:
+        """
+        Bins a cloud fraction into a GLOBE cloud cover category.
+        :param fraction: The cloud fraction, from 0.0 (clear) to 1.0 (overcast).  A ValueError is raised if the fraction
+        lies outside this range.
+        :return: A string describing the cloud cover: one of [none, few, isolated, scattered, broken, overcast].
+        """
+        fraction = min(max(fraction, 0.0), 1.0)
+
+        bins = dict(none=0.00, few=0.10, isolated=0.25, scattered=0.50, broken=0.90, overcast=1.00)
+
+        for k, v in bins.items():
+            if fraction <= v:
+                return k
 
     @property
     def cloud_types(self) -> List[str]:
