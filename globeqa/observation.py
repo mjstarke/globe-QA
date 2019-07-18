@@ -55,7 +55,9 @@ class CloudCover:
         return c != 0. if c is not None else NotImplemented
 
     def _compare(self, other):
-        if type(other) is CloudCover:
+        if self.mid is None:
+            return None
+        elif type(other) is CloudCover:
             return self.num - other.num
         elif type(other) is str:
             return self.mid - self.cat_to_mid(other)
@@ -95,10 +97,11 @@ class CloudCover:
 
     def num_to_cat(self, fraction):
         fraction = min(max(fraction, 0.0), 1.0)
-        bins = dict(none=0.00, few=0.10, isolated=0.25, scattered=0.50, broken=0.90, overcast=1.00)
+        bins = dict(none=0.00, few=0.10, isolated=0.25, scattered=0.50, broken=0.90)
         for k, v in bins.items():
             if fraction <= v:
                 return k
+        return "overcast"
 
     def cat_to_mid(self, cat):
         try:
