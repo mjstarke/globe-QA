@@ -3,6 +3,76 @@ import shapely.geometry as sgeom
 from typing import Optional, List, Union, Dict
 
 
+class CloudCover:
+    def __init__(self, val: Optional[Union[float, str]]):
+
+        self._val = val
+
+        cat_to_num = dict(none=0.00, clear=0.05, few=0.05, isolated=0.175, scattered=0.375, broken=0.70, overcast=0.95,
+                          obscured=0.95)
+
+        if type(val) is str:
+            try:
+                val = float(val)
+            except ValueError:
+                pass
+
+        if type(val) is str:
+            self._cat = val
+            try:
+                self._num = cat_to_num[val]
+            except KeyError:
+                raise ValueError("'{}' does not represent a valid category.".format(val))
+            self._mid = self._num
+        elif type(val) is float:
+            val = min(max(val, 0.0), 1.0)
+            self._num = val
+            self._cat = self.bin_cloud_fraction(val)
+            self._mid = cat_to_num[self._cat]
+        elif val is None:
+            self._num = None
+            self._cat = None
+            self._mid = None
+        else:
+            raise TypeError("Argument 'val' must be a string, a float, or None.")
+
+    @property
+    def cat(self) -> Optional[str]:
+        """
+        :return: The GLOBE category that this cloud cover falls into.
+        """
+        return self._cat
+
+    @property
+    def mid(self) -> Optional[float]:
+        """
+        :return: The numeric midpoint of the GLOBE category that this cloud cover falls into.
+        """
+        return self._mid
+
+    @property
+    def num(self) -> Optional[float]:
+        """
+        :return: The numeric value of this cloud cover (fraction).  If initialized with a category string, this will be
+        the midpoint of the category (and equal to the mid property).
+        """
+        return self._num
+
+    @property
+    def val(self):
+        """
+        :return: The value used to initialize this CloudCover.
+        """
+        return self._val
+
+    def bin_cloud_fraction(self, fraction):
+        fraction = min(max(fraction, 0.0), 1.0)
+        bins = dict(none=0.00, few=0.10, isolated=0.25, scattered=0.50, broken=0.90, overcast=1.00)
+        for k, v in bins.items():
+            if fraction <= v:
+                return k
+
+
 class Observation:
     def __init__(self, header: Optional[List[str]] = None, row: Optional[List[str]] = None,
                  feature: Optional[dict] = None, protocol: Optional[str] = None):
