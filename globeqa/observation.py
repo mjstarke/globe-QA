@@ -30,6 +30,40 @@ class CloudCover:
         else:
             raise TypeError("Argument 'val' must be a string, a float, or None.")
 
+    def __lt__(self, other):
+        c = self._compare(other)
+        return c < 0. if c is not None else NotImplemented
+
+    def __gt__(self, other):
+        c = self._compare(other)
+        return c > 0. if c is not None else NotImplemented
+
+    def __le__(self, other):
+        c = self._compare(other)
+        return c <= 0. if c is not None else NotImplemented
+
+    def __ge__(self, other):
+        c = self._compare(other)
+        return c >= 0. if c is not None else NotImplemented
+
+    def __eq__(self, other):
+        c = self._compare(other)
+        return c == 0. if c is not None else NotImplemented
+
+    def __ne__(self, other):
+        c = self._compare(other)
+        return c != 0. if c is not None else NotImplemented
+
+    def _compare(self, other):
+        if type(other) is CloudCover:
+            return self.num - other.num
+        elif type(other) is str:
+            return self.mid - self.cat_to_mid(other)
+        elif type(other) is float:
+            return self.num - other
+        else:
+            return None
+
     @property
     def cat(self) -> Optional[str]:
         """
