@@ -524,3 +524,10 @@ class Observation:
         :return: Returns whether or not this observation comes from the GLOBE Observer app.
         """
         return self.source in ["GLOBE Observer App", "citizen science", "GLOBE-trained citizen science"]
+
+    @property
+    def id(self):
+        """
+        :return: Gets the observation's ID or number, whichever is available first.
+        """
+        return self.try_keys(["ObservationId", "Observation Number"])
