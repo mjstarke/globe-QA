@@ -326,22 +326,34 @@ class Observation:
 
     @property
     def tcc_aqua_cat(self):
+        """
+        :return: Gets the cloud cover category associated with the cloud fraction reported by Aqua if this observation
+        was matched to Aqua; otherwise, returns None.
+        """
         return self.bin_cloud_fraction(self.tcc_aqua) if self.tcc_aqua is not None else None
 
     @property
     def tcc_terra_cat(self):
+        """
+        :return: Gets the cloud cover category associated with the cloud fraction reported by Terra if this observation
+        was matched to Terra; otherwise, returns None.
+        """
         return self.bin_cloud_fraction(self.tcc_terra) if self.tcc_terra is not None else None
 
     @property
     def tcc_geo_cat(self):
+        """
+        :return: Gets the cloud cover category associated with the cloud fraction reported by a geostationary satellite
+        if this observation was matched to a geostationary satellite; otherwise, returns None.
+        """
         return self.bin_cloud_fraction(self.tcc_geo) if self.tcc_geo is not None else None
 
     @staticmethod
     def bin_cloud_fraction(fraction: float) -> str:
         """
         Bins a cloud fraction into a GLOBE cloud cover category.
-        :param fraction: The cloud fraction, from 0.0 (clear) to 1.0 (overcast).  A ValueError is raised if the fraction
-        lies outside this range.
+        :param fraction: The cloud fraction, from 0.0 (clear) to 1.0 (overcast).  Values outside this range are clipped
+        to be within the range.
         :return: A string describing the cloud cover: one of [none, few, isolated, scattered, broken, overcast].
         """
         fraction = min(max(fraction, 0.0), 1.0)
