@@ -13,17 +13,13 @@ filtered_obs = tools.filter_by_datetime(
     tools.get_cdf_datetime(cdf2, -1) + timedelta(minutes=30)
 )
 
-tools.patch_obs(filtered_obs, "geos_coincident.csv", "tcc_geos", float)
-tools.patch_obs(filtered_obs, "geos_coincident_cat.csv", "tcc_geos_cat")
+goes15_tallies = []
+goes16_tallies = []
+himawari_tallies = []
+meteosat8_tallies = []
+meteosat10_11_tallies = []
 
-globe_tallies = []
-geos_tallies = []
-aqua_tallies = []
-terra_tallies = []
-geo_tallies = []
-
-globe_categories = ["none", "few", "isolated", "scattered", "broken", "overcast", "obscured"]
-geos_categories = ["none", "few", "isolated", "scattered", "broken", "overcast"]
+tcc_categories = ["none", "few", "isolated", "scattered", "broken", "overcast"]
 
 #################################################
 for _ in tqdm(range(sample_count), desc="Sampling observations"):
@@ -31,80 +27,73 @@ for _ in tqdm(range(sample_count), desc="Sampling observations"):
     sample = np.random.choice(filtered_obs, int(len(filtered_obs) / 20), False)
 
     # Tally all the TCCs in each category.
-    globe_tally = [sum(1 for ob in sample if ob["GEO Satellite"] == "GOES-15" and ob.tcc_geo_cat == category) for category in globe_categories]
-    geos_tally = [sum(1 for ob in sample if ob["GEO Satellite"] == "GOES-16" and ob.tcc_geo_cat == category) for category in geos_categories]
-    aqua_tally = [sum(1 for ob in sample if ob["GEO Satellite"] == "HIMAWARI-8" and ob.tcc_geo_cat == category) for category in geos_categories]
-    terra_tally = [sum(1 for ob in sample if ob["GEO Satellite"] == "METEOSAT-8" and ob.tcc_geo_cat == category) for category in geos_categories]
-    geo_tally = [sum(1 for ob in sample if ob["GEO Satellite"] == "METEOSAT-11" and ob.tcc_geo_cat == category) for category in geos_categories]
-
-    # Press overcast and obscured into one.
-    globe_tally[-2] += globe_tally[-1]
-    globe_tally = globe_tally[:-1]
+    goes15_tally = [sum(1 for ob in sample if ob.which_geo == "GOES-15" and ob.tcc_geo_cat == category) for category in tcc_categories]
+    goes16_tally = [sum(1 for ob in sample if ob.which_geo == "GOES-16" and ob.tcc_geo_cat == category) for category in tcc_categories]
+    himawari_tally = [sum(1 for ob in sample if ob.which_geo == "HIMAWARI-8" and ob.tcc_geo_cat == category) for category in tcc_categories]
+    meteosat8_tally = [sum(1 for ob in sample if ob.which_geo == "METEOSAT-8" and ob.tcc_geo_cat == category) for category in tcc_categories]
+    meteosat10_11_tally = [sum(1 for ob in sample if ob.which_geo == "METEOSAT-11" and ob.tcc_geo_cat == category) for category in tcc_categories]
 
     # Convert to arrays.
-    globe_tally = np.array(globe_tally)
-    geos_tally = np.array(geos_tally)
-    aqua_tally = np.array(aqua_tally)
-    terra_tally = np.array(terra_tally)
-    geo_tally = np.array(geo_tally)
+    goes15_tally = np.array(goes15_tally)
+    goes16_tally = np.array(goes16_tally)
+    himawari_tally = np.array(himawari_tally)
+    meteosat8_tally = np.array(meteosat8_tally)
+    meteosat10_11_tally = np.array(meteosat10_11_tally)
 
     # Divide by sum to get percentages.
-    globe_tally = globe_tally / globe_tally.sum()
-    geos_tally = geos_tally / geos_tally.sum()
-    aqua_tally = aqua_tally / aqua_tally.sum()
-    terra_tally = terra_tally / terra_tally.sum()
-    geo_tally = geo_tally / geo_tally.sum()
+    goes15_tally = goes15_tally / goes15_tally.sum()
+    goes16_tally = goes16_tally / goes16_tally.sum()
+    himawari_tally = himawari_tally / himawari_tally.sum()
+    meteosat8_tally = meteosat8_tally / meteosat8_tally.sum()
+    meteosat10_11_tally = meteosat10_11_tally / meteosat10_11_tally.sum()
 
-    globe_tallies.append(globe_tally)
-    geos_tallies.append(geos_tally)
-    aqua_tallies.append(aqua_tally)
-    terra_tallies.append(terra_tally)
-    geo_tallies.append(geo_tally)
+    goes15_tallies.append(goes15_tally)
+    goes16_tallies.append(goes16_tally)
+    himawari_tallies.append(himawari_tally)
+    meteosat8_tallies.append(meteosat8_tally)
+    meteosat10_11_tallies.append(meteosat10_11_tally)
 
 #################################################
-pop_globe_tally = [sum(1 for ob in filtered_obs if ob["GEO Satellite"] == "GOES-15" and ob.tcc_geo_cat == category) for category in globe_categories]
-pop_geos_tally = [sum(1 for ob in filtered_obs if ob["GEO Satellite"] == "GOES-16" and ob.tcc_geo_cat == category) for category in geos_categories]
-pop_aqua_tally = [sum(1 for ob in filtered_obs if ob["GEO Satellite"] == "HIMAWARI-8" and ob.tcc_geo_cat == category) for category in geos_categories]
-pop_terra_tally = [sum(1 for ob in filtered_obs if ob["GEO Satellite"] == "METEOSAT-8" and ob.tcc_geo_cat == category) for category in geos_categories]
-pop_geo_tally = [sum(1 for ob in filtered_obs if ob["GEO Satellite"] == "METEOSAT-11" and ob.tcc_geo_cat == category) for category in geos_categories]
+pop_goes15_tally = [sum(1 for ob in filtered_obs if ob.which_geo == "GOES-15" and ob.tcc_geo_cat == category) for category in tcc_categories]
+pop_goes16_tally = [sum(1 for ob in filtered_obs if ob.which_geo == "GOES-16" and ob.tcc_geo_cat == category) for category in tcc_categories]
+pop_himawari_tally = [sum(1 for ob in filtered_obs if ob.which_geo == "HIMAWARI-8" and ob.tcc_geo_cat == category) for category in tcc_categories]
+pop_meteosat8_tally = [sum(1 for ob in filtered_obs if ob.which_geo == "METEOSAT-8" and ob.tcc_geo_cat == category) for category in tcc_categories]
+pop_meteosat10_11_tally = [sum(1 for ob in filtered_obs if ob.which_geo == "METEOSAT-11" and ob.tcc_geo_cat == category) for category in tcc_categories]
 
-pop_globe_tally[-2] += pop_globe_tally[-1]
-pop_globe_tally = pop_globe_tally[:-1]
+pop_goes15_tally = np.array(pop_goes15_tally)
+pop_goes16_tally = np.array(pop_goes16_tally)
+pop_himawari_tally = np.array(pop_himawari_tally)
+pop_meteosat8_tally = np.array(pop_meteosat8_tally)
+pop_meteosat10_11_tally = np.array(pop_meteosat10_11_tally)
 
-pop_globe_tally = np.array(pop_globe_tally)
-pop_geos_tally = np.array(pop_geos_tally)
-pop_aqua_tally = np.array(pop_aqua_tally)
-pop_terra_tally = np.array(pop_terra_tally)
-pop_geo_tally = np.array(pop_geo_tally)
+pop_goes15_tally = pop_goes15_tally / pop_goes15_tally.sum()
+pop_goes16_tally = pop_goes16_tally / pop_goes16_tally.sum()
+pop_himawari_tally = pop_himawari_tally / pop_himawari_tally.sum()
+pop_meteosat8_tally = pop_meteosat8_tally / pop_meteosat8_tally.sum()
+pop_meteosat10_11_tally = pop_meteosat10_11_tally / pop_meteosat10_11_tally.sum()
 
-pop_globe_tally = pop_globe_tally / pop_globe_tally.sum()
-pop_geos_tally = pop_geos_tally / pop_geos_tally.sum()
-pop_aqua_tally = pop_aqua_tally / pop_aqua_tally.sum()
-pop_terra_tally = pop_terra_tally / pop_terra_tally.sum()
-pop_geo_tally = pop_geo_tally / pop_geo_tally.sum()
-
-globe_stdev = np.std(globe_tallies, axis=0)
-geos_stdev = np.std(geos_tallies, axis=0)
-aqua_stdev = np.std(aqua_tallies, axis=0)
-terra_stdev = np.std(terra_tallies, axis=0)
-geo_stdev = np.std(geo_tallies, axis=0)
+goes15_stdev = np.std(goes15_tallies, axis=0)
+goes16_stdev = np.std(goes16_tallies, axis=0)
+himawari_stdev = np.std(himawari_tallies, axis=0)
+meteosat8_stdev = np.std(meteosat8_tallies, axis=0)
+meteosat10_11_stdev = np.std(meteosat10_11_tallies, axis=0)
 
 #################################################
 fig = plt.figure(figsize=(8, 7.2))
 ax = fig.add_subplot(111)
 
-artists = [ax.bar(np.arange(6) - 0.3, pop_globe_tally, color="#000077", width=0.15),
-           ax.bar(np.arange(6) - 0.15, pop_geos_tally, color="#4444cc", width=0.15),
-           ax.bar(np.arange(6) + 0.0, pop_aqua_tally, color="#ff69b4", width=0.15),
-           ax.bar(np.arange(6) + 0.15, pop_terra_tally, color="#771111", width=0.15),
-           ax.bar(np.arange(6) + 0.3, pop_geo_tally, color="#cc4444", width=0.15),
-           ax.errorbar(np.arange(6) + 0.15, pop_terra_tally, terra_stdev, fmt="none", capsize=5, ecolor="black")]
+artists = [ax.bar(np.arange(6) - 0.3, pop_goes15_tally, color="#000077", width=0.15),
+           ax.bar(np.arange(6) - 0.15, pop_goes16_tally, color="#4444cc", width=0.15),
+           ax.bar(np.arange(6) + 0.0, pop_himawari_tally, color="#ff69b4", width=0.15),
+           ax.bar(np.arange(6) + 0.15, pop_meteosat8_tally, color="#771111", width=0.15),
+           ax.bar(np.arange(6) + 0.3, pop_meteosat10_11_tally, color="#cc4444", width=0.15),
+           ax.errorbar(np.arange(6) + 0.15, pop_meteosat8_tally, meteosat8_stdev, fmt="none", capsize=5, ecolor="black")]
 
 #################################################
-ax.errorbar(np.arange(6) - 0.3, pop_globe_tally, globe_stdev, fmt="none", capsize=5, ecolor="black")
-ax.errorbar(np.arange(6) - 0.15, pop_geos_tally, geos_stdev, fmt="none", capsize=5, ecolor="black")
-ax.errorbar(np.arange(6) + 0.0, pop_aqua_tally, aqua_stdev, fmt="none", capsize=5, ecolor="black")
-ax.errorbar(np.arange(6) + 0.3, pop_geo_tally, geo_stdev, fmt="none", capsize=5, ecolor="black")
+ax.errorbar(np.arange(6) - 0.3, pop_goes15_tally, goes15_stdev, fmt="none", capsize=5, ecolor="black")
+ax.errorbar(np.arange(6) - 0.15, pop_goes16_tally, goes16_stdev, fmt="none", capsize=5, ecolor="black")
+ax.errorbar(np.arange(6) + 0.0, pop_himawari_tally, himawari_stdev, fmt="none", capsize=5, ecolor="black")
+ax.errorbar(np.arange(6) + 0.3, pop_meteosat10_11_tally, meteosat10_11_stdev, fmt="none", capsize=5, ecolor="black")
 
 #################################################
 for a in np.arange(-0.5, 5.6, 1.0):
