@@ -1,10 +1,23 @@
 from scratch_vars import *
 
+# Settings
+season = ["winter", "summer"][1]
+region = ["CONUS", "Europe"][1]
+sample_count = 1000
+
+# Result of settings
+cdf1 = Dataset(fpGEOS_Dec) if season == "winter" else Dataset(fpGEOS_Jun)
+cdf2 = Dataset(fpGEOS_Jan) if season == "winter" else Dataset(fpGEOS_Jul)
+min_lon = {"CONUS": -126, "Europe": -22}[region]
+max_lon = {"CONUS": -69, "Europe": 72}[region]
+min_lat = {"CONUS": 23, "Europe": 15}[region]
+max_lat = {"CONUS": 51.5, "Europe": 62}[region]
+sat_1 = {"CONUS": "GOES-15", "Europe": "METEOSAT-8"}[region]
+sat_2 = {"CONUS": "GOES-16", "Europe": "METEOSAT-10" if season == "winter" else "METEOSAT-11"}[region]
+
+
 obs = tools.parse_csv(fpSC_Dec)
 obs.extend(tools.parse_csv(fpSC_2018))
-# cdf1, cdf2 = Dataset(fpGEOS_Dec), Dataset(fpGEOS_Jan)  # B205
-cdf1, cdf2 = Dataset(fpGEOS_Jun), Dataset(fpGEOS_Jul)  # B206
-sample_count = 1000
 
 filtered_obs = [ob for ob in obs if ob.tcc is not None]
 filtered_obs = tools.filter_by_datetime(
@@ -13,7 +26,7 @@ filtered_obs = tools.filter_by_datetime(
     tools.get_cdf_datetime(cdf2, -1) + timedelta(minutes=30)
 )
 
-filtered_obs = [ob for ob in filtered_obs if (-126 <= ob.lon <= -69) and (23 <= ob.lat <= 51.5)]
+filtered_obs = [ob for ob in filtered_obs if (min_lon <= ob.lon <= max_lon) and (min_lat <= ob.lat <= max_lat)]
 
 tools.patch_obs(filtered_obs, "geos_coincident.csv", "tcc_geos", float)
 tools.patch_obs(filtered_obs, "geos_coincident_cat.csv", "tcc_geos_cat")
@@ -38,8 +51,8 @@ for _ in tqdm(range(sample_count), desc="Sampling observations"):
     geos_tally = [sum(1 for ob in sample if ob["tcc_geos_cat"] == category) for category in geos_categories]
     aqua_tally = [sum(1 for ob in sample if ob.tcc_aqua_cat == category) for category in geos_categories]
     terra_tally = [sum(1 for ob in sample if ob.tcc_terra_cat == category) for category in geos_categories]
-    g15_tally = [sum(1 for ob in sample if ob.tcc_geo_cat == category and ob.which_geo == "GOES-15") for category in geos_categories]
-    g16_tally = [sum(1 for ob in sample if ob.tcc_geo_cat == category and ob.which_geo == "GOES-16") for category in geos_categories]
+    g15_tally = [sum(1 for ob in sample if ob.tcc_geo_cat == category and ob.which_geo == sat_1) for category in geos_categories]
+    g16_tally = [sum(1 for ob in sample if ob.tcc_geo_cat == category and ob.which_geo == sat_2) for category in geos_categories]
 
     # Press overcast and obscured into one.
     globe_tally[-2] += globe_tally[-1]
@@ -73,8 +86,8 @@ pop_globe_tally = [sum(1 for ob in filtered_obs if ob.tcc == category) for categ
 pop_geos_tally = [sum(1 for ob in filtered_obs if ob["tcc_geos_cat"] == category) for category in geos_categories]
 pop_aqua_tally = [sum(1 for ob in filtered_obs if ob.tcc_aqua_cat == category) for category in geos_categories]
 pop_terra_tally = [sum(1 for ob in filtered_obs if ob.tcc_terra_cat == category) for category in geos_categories]
-pop_g15_tally = [sum(1 for ob in filtered_obs if ob.tcc_geo_cat == category and ob.which_geo == "GOES-15") for category in geos_categories]
-pop_g16_tally = [sum(1 for ob in filtered_obs if ob.tcc_geo_cat == category and ob.which_geo == "GOES-16") for category in geos_categories]
+pop_g15_tally = [sum(1 for ob in filtered_obs if ob.tcc_geo_cat == category and ob.which_geo == sat_1) for category in geos_categories]
+pop_g16_tally = [sum(1 for ob in filtered_obs if ob.tcc_geo_cat == category and ob.which_geo == sat_2) for category in geos_categories]
 
 pop_globe_tally[-2] += pop_globe_tally[-1]
 pop_globe_tally = pop_globe_tally[:-1]
@@ -110,8 +123,8 @@ artists.append(ax.bar(np.arange(6) - 0.30, pop_globe_tally, color="purple", widt
 artists.append(ax.bar(np.arange(6) - 0.18, pop_geos_tally, color="orange", width=0.12))
 artists.append(ax.bar(np.arange(6) - 0.06, pop_aqua_tally, color="#6666ff", width=0.12))
 artists.append(ax.bar(np.arange(6) + 0.06, pop_terra_tally, color="#55ff00", width=0.12))
-artists.append(ax.bar(np.arange(6) + 0.18, pop_g15_tally, color="#004400", width=0.12))
-artists.append(ax.bar(np.arange(6) + 0.30, pop_g16_tally, color="#228822", width=0.12))
+artists.append(ax.bar(np.arange(6) + 0.18, pop_g15_tally, color=std_colors[sat_1], width=0.12))
+artists.append(ax.bar(np.arange(6) + 0.30, pop_g16_tally, color=std_colors[sat_2], width=0.12))
 
 #################################################
 ax.errorbar(np.arange(6) - 0.30, pop_globe_tally, globe_sem, fmt="none", capsize=5, ecolor="black")
@@ -131,7 +144,7 @@ ax.set_xticks(np.arange(6))
 ax.set_xticklabels(["none", "few", "isolated", "scattered", "broken", "overcast + obscured"])
 ax.set_ylabel("Proportion")
 ax.set_yticklabels(["{:.0%}".format(tick) for tick in ax.get_yticks()])
-ax.legend(artists, ["GLOBE", "GEOS", "Aqua", "Terra", "GOES-15", "GOES-16", "Standard error"], loc="upper center")
+ax.legend(artists, ["GLOBE", "GEOS", "Aqua", "Terra", sat_1, sat_2, "Standard error"], loc="upper center")
 ax.grid(axis="y")
 
 plt.tight_layout()
