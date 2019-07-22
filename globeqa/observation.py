@@ -348,6 +348,14 @@ class Observation:
         """
         return self.bin_cloud_fraction(self.tcc_geo) if self.tcc_geo is not None else None
 
+    @property
+    def which_geo(self):
+        """
+        :return: Returns the name of the geostationary satellite matched to this observation, or None if no
+        geostationary satellite was matched.
+        """
+        return self.soft_get("GEO Satellite")
+
     @staticmethod
     def bin_cloud_fraction(fraction: float) -> str:
         """
