@@ -62,6 +62,19 @@ source_color = {
     "GLOBE Data Entry Legacy": "#ffff00",
 }
 
+std_colors = {
+    "GLOBE": "purple",
+    "GEOS": "orange",
+    "Aqua": "#6666ff",
+    "Terra": "#55ff00",
+    "GOES-15": "#004400",
+    "GOES-16": "#228822",
+    "HIMAWARI-8": "#ff69b4",
+    "METEOSAT-8": "#771111",
+    "METEOSAT-10": "#cc4444",
+    "METEOSAT-11": "#cc4444",
+}
+
 source_names = list(source_color.keys())
 
 category_to_midpoint = dict(
