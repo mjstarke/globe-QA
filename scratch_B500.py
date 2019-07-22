@@ -44,27 +44,27 @@ cdf = Dataset("/Users/mjstarke/Documents/GLOBE_B/CLDTT.CONUS.201608.01-05.nc4")
 data_3km = np.array(cdf["CLDTT"])
 histo_3km = histogram(data_3km)
 
-data_6km = rebin(np.array(cdf["CLDTT"]), 2)
-histo_6km = histogram(data_6km)
-
-data_9km = rebin(np.array(cdf["CLDTT"]), 3)
-histo_9km = histogram(data_9km)
-
-data_12km = rebin(np.array(cdf["CLDTT"]), 4)
-histo_12km = histogram(data_12km)
-
 data_15km = rebin(np.array(cdf["CLDTT"]), 5)
 histo_15km = histogram(data_15km)
+
+data_30km = rebin(np.array(cdf["CLDTT"]), 10)
+histo_30km = histogram(data_30km)
+
+data_45km = rebin(np.array(cdf["CLDTT"]), 15)
+histo_45km = histogram(data_45km)
+
+data_60km = rebin(np.array(cdf["CLDTT"]), 20)
+histo_60km = histogram(data_60km)
 
 
 fig = plt.figure(figsize=(8, 7.2))
 ax = fig.add_subplot(111)
 
 artists = [ax.bar(np.arange(6) - 0.3, histo_3km, color="#55ffff", width=0.15),
-           ax.bar(np.arange(6) - 0.15, histo_6km, color="#33dddd", width=0.15),
-           ax.bar(np.arange(6) - 0, histo_9km, color="#11aaaa", width=0.15),
-           ax.bar(np.arange(6) + 0.15, histo_12km, color="#008888", width=0.15),
-           ax.bar(np.arange(6) + 0.3, histo_15km, color="#005555", width=0.15), ]
+           ax.bar(np.arange(6) - 0.15, histo_15km, color="#33dddd", width=0.15),
+           ax.bar(np.arange(6) - 0, histo_30km, color="#11aaaa", width=0.15),
+           ax.bar(np.arange(6) + 0.15, histo_45km, color="#008888", width=0.15),
+           ax.bar(np.arange(6) + 0.3, histo_60km, color="#005555", width=0.15), ]
 
 #################################################
 for a in np.arange(-0.5, 5.6, 1.0):
@@ -76,7 +76,7 @@ ax.set_xticks(np.arange(6))
 ax.set_xticklabels(["none", "few", "isolated", "scattered", "broken", "overcast + obscured"])
 ax.set_ylabel("Proportion")
 ax.set_yticklabels(["{:.1%}".format(tick) for tick in ax.get_yticks()])
-ax.legend(artists, ["3km", "6km", "9km", "12km", "15km"], loc="upper center")
+ax.legend(artists, ["3km", "15km", "30km", "45km", "60km"], loc="upper center")
 ax.grid(axis="y")
 
 plt.tight_layout()
