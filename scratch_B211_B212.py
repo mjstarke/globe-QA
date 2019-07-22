@@ -2,8 +2,8 @@ from scratch_vars import *
 
 obs = tools.parse_csv(fpSC_Dec)
 obs.extend(tools.parse_csv(fpSC_2018))
-# cdf1, cdf2 = Dataset(fpGEOS_Dec), Dataset(fpGEOS_Jan)  # B211
-cdf1, cdf2 = Dataset(fpGEOS_Jun), Dataset(fpGEOS_Jul)  # B212
+cdf1, cdf2 = Dataset(fpGEOS_Dec), Dataset(fpGEOS_Jan)  # B211
+# cdf1, cdf2 = Dataset(fpGEOS_Jun), Dataset(fpGEOS_Jul)  # B212
 sample_count = 1000
 
 filtered_obs = [ob for ob in obs if ob.tcc is not None]
@@ -82,8 +82,8 @@ meteosat10_11_sem = np.std(meteosat10_11_tallies, axis=0, ddof=1) / np.sqrt(samp
 fig = plt.figure(figsize=(8, 7.2))
 ax = fig.add_subplot(111)
 
-artists = [ax.bar(np.arange(6) - 0.3, pop_goes15_tally, color="#000077", width=0.15),
-           ax.bar(np.arange(6) - 0.15, pop_goes16_tally, color="#4444cc", width=0.15),
+artists = [ax.bar(np.arange(6) - 0.3, pop_goes15_tally, color="#004400", width=0.15),
+           ax.bar(np.arange(6) - 0.15, pop_goes16_tally, color="#228822", width=0.15),
            ax.bar(np.arange(6) + 0.0, pop_himawari_tally, color="#ff69b4", width=0.15),
            ax.bar(np.arange(6) + 0.15, pop_meteosat8_tally, color="#771111", width=0.15),
            ax.bar(np.arange(6) + 0.3, pop_meteosat10_11_tally, color="#cc4444", width=0.15),
