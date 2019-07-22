@@ -72,11 +72,11 @@ pop_himawari_tally = pop_himawari_tally / pop_himawari_tally.sum()
 pop_meteosat8_tally = pop_meteosat8_tally / pop_meteosat8_tally.sum()
 pop_meteosat10_11_tally = pop_meteosat10_11_tally / pop_meteosat10_11_tally.sum()
 
-goes15_stdev = np.std(goes15_tallies, axis=0)
-goes16_stdev = np.std(goes16_tallies, axis=0)
-himawari_stdev = np.std(himawari_tallies, axis=0)
-meteosat8_stdev = np.std(meteosat8_tallies, axis=0)
-meteosat10_11_stdev = np.std(meteosat10_11_tallies, axis=0)
+goes15_sem = np.std(goes15_tallies, axis=0, ddof=1) / np.sqrt(sample_count)
+goes16_sem = np.std(goes16_tallies, axis=0, ddof=1) / np.sqrt(sample_count)
+himawari_sem = np.std(himawari_tallies, axis=0, ddof=1) / np.sqrt(sample_count)
+meteosat8_sem = np.std(meteosat8_tallies, axis=0, ddof=1) / np.sqrt(sample_count)
+meteosat10_11_sem = np.std(meteosat10_11_tallies, axis=0, ddof=1) / np.sqrt(sample_count)
 
 #################################################
 fig = plt.figure(figsize=(8, 7.2))
@@ -87,13 +87,13 @@ artists = [ax.bar(np.arange(6) - 0.3, pop_goes15_tally, color="#000077", width=0
            ax.bar(np.arange(6) + 0.0, pop_himawari_tally, color="#ff69b4", width=0.15),
            ax.bar(np.arange(6) + 0.15, pop_meteosat8_tally, color="#771111", width=0.15),
            ax.bar(np.arange(6) + 0.3, pop_meteosat10_11_tally, color="#cc4444", width=0.15),
-           ax.errorbar(np.arange(6) + 0.15, pop_meteosat8_tally, meteosat8_stdev, fmt="none", capsize=5, ecolor="black")]
+           ax.errorbar(np.arange(6) + 0.15, pop_meteosat8_tally, meteosat8_sem, fmt="none", capsize=5, ecolor="black")]
 
 #################################################
-ax.errorbar(np.arange(6) - 0.3, pop_goes15_tally, goes15_stdev, fmt="none", capsize=5, ecolor="black")
-ax.errorbar(np.arange(6) - 0.15, pop_goes16_tally, goes16_stdev, fmt="none", capsize=5, ecolor="black")
-ax.errorbar(np.arange(6) + 0.0, pop_himawari_tally, himawari_stdev, fmt="none", capsize=5, ecolor="black")
-ax.errorbar(np.arange(6) + 0.3, pop_meteosat10_11_tally, meteosat10_11_stdev, fmt="none", capsize=5, ecolor="black")
+ax.errorbar(np.arange(6) - 0.3, pop_goes15_tally, goes15_sem, fmt="none", capsize=5, ecolor="black")
+ax.errorbar(np.arange(6) - 0.15, pop_goes16_tally, goes16_sem, fmt="none", capsize=5, ecolor="black")
+ax.errorbar(np.arange(6) + 0.0, pop_himawari_tally, himawari_sem, fmt="none", capsize=5, ecolor="black")
+ax.errorbar(np.arange(6) + 0.3, pop_meteosat10_11_tally, meteosat10_11_sem, fmt="none", capsize=5, ecolor="black")
 
 #################################################
 for a in np.arange(-0.5, 5.6, 1.0):
@@ -105,7 +105,7 @@ ax.set_xticks(np.arange(6))
 ax.set_xticklabels(["none", "few", "isolated", "scattered", "broken", "overcast + obscured"])
 ax.set_ylabel("Proportion")
 ax.set_yticklabels(["{:.0%}".format(tick) for tick in ax.get_yticks()])
-ax.legend(artists, ["GOES-15", "GOES-16", "HIMAWARI-8", "METEOSAT-8", "METEOSAT-11", "Standard deviation"], loc="upper center")
+ax.legend(artists, ["GOES-15", "GOES-16", "HIMAWARI-8", "METEOSAT-8", "METEOSAT-11", "Standard error"], loc="upper center")
 ax.grid(axis="y")
 
 plt.tight_layout()
