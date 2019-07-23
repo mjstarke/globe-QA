@@ -12,8 +12,6 @@ ax.set_ylim(dc_lat - 1, dc_lat + 1)
 ax.add_feature(NaturalEarthFeature("physical", "land", "50m", facecolor="#999999", zorder=-1), edgecolor="#444444", linewidth=1)
 ax.add_feature(NaturalEarthFeature("physical", "ocean", "50m", facecolor="#98B6E2", zorder=-1), edgecolor="#444444", linewidth=1)
 
-ax.scatter([dc_lon], [dc_lat], s=100)
-
 for lat in np.arange(38., 41., 0.25) + 0.125:
     ax.axhline(lat, color="orange")
 
@@ -22,6 +20,8 @@ for lon in np.arange(-80., -73., 0.3125) + (0.3125 / 2):
 
 ax.add_patch(mpatches.Circle((dc_lon, dc_lat), 0.4, alpha=0.3, edgecolor="cyan", facecolor="cyan", lw=0))
 ax.add_patch(mpatches.Circle((dc_lon, dc_lat), 0.4, fill=False, edgecolor="cyan", lw=3))
+
+ax.scatter([dc_lon], [dc_lat], s=100, c="black", zorder=1000)
 
 states_provinces = NaturalEarthFeature(
         category='cultural',
