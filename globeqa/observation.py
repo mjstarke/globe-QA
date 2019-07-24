@@ -325,7 +325,7 @@ class Observation:
         return s / 100. if s is not None else None
 
     @property
-    def tcc_aqua_cat(self):
+    def tcc_aqua_cat(self) -> Optional[str]:
         """
         :return: Gets the cloud cover category associated with the cloud fraction reported by Aqua if this observation
         was matched to Aqua; otherwise, returns None.
@@ -333,7 +333,7 @@ class Observation:
         return self.bin_cloud_fraction(self.tcc_aqua) if self.tcc_aqua is not None else None
 
     @property
-    def tcc_terra_cat(self):
+    def tcc_terra_cat(self) -> Optional[str]:
         """
         :return: Gets the cloud cover category associated with the cloud fraction reported by Terra if this observation
         was matched to Terra; otherwise, returns None.
@@ -341,7 +341,7 @@ class Observation:
         return self.bin_cloud_fraction(self.tcc_terra) if self.tcc_terra is not None else None
 
     @property
-    def tcc_geo_cat(self):
+    def tcc_geo_cat(self) -> Optional[str]:
         """
         :return: Gets the cloud cover category associated with the cloud fraction reported by a geostationary satellite
         if this observation was matched to a geostationary satellite; otherwise, returns None.
@@ -349,7 +349,7 @@ class Observation:
         return self.bin_cloud_fraction(self.tcc_geo) if self.tcc_geo is not None else None
 
     @property
-    def which_geo(self):
+    def which_geo(self) -> Optional[str]:
         """
         :return: Returns the name of the geostationary satellite matched to this observation, or None if no
         geostationary satellite was matched.
