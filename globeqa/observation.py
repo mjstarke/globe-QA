@@ -336,7 +336,8 @@ class Observation:
         :return: Gets the total cloud cover (sum of each level) as reported by a geostationary satellite.  Returns None
         if there is no geostationary satellite matched to this observation.
         """
-        s = self.sum_keys(["GEO Low Cloud", "GEO Mid Cloud", "GEO High Cloud"])
+        s = self.sum_keys(["GEO Low Cloud", "GEO Mid Cloud", "GEO High Cloud",
+                           "GEO Low Cloud Cover", "GEO Mid Cloud Cover", "GEO High Cloud Cover"])
         return s / 100. if s is not None else None
 
     @property
