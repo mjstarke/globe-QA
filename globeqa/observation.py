@@ -316,6 +316,21 @@ class Observation:
         return s / 100. if s is not None else None
 
     @property
+    def tcc_aquaterra(self) -> Optional[float]:
+        """
+        :return: Gets the total cloud cover from Aqua or Terra, whichever is available, or None if neither are
+        avialable.  If both are available, the average of the two is returned.
+        """
+        t = self.tcc_terra
+        a = self.tcc_aqua
+        if t is not None and a is not None:
+            return (t+a)/2
+        elif t is not None:
+            return t
+        else:
+            return a
+
+    @property
     def tcc_geo(self) -> Optional[float]:
         """
         :return: Gets the total cloud cover (sum of each level) as reported by a geostationary satellite.  Returns None
@@ -339,6 +354,14 @@ class Observation:
         was matched to Terra; otherwise, returns None.
         """
         return self.bin_cloud_fraction(self.tcc_terra) if self.tcc_terra is not None else None
+
+    @property
+    def tcc_aquaterra_cat(self) -> Optional[str]:
+        """
+        :return: Gets the cloud cover category associated with the cloud fraction reported by Aqua or Terra, if either
+        is available; the average of the two if both are available, or None if neither is available.
+        """
+        return self.bin_cloud_fraction(self.tcc_aquaterra) if self.tcc_aquaterra is not None else None
 
     @property
     def tcc_geo_cat(self) -> Optional[str]:
