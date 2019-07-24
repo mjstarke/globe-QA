@@ -67,6 +67,7 @@ std_colors = {
     "GEOS": "orange",
     "Aqua": "#6666ff",
     "Terra": "#55ff00",
+    "AquaTerra": "#66aa88",
     "GOES-15": "#004400",
     "GOES-16": "#228822",
     "HIMAWARI-8": "#ff69b4",
