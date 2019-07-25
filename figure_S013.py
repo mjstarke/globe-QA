@@ -9,7 +9,7 @@ histo, bin_lefts = np.histogram(times, np.arange(0, 1441, 15))
 fig = plt.figure(figsize=(11, 5))
 ax = fig.add_subplot(111)
 
-ax.bar(bin_lefts[:-1], histo, align="edge", width=15)
+ax.bar(bin_lefts[:-1], histo, align="edge", width=15, color="purple")
 
 ax.set_xticks(np.arange(0, 1441, 60))
 ax.set_xticklabels(["{:0>2.0f}Z".format(v / 60) for v in np.arange(0, 1440, 60)] + ["00Z"])
@@ -19,7 +19,7 @@ ax.set_ylabel("Count")
 
 artists = [
     ax.bar([0], sum(1 for ob in obs if ob.measured_dt.hour == ob.measured_dt.minute == 0), align="edge", width=15,
-           color="#222266"),
+           color="pink"),
     ax.axvline(6.5*60, ls=":", lw=2, c="black"),
     ax.axvline(11*60, ls="--", lw=2, c="black"),
     ax.axvline(18*60, ls="-.", lw=2, c="black"),
