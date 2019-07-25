@@ -31,5 +31,9 @@ pcmcb = plt.colorbar(pcm, ticks=np.log10(ticks), fraction=0.04)
 pcmcb.set_ticklabels(ticks)
 pcmcb.ax.tick_params(labelsize=18)
 
+ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
+             "Distribution of GLOBE observations",
+             fontdict={"fontsize": 18})
+
 plt.tight_layout()
-plt.show()
+plt.savefig("img/S010_Jan2017-May2019_global_GLOBE_heatmap_observation_distribution.png")
