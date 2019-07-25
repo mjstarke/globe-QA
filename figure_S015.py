@@ -27,5 +27,7 @@ ax = fig.add_subplot(111)
 ax.pie([vals[k] for k in vals], labels=["{} ({:.2%})".format(k, v / total) for k, v in vals.items()],
        labeldistance=None)
 ax.legend()
+ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
+             "Direction of missing photo for observations with 5 photos")
 plt.tight_layout()
-plt.show()
+plt.savefig("img/S015_Jan2017-May2019_global_GLOBE_pie_missing_photo.png")
