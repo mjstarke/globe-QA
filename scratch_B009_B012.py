@@ -27,7 +27,7 @@ for loop in loops:
     # Filter obs to only those which occur in the CDF's timeframe.
     obs = tools.filter_by_datetime(obs, earliest=cdf_start, latest=cdf_end)
 
-    tools.patch_obs(obs, "geos_coincident.csv", "tcc_geos")
+    tools.patch_obs(obs, "geos_coincident.csv", "tcc_geos", float)
 
     sample_average_heatmaps = []
 
