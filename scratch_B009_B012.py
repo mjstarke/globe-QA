@@ -27,20 +27,7 @@ for loop in loops:
     # Filter obs to only those which occur in the CDF's timeframe.
     obs = tools.filter_by_datetime(obs, earliest=cdf_start, latest=cdf_end)
 
-    # Get GEOS coincident for each observation.  If one CDF fails, try the next.
-    for ob in tqdm(obs, desc="Finding GEOS coincident output for all observations"):
-        try:
-            i = tools.find_closest_gridbox(cdf1, ob.measured_dt, ob.lat, ob.lon)
-            ob.tcc_geos = float(cdf1["CLDTOT"][i])
-        except IndexError:
-            try:
-                i = tools.find_closest_gridbox(cdf2, ob.measured_dt, ob.lat, ob.lon)
-                ob.tcc_geos = float(cdf2["CLDTOT"][i])
-            except IndexError:
-                pass
-
-    # Filter out any obs that do not have GEOS coincident output.
-    obs = [ob for ob in obs if "tcc_geos" in dir(ob)]
+    tools.patch_obs(obs, "geos_coincident.csv", "tcc_geos")
 
     sample_average_heatmaps = []
 
@@ -51,7 +38,7 @@ for loop in loops:
         # Construct lists used for scattering.
         x = [ob.lon for ob in sample]
         y = [ob.lat for ob in sample]
-        geos = np.array([ob.tcc_geos for ob in sample])
+        geos = np.array([ob["tcc_geos"] for ob in sample])
         globe = np.array([category_to_midpoint[ob.tcc] for ob in sample])
         sample_diff = globe - geos
 
@@ -70,7 +57,7 @@ for loop in loops:
     # Calculate population average difference.
     x = [ob.lon for ob in obs]
     y = [ob.lat for ob in obs]
-    geos = np.array([ob.tcc_geos for ob in obs])
+    geos = np.array([ob["tcc_geos"] for ob in obs])
     globe = np.array([category_to_midpoint[ob.tcc] for ob in obs])
     pop_diff = globe - geos
     pop_counting_heatmap = np.histogram2d(x, y, [lons, lats])[0]
