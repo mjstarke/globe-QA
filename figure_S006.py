@@ -34,12 +34,16 @@ ax.set_xlabel("Flag")
 ax.set_ylabel("Count")
 ax.grid(axis="y")
 
-plt.show()
+ax.set_title("Jan 2017 - May 2019 global GLOBE\n "
+             "Frequency of quality control flags")
+
+plt.tight_layout()
+plt.savefig("img/Jan2019-May2019_global_GLOBE_bar_flag_frequency_S006.png")
 
 
 ax = plotters.plot_stacked_bars(
     x=range(len(flags)),
-    ys=y_array / np.sum(y_array, axis=0),
+    ys=y_array / np.sum(y_array, axis=0),  # Division by sum makes it proportionwise.
     labels=[k for k in source_counts],
     colors=[source_color[k] for k in source_counts]
 )
@@ -48,6 +52,10 @@ ax.set_xticks(range(len(flags)))
 ax.set_xticklabels(sorted(flags2.keys()))
 ax.set_xlabel("Flag")
 ax.set_ylabel("Count")
-ax.set_xlim(0.3, 18)
+ax.set_xlim(0.3, 18)  # Make space for the legend.
 
-plt.show()
+ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
+             "Proprotional frequency of quality control flags")
+
+plt.tight_layout()
+plt.savefig("img/Jan2019-May2019_global_GLOBE_bar_flag_proportional_frequency_S006.png")
