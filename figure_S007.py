@@ -10,7 +10,7 @@ while day <= date(2019, 5, 31):
 
 counts, bin_edges = np.histogram([ob.measured_dt.date() for ob in obs], dates)
 
-fig = plt.figure()
+fig = plt.figure(figsize=(11, 3.5))
 ax = fig.add_subplot(111)
 ax.stackplot(bin_edges[:-1], counts)
 ax.set_xlabel("Date")
