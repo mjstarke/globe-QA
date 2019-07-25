@@ -16,5 +16,8 @@ for source in sources:
     artists.append((dot, bubble))
 
 ax.legend(artists, sources, loc="lower left", fontsize=18)
-plt.tight_layout()
-plt.show()
+ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
+             "Locations of observations whose elevations lie outside the range -300m to 6000m",
+             fontdict={"fontsize": 18})
+
+plt.savefig("img/S009_Jan2017-May2019_global_GLOBE_scattermap_suspect_elevation.png")
