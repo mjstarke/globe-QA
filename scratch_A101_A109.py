@@ -10,7 +10,7 @@ satellite_labels = ["none", "few", "isolated", "scattered", "broken", "overcast"
 
 data = np.zeros((6, 8))
 for ob in [ob for ob in obs if ob.tcc_aqua is not None]:
-    x = satellite_categories.index(tools.bin_cloud_fraction(ob.tcc_aqua / 100., clip=True))
+    x = satellite_categories.index(ob.tcc_aqua_cat)
     y = globe_categories.index(ob.tcc)
     data[x, y] += 1
 
@@ -41,7 +41,7 @@ plt.savefig("img/S014_Jan2018-Dec2018_global_GLOBEvAqua_coincidence_cloud_cover_
 
 data = np.zeros((6, 8))
 for ob in [ob for ob in obs if ob.tcc_terra is not None]:
-    x = satellite_categories.index(tools.bin_cloud_fraction(ob.tcc_terra / 100., clip=True))
+    x = satellite_categories.index(ob.tcc_terra_cat)
     y = globe_categories.index(ob.tcc)
     data[x, y] += 1
 
@@ -72,7 +72,7 @@ plt.savefig("img/S014_Jan2018-Dec2018_global_GLOBEvTerra_coincidence_cloud_cover
 
 data = np.zeros((6, 8))
 for ob in [ob for ob in obs if ob.tcc_geo is not None]:
-    x = satellite_categories.index(tools.bin_cloud_fraction(ob.tcc_geo / 100., clip=True))
+    x = satellite_categories.index(ob.tcc_geo_cat)
     y = globe_categories.index(ob.tcc)
     data[x, y] += 1
 
