@@ -22,5 +22,8 @@ ax.grid(axis="y")
 ax.text(date(2017, 8, 26), 1080, "North\nAmerican\nEclipse")
 ax.text(date(2018, 5, 5), 1080, "NASA GLOBE\nClouds Data\nChallenge")
 
+ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
+             "Number of observations per day")
+
 plt.tight_layout()
-plt.show()
+plt.savefig("img/Jan2017-May2019_global_GLOBE_timeseries_observations_per_day_S007.png")
