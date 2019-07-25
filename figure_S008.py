@@ -1,10 +1,9 @@
 from scratch_vars import *
 
 
-# Get obs, quality check, and filter to only those with the ER flag.
+# Get obs and filter to only those outside of the reasonable elevation range.
 obs = tools.parse_json(fpSC)
-tools.do_quality_check(obs)
-obsER = tools.filter_by_flag(obs, {"ER": True})
+obs = [ob for ob in obs if not (-300 <= ob.elevation <= 6000)]
 
 sources = ["GLOBE Observer App", "GLOBE Data Entry App", "GLOBE Data Entry Web Forms"]
 
@@ -12,7 +11,7 @@ histograms = []
 bar_lefts = None
 for source in sources:
     # Get the elevations from the observations that come from this source.
-    elevations = [ob.elevation for ob in obsER if ob.source == source]
+    elevations = [ob.elevation for ob in obs if ob.source == source]
     # Create the histogram and retrieve the left edges of the bins.
     histogram, bin_lefts = np.histogram(elevations, np.arange(-6000., 8000.1, 250.))
     histograms.append(histogram)
