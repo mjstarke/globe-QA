@@ -57,7 +57,7 @@ ax.set_ylabel("Count")
 ax.set_xlim(-0.7, 18)  # Make space for the legend.
 
 ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
-             "Proprotional frequency of quality control flags")
+             "Proportional frequency of quality control flags")
 
 plt.tight_layout()
 plt.savefig("img/Jan2017-May2019_global_GLOBE_bar_flag_proportional_frequency_S006.png")
