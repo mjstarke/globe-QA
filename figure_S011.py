@@ -34,7 +34,7 @@ pcmcb.set_ticklabels(ticks)
 pcmcb.ax.tick_params(labelsize=18)
 
 ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
-             "Distribution of GLOBE observations over water given 1:50m NaturalEarth geometry",
+             "Distribution of GLOBE sky_conditions observations over water given 1:50m NaturalEarth geometry",
              fontdict={"fontsize": 18})
 
 plt.tight_layout()
