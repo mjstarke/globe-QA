@@ -18,6 +18,7 @@ ax.set_yticklabels(minor_ticks, minor=True)
 ax.grid(which="major", axis="y")
 ax.set_xlabel("Concurrent obscurations")
 ax.set_ylabel("Number of observations")
+ax.set_title("Jan 2017 - May 2019 global GLOBE\nFrequency of concurrent obscurations")
 
-plt.show()
 plt.tight_layout()
+plt.savefig("img/Jan2017-May2019_global_GLOBE_bar_concurrent_obscurations_S001.png")
