@@ -39,7 +39,7 @@ ax.set_title("Jan 2017 - May 2019 global GLOBE\n "
              "Frequency of quality control flags")
 
 plt.tight_layout()
-plt.savefig("img/Jan2019-May2019_global_GLOBE_bar_flag_frequency_S006.png")
+plt.savefig("img/Jan2017-May2019_global_GLOBE_bar_flag_frequency_S006.png")
 
 
 ax = plotters.plot_stacked_bars(
@@ -60,4 +60,4 @@ ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
              "Proprotional frequency of quality control flags")
 
 plt.tight_layout()
-plt.savefig("img/Jan2019-May2019_global_GLOBE_bar_flag_proportional_frequency_S006.png")
+plt.savefig("img/Jan2017-May2019_global_GLOBE_bar_flag_proportional_frequency_S006.png")
