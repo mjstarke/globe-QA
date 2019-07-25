@@ -9,18 +9,20 @@ lats = np.arange(-90., 90.1, 1.00)
 # Parse data
 obs_all = tools.parse_csv(fpSC_Dec)
 obs_all.extend(tools.parse_csv(fpSC_2018))
-cdfs = [
-    [Dataset(fpGEOS_Dec), Dataset(fpGEOS_Jan)],
-    [Dataset(fpGEOS_Jun), Dataset(fpGEOS_Jul)],
+loops = [
+    [Dataset(fpGEOS_Dec), Dataset(fpGEOS_Jan), "Dec 2017 - Jan 2018"],
+    [Dataset(fpGEOS_Jun), Dataset(fpGEOS_Jul), "Jun 2018 - Jul 2018"],
 ]
 
-for cdf_set in cdfs:
+for loop in loops:
+    cdf1, cdf2, date_range = loop
+
     # Filter out obs that have no TCC.
     obs = [ob for ob in obs_all if ob.tcc is not None]
 
     # Determine the start and end dates of the CDF.
-    cdf_start = tools.get_cdf_datetime(cdf_set[0], 0) - timedelta(minutes=30)
-    cdf_end = tools.get_cdf_datetime(cdf_set[1], -1) + timedelta(minutes=30)
+    cdf_start = tools.get_cdf_datetime(cdf1, 0) - timedelta(minutes=30)
+    cdf_end = tools.get_cdf_datetime(cdf2, -1) + timedelta(minutes=30)
 
     # Filter obs to only those which occur in the CDF's timeframe.
     obs = tools.filter_by_datetime(obs, earliest=cdf_start, latest=cdf_end)
@@ -28,12 +30,12 @@ for cdf_set in cdfs:
     # Get GEOS coincident for each observation.  If one CDF fails, try the next.
     for ob in tqdm(obs, desc="Finding GEOS coincident output for all observations"):
         try:
-            i = tools.find_closest_gridbox(cdf_set[0], ob.measured_dt, ob.lat, ob.lon)
-            ob.tcc_geos = float(cdf_set[0]["CLDTOT"][i])
+            i = tools.find_closest_gridbox(cdf1, ob.measured_dt, ob.lat, ob.lon)
+            ob.tcc_geos = float(cdf1["CLDTOT"][i])
         except IndexError:
             try:
-                i = tools.find_closest_gridbox(cdf_set[1], ob.measured_dt, ob.lat, ob.lon)
-                ob.tcc_geos = float(cdf_set[1]["CLDTOT"][i])
+                i = tools.find_closest_gridbox(cdf2, ob.measured_dt, ob.lat, ob.lon)
+                ob.tcc_geos = float(cdf2["CLDTOT"][i])
             except IndexError:
                 pass
 
