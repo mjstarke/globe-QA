@@ -5,6 +5,7 @@ obs = tools.parse_json(fpSC)
 times = [60 * ob.measured_dt.hour + ob.measured_dt.minute for ob in obs]
 
 histo, bin_lefts = np.histogram(times, np.arange(0, 1441, 15))
+zeros = sum(1 for ob in obs if ob.measured_dt.hour == ob.measured_dt.minute == 0)
 
 fig = plt.figure(figsize=(11, 5))
 ax = fig.add_subplot(111)
@@ -18,8 +19,7 @@ ax.set_xlabel("Time (UTC)")
 ax.set_ylabel("Count")
 
 artists = [
-    ax.bar([0], sum(1 for ob in obs if ob.measured_dt.hour == ob.measured_dt.minute == 0), align="edge", width=15,
-           color="pink"),
+    ax.bar([0], zeros, align="edge", width=15, color="pink"),
     ax.axvline(6.5*60, ls=":", lw=2, c="black"),
     ax.axvline(11*60, ls="--", lw=2, c="black"),
     ax.axvline(18*60, ls="-.", lw=2, c="black"),
