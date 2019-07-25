@@ -30,5 +30,8 @@ ax.legend(artists, ["Observations at 0000Z",
                     "Noon Central European Time",
                     "Noon Central Standard Time"], loc="upper left")
 
+ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
+             "Temporal distribution of GLOBE observations")
+
 plt.tight_layout()
-plt.show()
+plt.savefig("img/S013_Jan2017-May2019_global_GLOBE_histogram_temporal.png")
