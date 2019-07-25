@@ -183,7 +183,8 @@ def plot_dict_pie(d: dict, keys=None, labels_include_values: bool = True, labels
     return ax
 
 
-def plot_stacked_bars(x, ys, labels, colors, legend: bool = True, **kwargs):
+def plot_stacked_bars(x, ys, labels, colors, legend: bool = True, figsize: Optional[Tuple[float, float]] = None,
+                      **kwargs):
     """
     Creates a stacked bar chart.
     :param x: The horizontal positions of the bars.
@@ -207,7 +208,7 @@ def plot_stacked_bars(x, ys, labels, colors, legend: bool = True, **kwargs):
         raise ValueError("'y', 'labels', and 'colors' must be equal in length.")
 
     # Create a figure.
-    fig = plt.figure()
+    fig = plt.figure(figsize=figsize)
     ax = fig.add_subplot(111)
 
     # Collect artists for the legend.
