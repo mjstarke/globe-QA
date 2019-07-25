@@ -1,8 +1,7 @@
 from scratch_vars import *
 
 obs = tools.parse_json(fpSC)
-tools.do_quality_check(obs)
-obs = tools.filter_by_flag_sets(obs, all_of=["ER"])
+obs = [ob for ob in obs if not (-300 <= ob.elevation <= 6000)]
 
 ax = plotters.make_pc_fig()
 
