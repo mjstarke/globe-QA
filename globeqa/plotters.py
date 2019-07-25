@@ -193,6 +193,7 @@ def plot_stacked_bars(x, ys, labels, colors, legend: bool = True, figsize: Optio
     :param labels: A list of legend labels corresponding to the lists of y value lists.
     :param colors: A list of colors corresponding to the lists of y value lists.
     :param legend: Whether to draw the legend.  Default True.
+    :param figsize: The figure size to use.  Default None, which lets matplotlib decide.
     :param kwargs: kwargs are passed to bar().  kwargs 'color' and 'bottom' should not be passed.
     :return: The axis on which the bar was plotted.
     :raises ValueError: If ys, labels, and colors are not all the same length, or if the elements of y do not all have
