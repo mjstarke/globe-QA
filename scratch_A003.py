@@ -14,4 +14,7 @@ ax.pie([vals[k] for k in keys],
        labeldistance=None,
        colors=["#aaaaff", "#8888ff", "#7777dd", "#6666bb", "#555599", "#444477", "#333366"])
 ax.legend()
-plt.show()
+ax.set_title("Jan 2017 - May 2019 global GLOBE\nFrequency of each cloud cover category")
+
+plt.tight_layout()
+plt.savefig("img/Jan2017-May2019_global_GLOBE_pie_cloud_cover_S003.png")
