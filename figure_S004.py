@@ -38,8 +38,9 @@ fig = plt.figure(figsize=(6, 6))
 ax = fig.add_subplot(111)
 ax.pie(vals,
        labels=["{} ({:.2%})".format(k, v / total) for k, v in zip(labels, vals)],
-       labeldistance=None)
+       labeldistance=None)  # This removes the labels from the slices.
 ax.legend()
+ax.set_title("Jan 2018 - Dec 2018 global GLOBE\nFrequency of satellite matches")
 
 plt.tight_layout()
-plt.show()
+plt.savefig("img/Jan2018-Dec2018_global_GLOBE_pie_satellite_matches_S004.png")
