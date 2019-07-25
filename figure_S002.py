@@ -23,4 +23,4 @@ ax.legend()
 ax.set_title("Jan 2017 - May 2019 global GLOBE\nNumber of photos in each observation")
 
 plt.tight_layout()
-plt.savefig("img/Jan2017-May2019_global_GLOBE_pie_concurrent_photos_S002.png")
+plt.savefig("img/S002_Jan2017-May2019_global_GLOBE_pie_concurrent_photos.png")

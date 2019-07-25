@@ -60,4 +60,4 @@ ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
              "Proportional frequency of quality control flags")
 
 plt.tight_layout()
-plt.savefig("img/Jan2017-May2019_global_GLOBE_bar_flag_proportional_frequency_S006.png")
+plt.savefig("img/S006_Jan2017-May2019_global_GLOBE_bar_flag_proportional_frequency.png")

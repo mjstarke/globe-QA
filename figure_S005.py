@@ -18,4 +18,4 @@ ax.legend()
 ax.set_title("Jan 2017 - May 2019 global GLOBE\nSources of GLOBE observations")
 
 plt.tight_layout()
-plt.savefig("img/Jan2019-May2019_global_GLOBE_pie_data_sources_S005.png")
+plt.savefig("img/S005_Jan2019-May2019_global_GLOBE_pie_data_sources.png")

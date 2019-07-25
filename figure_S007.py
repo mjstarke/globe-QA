@@ -26,4 +26,4 @@ ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
              "Number of observations per day")
 
 plt.tight_layout()
-plt.savefig("img/Jan2017-May2019_global_GLOBE_timeseries_observations_per_day_S007.png")
+plt.savefig("img/S007_Jan2017-May2019_global_GLOBE_timeseries_observations_per_day.png")
