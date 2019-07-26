@@ -12,6 +12,8 @@ obs.extend(tools.parse_csv(fpSC_2018))
 cdf1, cdf2 = Dataset(fpGEOS_Dec), Dataset(fpGEOS_Jan)
 cdf3, cdf4 = Dataset(fpGEOS_Jun), Dataset(fpGEOS_Jul)
 
+tools.patch_obs(obs, "geos_coincident_cat.csv", "tcc_geos_cat")
+
 obs_winter = tools.filter_by_datetime(obs,
                                earliest=tools.get_cdf_datetime(cdf1, 0) - timedelta(minutes=30),
                                latest=tools.get_cdf_datetime(cdf2, -1) + timedelta(minutes=30))
@@ -19,38 +21,16 @@ obs_summer = tools.filter_by_datetime(obs,
                                earliest=tools.get_cdf_datetime(cdf3, 0) - timedelta(minutes=30),
                                latest=tools.get_cdf_datetime(cdf4, -1) + timedelta(minutes=30))
 
-for ob in tqdm(obs_winter, desc="Gathering coincident GEOS output (winter)"):
-    try:
-        ob.tcc_geos = cdf1["CLDTOT"][tools.find_closest_gridbox(cdf1, ob.measured_dt, ob.lat, ob.lon)]
-        ob.tcc_geos_category = tools.bin_cloud_fraction(ob.tcc_geos, True)
-    except IndexError:
-        try:
-            ob.tcc_geos = cdf2["CLDTOT"][tools.find_closest_gridbox(cdf2, ob.measured_dt, ob.lat, ob.lon)]
-            ob.tcc_geos_category = tools.bin_cloud_fraction(ob.tcc_geos, True)
-        except IndexError:
-            pass
-
-for ob in tqdm(obs_summer, desc="Gathering coincident GEOS output (summer)"):
-    try:
-        ob.tcc_geos = cdf3["CLDTOT"][tools.find_closest_gridbox(cdf3, ob.measured_dt, ob.lat, ob.lon)]
-        ob.tcc_geos_category = tools.bin_cloud_fraction(ob.tcc_geos, True)
-    except IndexError:
-        try:
-            ob.tcc_geos = cdf4["CLDTOT"][tools.find_closest_gridbox(cdf4, ob.measured_dt, ob.lat, ob.lon)]
-            ob.tcc_geos_category = tools.bin_cloud_fraction(ob.tcc_geos, True)
-        except IndexError:
-            pass
-
 ########################################################################################################################
 population_winter = np.zeros((6, 8))
 for ob in obs_winter:
-    x = geos_categories.index(ob.tcc_geos_category)
+    x = geos_categories.index(ob["tcc_geos_cat"])
     y = globe_categories.index(ob.tcc)
     population_winter[x, y] += 1
 
 population_summer = np.zeros((6, 8))
 for ob in obs_summer:
-    x = geos_categories.index(ob.tcc_geos_category)
+    x = geos_categories.index(ob["tcc_geos_cat"])
     y = globe_categories.index(ob.tcc)
     population_summer[x, y] += 1
 
@@ -63,7 +43,7 @@ for _ in tqdm(range(sample_count), desc="Sampling observations (winter)"):
 
     data = np.zeros((6, 8))
     for ob in sample:
-        x = geos_categories.index(ob.tcc_geos_category)
+        x = geos_categories.index(ob["tcc_geos_cat"])
         y = globe_categories.index(ob.tcc)
         data[x, y] += 1
     rowwise_samples_winter.append(data / data.sum(axis=0, keepdims=True))
@@ -79,7 +59,7 @@ for _ in tqdm(range(sample_count), desc="Sampling observations (summer)"):
 
     data = np.zeros((6, 8))
     for ob in sample:
-        x = geos_categories.index(ob.tcc_geos_category)
+        x = geos_categories.index(ob["tcc_geos_cat"])
         y = globe_categories.index(ob.tcc)
         data[x, y] += 1
     rowwise_samples_summer.append(data / data.sum(axis=0, keepdims=True))
