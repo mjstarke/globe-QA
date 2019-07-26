@@ -71,7 +71,7 @@ for loop in loops:
 
     # Plot mean difference.
     fig = plt.figure(figsize=(10.5, 9))
-    ax = fig.add_axes([0.02, 0.02, 0.82, 0.46], projection=ccrs.PlateCarree())
+    ax = fig.add_axes([0.02, 0.02, 0.82, 0.43], projection=ccrs.PlateCarree())
     ax.coastlines(color="#444444")
     ax.add_feature(NaturalEarthFeature("physical", "land", "110m", facecolor="#999999", zorder=-1))
     ax.add_feature(NaturalEarthFeature("physical", "ocean", "110m", facecolor="#98B6E2", zorder=-1))
@@ -79,7 +79,7 @@ for loop in loops:
     ax.set_ylim(23, 51.5)
     ax.pcolormesh(xx, yy, pop_average_heatmap.T, cmap="bwr", vmin=-1.0, vmax=1.0)
 
-    ax = fig.add_axes([0.02, 0.52, 0.82, 0.46], projection=ccrs.PlateCarree())
+    ax = fig.add_axes([0.02, 0.49, 0.82, 0.43], projection=ccrs.PlateCarree())
     ax.coastlines(color="#444444")
     ax.add_feature(NaturalEarthFeature("physical", "land", "110m", facecolor="#999999", zorder=-1))
     ax.add_feature(NaturalEarthFeature("physical", "ocean", "110m", facecolor="#98B6E2", zorder=-1))
@@ -87,6 +87,10 @@ for loop in loops:
     ax.set_ylim(15, 62)
     pcm = ax.pcolormesh(xx, yy, pop_average_heatmap.T, cmap="bwr", vmin=-1.0, vmax=1.0)
 
+    ax.set_title(date_range + " regional GLOBE minus GEOS\n"
+                 "Average cloud cover discrepancy",
+                 fontdict={"fontsize": 18})
+
     ax = fig.add_axes([0.86, 0.02, 0.12, 0.96])
     for s in ["left", "top", "right", "bottom"]:
         ax.spines[s].set_visible(False)
@@ -94,11 +98,14 @@ for loop in loops:
     ax.set_yticks([])
     cb = plt.colorbar(pcm, fraction=1.0, ax=ax)
     cb.ax.tick_params(labelsize=18)
-    plt.show()
+
+    plt.tight_layout()
+    plt.savefig("img/S016_{}_regional_GLOBEvGEOS_heatmap_average_discrepancy.png".format(date_range))
+
 
     # Plot SEM difference.
     fig = plt.figure(figsize=(10.5, 9))
-    ax = fig.add_axes([0.02, 0.02, 0.82, 0.46], projection=ccrs.PlateCarree())
+    ax = fig.add_axes([0.02, 0.02, 0.82, 0.43], projection=ccrs.PlateCarree())
     ax.coastlines(color="#444444")
     ax.add_feature(NaturalEarthFeature("physical", "land", "110m", facecolor="#999999", zorder=-1))
     ax.add_feature(NaturalEarthFeature("physical", "ocean", "110m", facecolor="#98B6E2", zorder=-1))
@@ -106,13 +113,17 @@ for loop in loops:
     ax.set_ylim(23, 51.5)
     ax.pcolormesh(xx, yy, average_heatmap_sem.T, cmap="Greens", vmin=0.0, vmax=0.05)
 
-    ax = fig.add_axes([0.02, 0.52, 0.82, 0.46], projection=ccrs.PlateCarree())
+    ax = fig.add_axes([0.02, 0.49, 0.82, 0.43], projection=ccrs.PlateCarree())
     ax.coastlines(color="#444444")
     ax.add_feature(NaturalEarthFeature("physical", "land", "110m", facecolor="#999999", zorder=-1))
     ax.add_feature(NaturalEarthFeature("physical", "ocean", "110m", facecolor="#98B6E2", zorder=-1))
     ax.set_xlim(-22, 72)
     ax.set_ylim(15, 62)
     pcm = ax.pcolormesh(xx, yy, average_heatmap_sem.T, cmap="Greens", vmin=0.0, vmax=0.05)
+
+    ax.set_title(date_range + " regional GLOBE minus GEOS\n"
+                 "Standard error of the average cloud cover discrepancy",
+                 fontdict={"fontsize": 18})
 
     ax = fig.add_axes([0.86, 0.02, 0.12, 0.96])
     for s in ["left", "top", "right", "bottom"]:
@@ -121,4 +132,7 @@ for loop in loops:
     ax.set_yticks([])
     cb = plt.colorbar(pcm, fraction=1.0, ax=ax)
     cb.ax.tick_params(labelsize=18)
-    plt.show()
+
+    plt.tight_layout()
+    plt.savefig("img/S016_{}_regional_GLOBEvGEOS_heatmap_stderr_average_discrepancy.png".format(date_range))
+
