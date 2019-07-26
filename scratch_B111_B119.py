@@ -68,9 +68,11 @@ for _ in tqdm(range(sample_count), desc="Sampling observations (summer)"):
 
 ########################################################################################################################
 # WINTER POPULATION
-ax = plotters.plot_annotated_heatmap(population_winter, geos_labels, globe_labels, text_color_threshold=2000, figsize=(6, 7))
+ax = plotters.plot_annotated_heatmap(population_winter, geos_labels, globe_labels, text_color_threshold=2000, figsize=(6, 8))
 ax.set_xlabel("GEOS total cloud cover")
 ax.set_ylabel("GLOBE total cloud cover")
+ax.set_title("Dec 2017 - Jan 2018 global GLOBE vs GEOS\n"
+             "Total cloud cover")
 plt.tight_layout()
 
 
@@ -84,10 +86,12 @@ for i in range(columnwise_mean_winter.shape[0]):
     for j in range(columnwise_mean_winter.shape[1]):
         columnwise_labels_winter[i][j] = "{:.2%}\n±{:.2%}".format(columnwise_mean_winter[i, j], columnwise_sem_winter[i, j])
 
-ax = plotters.plot_annotated_heatmap(columnwise_mean_winter, geos_labels, globe_labels, text_color_threshold=0.5, figsize=(6, 7),
+ax = plotters.plot_annotated_heatmap(columnwise_mean_winter, geos_labels, globe_labels, text_color_threshold=0.5, figsize=(6, 8),
                                      labels=columnwise_labels_winter)
 ax.set_xlabel("GEOS total cloud cover")
 ax.set_ylabel("GLOBE total cloud cover")
+ax.set_title("Dec 2017 - Jan 2018 global GLOBE vs GEOS\n"
+             "Total cloud cover (columnwise proportions)")
 plt.tight_layout()
 
 
@@ -101,18 +105,22 @@ for i in range(rowwise_mean_winter.shape[0]):
     for j in range(rowwise_mean_winter.shape[1]):
         rowwise_labels_winter[i][j] = "{:.2%}\n±{:.2%}".format(rowwise_mean_winter[i, j], rowwise_sem_winter[i, j])
 
-ax = plotters.plot_annotated_heatmap(rowwise_mean_winter, geos_labels, globe_labels, text_color_threshold=0.5, figsize=(6, 7),
+ax = plotters.plot_annotated_heatmap(rowwise_mean_winter, geos_labels, globe_labels, text_color_threshold=0.5, figsize=(6, 8),
                                      labels=rowwise_labels_winter)
 ax.set_xlabel("GEOS total cloud cover")
 ax.set_ylabel("GLOBE total cloud cover")
+ax.set_title("Dec 2017 - Jan 2018 global GLOBE vs GEOS\n"
+             "Total cloud cover (rowwise proportions)")
 plt.tight_layout()
 
 
 ########################################################################################################################
 # SUMMER POPULATION
-ax = plotters.plot_annotated_heatmap(population_summer, geos_labels, globe_labels, text_color_threshold=2000, figsize=(6, 7))
+ax = plotters.plot_annotated_heatmap(population_summer, geos_labels, globe_labels, text_color_threshold=2000, figsize=(6, 8))
 ax.set_xlabel("GEOS total cloud cover")
 ax.set_ylabel("GLOBE total cloud cover")
+ax.set_title("Jun 2018 - Jul 2018 global GLOBE vs GEOS\n"
+             "Total cloud cover")
 plt.tight_layout()
 
 
@@ -126,10 +134,12 @@ for i in range(columnwise_mean_summer.shape[0]):
     for j in range(columnwise_mean_summer.shape[1]):
         columnwise_labels_summer[i][j] = "{:.2%}\n±{:.2%}".format(columnwise_mean_summer[i, j], columnwise_sem_summer[i, j])
 
-ax = plotters.plot_annotated_heatmap(columnwise_mean_summer, geos_labels, globe_labels, text_color_threshold=0.5, figsize=(6, 7),
+ax = plotters.plot_annotated_heatmap(columnwise_mean_summer, geos_labels, globe_labels, text_color_threshold=0.5, figsize=(6, 8),
                                      labels=columnwise_labels_summer)
 ax.set_xlabel("GEOS total cloud cover")
 ax.set_ylabel("GLOBE total cloud cover")
+ax.set_title("Jun 2018 - Jul 2018 global GLOBE vs GEOS\n"
+             "Total cloud cover (columnwise proportions)")
 plt.tight_layout()
 
 
@@ -143,18 +153,23 @@ for i in range(rowwise_mean_summer.shape[0]):
     for j in range(rowwise_mean_summer.shape[1]):
         rowwise_labels_summer[i][j] = "{:.2%}\n±{:.2%}".format(rowwise_mean_summer[i, j], rowwise_sem_summer[i, j])
 
-ax = plotters.plot_annotated_heatmap(rowwise_mean_summer, geos_labels, globe_labels, text_color_threshold=0.5, figsize=(6, 7),
+ax = plotters.plot_annotated_heatmap(rowwise_mean_summer, geos_labels, globe_labels, text_color_threshold=0.5, figsize=(6, 8),
                                      labels=rowwise_labels_summer)
 ax.set_xlabel("GEOS total cloud cover")
 ax.set_ylabel("GLOBE total cloud cover")
+ax.set_title("Jun 2018 - Jul 2018 global GLOBE vs GEOS\n"
+             "Total cloud cover (rowwise proportions)")
 plt.tight_layout()
 
 
 ########################################################################################################################
 # DIFF POPULATION
-ax = plotters.plot_annotated_heatmap(population_summer - population_winter, geos_labels, globe_labels, text_color_threshold=-1e9, figsize=(6, 7), cmap="bwr", vmin=-1000., vmax=1000.)
+ax = plotters.plot_annotated_heatmap(population_summer - population_winter, geos_labels, globe_labels, text_color_threshold=-1e9, figsize=(6, 8), cmap="bwr", vmin=-1000., vmax=1000.)
 ax.set_xlabel("GEOS total cloud cover")
 ax.set_ylabel("GLOBE total cloud cover")
+ax.set_title("(Jun 2018 - Jul 2018) minus (Dec 2017 - Jan 2018)\n"
+             "global GLOBE vs GEOS\n"
+             "Total cloud cover")
 plt.tight_layout()
 
 
@@ -168,10 +183,13 @@ for i in range(columnwise_mean_diff.shape[0]):
     for j in range(columnwise_mean_diff.shape[1]):
         columnwise_labels_diff[i][j] = "{:.2%}\n±{:.2%}".format(columnwise_mean_diff[i, j], columnwise_sem_diff[i, j])
 
-ax = plotters.plot_annotated_heatmap(columnwise_mean_diff, geos_labels, globe_labels, text_color_threshold=-5, figsize=(6, 7),
+ax = plotters.plot_annotated_heatmap(columnwise_mean_diff, geos_labels, globe_labels, text_color_threshold=-5, figsize=(6, 8),
                                      labels=columnwise_labels_diff, cmap="bwr", vmin=-.3, vmax=.3)
 ax.set_xlabel("GEOS total cloud cover")
 ax.set_ylabel("GLOBE total cloud cover")
+ax.set_title("(Jun 2018 - Jul 2018) minus (Dec 2017 - Jan 2018)\n"
+             "global GLOBE vs GEOS\n"
+             "Total cloud cover (columnwise proportions)")
 plt.tight_layout()
 
 
@@ -185,9 +203,12 @@ for i in range(rowwise_mean_diff.shape[0]):
     for j in range(rowwise_mean_diff.shape[1]):
         rowwise_labels_diff[i][j] = "{:.2%}\n±{:.2%}".format(rowwise_mean_diff[i, j], rowwise_sem_diff[i, j])
 
-ax = plotters.plot_annotated_heatmap(rowwise_mean_diff, geos_labels, globe_labels, text_color_threshold=-.3, figsize=(6, 7),
+ax = plotters.plot_annotated_heatmap(rowwise_mean_diff, geos_labels, globe_labels, text_color_threshold=-.3, figsize=(6, 8),
                                      labels=rowwise_labels_diff, cmap="bwr", vmin=-.3, vmax=.3)
 ax.set_xlabel("GEOS total cloud cover")
 ax.set_ylabel("GLOBE total cloud cover")
+ax.set_title("(Jun 2018 - Jul 2018) minus (Dec 2017 - Jan 2018)\n"
+             "global GLOBE vs GEOS\n"
+             "Total cloud cover (rowwise proportions)")
 plt.tight_layout()
 
