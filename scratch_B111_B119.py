@@ -73,6 +73,7 @@ ax.set_ylabel("GLOBE total cloud cover")
 ax.set_title("Dec 2017 - Jan 2018 global GLOBE vs GEOS\n"
              "Total cloud cover")
 plt.tight_layout()
+plt.savefig("img/S017_Dec2017-Jan2018_global_GLOBEvGEOS_2dhistogram_total_cloud_cover.png")
 
 ########################################################################################################################
 # WINTER COLUMNWISE
@@ -92,6 +93,7 @@ ax.set_ylabel("GLOBE total cloud cover")
 ax.set_title("Dec 2017 - Jan 2018 global GLOBE vs GEOS\n"
              "Total cloud cover (columnwise proportions)")
 plt.tight_layout()
+plt.savefig("img/S017_Dec2017-Jan2018_global_GLOBEvGEOS_2dhistogram_total_cloud_cover_columnwise.png")
 
 ########################################################################################################################
 # WINTER ROWWISE
@@ -110,6 +112,7 @@ ax.set_ylabel("GLOBE total cloud cover")
 ax.set_title("Dec 2017 - Jan 2018 global GLOBE vs GEOS\n"
              "Total cloud cover (rowwise proportions)")
 plt.tight_layout()
+plt.savefig("img/S017_Dec2017-Jan2018_global_GLOBEvGEOS_2dhistogram_total_cloud_cover_rowwise.png")
 
 ########################################################################################################################
 # SUMMER POPULATION
@@ -120,6 +123,7 @@ ax.set_ylabel("GLOBE total cloud cover")
 ax.set_title("Jun 2018 - Jul 2018 global GLOBE vs GEOS\n"
              "Total cloud cover")
 plt.tight_layout()
+plt.savefig("img/S017_Jun2018-Jul2018_global_GLOBEvGEOS_2dhistogram_total_cloud_cover.png")
 
 ########################################################################################################################
 # SUMMER COLUMNWISE
@@ -139,6 +143,7 @@ ax.set_ylabel("GLOBE total cloud cover")
 ax.set_title("Jun 2018 - Jul 2018 global GLOBE vs GEOS\n"
              "Total cloud cover (columnwise proportions)")
 plt.tight_layout()
+plt.savefig("img/S017_Jun2018-Jul2018_global_GLOBEvGEOS_2dhistogram_total_cloud_cover_columnwise.png")
 
 ########################################################################################################################
 # SUMMER ROWWISE
@@ -157,6 +162,7 @@ ax.set_ylabel("GLOBE total cloud cover")
 ax.set_title("Jun 2018 - Jul 2018 global GLOBE vs GEOS\n"
              "Total cloud cover (rowwise proportions)")
 plt.tight_layout()
+plt.savefig("img/S017_Jun2018-Jul2018_global_GLOBEvGEOS_2dhistogram_total_cloud_cover_rowwise.png")
 
 ########################################################################################################################
 # DIFF POPULATION
@@ -168,6 +174,7 @@ ax.set_title("(Jun 2018 - Jul 2018) minus (Dec 2017 - Jan 2018)\n"
              "global GLOBE vs GEOS\n"
              "Total cloud cover")
 plt.tight_layout()
+plt.savefig("img/S017_Jun2018-Jul2018minusDec2018-Jan2018_global_GLOBEvGEOS_2dhistogram_total_cloud_cover.png")
 
 ########################################################################################################################
 # DIFF COLUMNWISE
@@ -187,6 +194,8 @@ ax.set_title("(Jun 2018 - Jul 2018) minus (Dec 2017 - Jan 2018)\n"
              "global GLOBE vs GEOS\n"
              "Total cloud cover (columnwise proportions)")
 plt.tight_layout()
+plt.savefig("img/S017_Jun2018-Jul2018minusDec2018-Jan2018_global_GLOBEvGEOS_2dhistogram_total_cloud_cover_columnwise"
+            ".png")
 
 ########################################################################################################################
 # DIFF ROWWISE
@@ -207,3 +216,4 @@ ax.set_title("(Jun 2018 - Jul 2018) minus (Dec 2017 - Jan 2018)\n"
              "global GLOBE vs GEOS\n"
              "Total cloud cover (rowwise proportions)")
 plt.tight_layout()
+plt.savefig("img/S017_Jun2018-Jul2018minusDec2018-Jan2018_global_GLOBEvGEOS_2dhistogram_total_cloud_cover_rowwise.png")
