@@ -1,19 +1,25 @@
 from scratch_vars import *
 
 obs = tools.parse_json(fpSC)
+# Do QC, to include land geometry detection.
 tools.do_quality_check(obs, tools.prepare_earth_geometry())
 
-# Flag counts where keys are just number of flags
+# This dictionary is flag=count pairs.
 flags = tools.get_flag_counts(obs)
-# Keys will be dict[str, int] with strs for each source.
+# This dictionary will be flag=(source=count) - i.e., it is a dictionary of dictionaries.
 flags2 = dict()
 
+# For each flag...
 for flag in flags:
+    # Filter to only the obs which have this flag.
     obsFlagged = tools.filter_by_flag_sets(obs, all_of=[flag])
+    # Set the flags2 entry to the dictionary of source=count pairs.
     flags2[flag] = tools.find_all_values(obsFlagged, "DataSource")
 
 source_counts = dict()
-
+# This dictionary will contain a list of all the counts for a given flag from each source.
+# Since the key for a given source may not exist, we check specifically for that and set to 0 when
+# a key doesn't exist.
 for source_name in source_names:
     source_counts[source_name] = [
         flags2[flag][source_name] if source_name in flags2[flag] else 0 for flag in sorted(flags2.keys())
