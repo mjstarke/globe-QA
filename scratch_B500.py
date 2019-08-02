@@ -79,5 +79,7 @@ ax.set_yticklabels(["{:.1%}".format(tick) for tick in ax.get_yticks()])
 ax.legend(artists, ["3km", "15km", "30km", "45km", "60km"], loc="upper center")
 ax.grid(axis="y")
 
+ax.set_title("01 - 05 Aug 2016 CONUS GEOS\n"
+             "Distribution of cloud cover at various rebinned resolutions")
 plt.tight_layout()
-plt.show()
+plt.savefig("img/S022_01Aug2016-05Aug2016_CONUS_GEOS_cloud_cover_vs_resolution.png")
