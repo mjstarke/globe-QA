@@ -20,8 +20,8 @@ ax = fig.add_subplot(111)
 ax.bar(dates[:-1], ts)
 ax.set_xlim(graph_start, graph_end)
 
-ax.title("Jan 2017 - May 2019 global GLOBE"
-         "Number of observations reporting dust per day")
+ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
+             "Number of observations reporting dust per day")
 plt.tight_layout()
 plt.savefig("img/S018_Jan2017-May2019_global_GLOBE_timeseries_dust_observations.png")
 
@@ -30,7 +30,8 @@ ax = plotters.make_pc_fig()
 plotters.plot_ob_scatter(obs, ax, c="brown", s=40)
 plotters.plot_ob_scatter(obs, ax, c="brown", s=16000, alpha=0.03)
 
-ax.set_title("Jan 2017 - May 2019 global GLOBE"
-             "Locations of observations reporting dust")
+ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
+             "Locations of observations reporting dust",
+             fontdict={"fontsize": 18})
 plt.tight_layout()
 plt.savefig("img/S018_Jan2017-May2019_global_GLOBE_scattermap_dust_observations.png")
