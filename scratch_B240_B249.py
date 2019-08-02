@@ -93,7 +93,7 @@ for loop in loops:
 
 
         #################################################
-        fig = plt.figure(figsize=(8, 7.2))
+        fig = plt.figure(figsize=(9, 7.2))
         ax = fig.add_subplot(111)
 
         artists = []
@@ -126,7 +126,10 @@ for loop in loops:
 
         ax.set_title("{} global GLOBE, GEOS, Aqua, Terra, {}\n"
                      "Cloud cover for all observations matched with {} and either Aqua or Terra\n"
-                     "({} observations)".format(date_range, geostationary_satellite, geostationary_satellite, len(obs)))
+                     "({} observations)\n"
+                     "Standard errors estimated with {} random no-replacement samples of {} observations each"
+                     "".format(date_range, geostationary_satellite, geostationary_satellite, len(obs), num_samples,
+                               len(sample)))
         plt.tight_layout()
         plt.savefig("img/S020_{}_global_GLOBEvsGEOSvsAquaTerravs{}_histogram_cloud_cover.png".format(
             date_range.replace(" ", ""), geostationary_satellite))
