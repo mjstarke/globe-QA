@@ -87,11 +87,11 @@ for loop in loops:
     pop_terra_tally = pop_terra_tally / pop_terra_tally.sum()
     pop_geo_tally = pop_geo_tally / pop_geo_tally.sum()
 
-    globe_stdev = np.std(globe_tallies, axis=0)
-    geos_stdev = np.std(geos_tallies, axis=0)
-    aqua_stdev = np.std(aqua_tallies, axis=0)
-    terra_stdev = np.std(terra_tallies, axis=0)
-    geo_stdev = np.std(geo_tallies, axis=0)
+    globe_sem = np.std(globe_tallies, axis=0, ddof=1) / np.sqrt(sample_count)
+    geos_sem = np.std(geos_tallies, axis=0, ddof=1) / np.sqrt(sample_count)
+    aqua_sem = np.std(aqua_tallies, axis=0, ddof=1) / np.sqrt(sample_count)
+    terra_sem = np.std(terra_tallies, axis=0, ddof=1) / np.sqrt(sample_count)
+    geo_sem = np.std(geo_tallies, axis=0, ddof=1) / np.sqrt(sample_count)
 
     #################################################
     fig = plt.figure(figsize=(8, 7.2))
@@ -106,11 +106,11 @@ for loop in loops:
     artists.append(ax.bar(np.arange(6) + 0.3, pop_geo_tally, color="grey", width=0.15))
 
     #################################################
-    ax.errorbar(np.arange(6) - 0.3, pop_globe_tally, globe_stdev, fmt="none", capsize=5, ecolor="black")
-    ax.errorbar(np.arange(6) - 0.15, pop_geos_tally, geos_stdev, fmt="none", capsize=5, ecolor="black")
-    ax.errorbar(np.arange(6) + 0.0, pop_aqua_tally, aqua_stdev, fmt="none", capsize=5, ecolor="black")
-    artists.append(ax.errorbar(np.arange(6) + 0.15, pop_terra_tally, terra_stdev, fmt="none", capsize=5, ecolor="black"))
-    ax.errorbar(np.arange(6) + 0.3, pop_geo_tally, geo_stdev, fmt="none", capsize=5, ecolor="black")
+    ax.errorbar(np.arange(6) - 0.3, pop_globe_tally, globe_sem, fmt="none", capsize=5, ecolor="black")
+    ax.errorbar(np.arange(6) - 0.15, pop_geos_tally, geos_sem, fmt="none", capsize=5, ecolor="black")
+    ax.errorbar(np.arange(6) + 0.0, pop_aqua_tally, aqua_sem, fmt="none", capsize=5, ecolor="black")
+    artists.append(ax.errorbar(np.arange(6) + 0.15, pop_terra_tally, terra_sem, fmt="none", capsize=5, ecolor="black"))
+    ax.errorbar(np.arange(6) + 0.3, pop_geo_tally, geo_sem, fmt="none", capsize=5, ecolor="black")
 
     #################################################
     for a in np.arange(-0.5, 5.6, 1.0):
@@ -122,7 +122,7 @@ for loop in loops:
     ax.set_xticklabels(["none", "few", "isolated", "scattered", "broken", "overcast + obscured"])
     ax.set_ylabel("Proportion of all values from source")
     ax.set_yticklabels(["{:.0%}".format(tick) for tick in ax.get_yticks()])
-    ax.legend(artists, ["GLOBE", "GEOS", "Aqua", "Terra", "Geostationaries", "Standard deviation"], loc="upper center")
+    ax.legend(artists, ["GLOBE", "GEOS", "Aqua", "Terra", "Geostationaries", "Standard error"], loc="upper center")
     ax.grid(axis="y")
 
     ax.set_title("{} global GLOBE\nDistribution of cloud cover".format(date_range))
