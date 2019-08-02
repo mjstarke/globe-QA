@@ -606,3 +606,12 @@ def patch_obs(obs: List[Observation], fp: str, attribute: str, processor: Callab
             ob[attribute] = patch[ob.id]
         except KeyError:
             pass
+
+
+def pretty_print_observation(ob: Observation):
+    """
+    Pretty-prints the properties of an observation.
+    :param ob: The observation to examine.
+    :return: None.  The properties of the observation are printed (see pretty_print_dictionary()).
+    """
+    pretty_print_dictionary(ob._raw, False, False, column_separator="  |  ")
