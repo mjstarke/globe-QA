@@ -329,7 +329,7 @@ def find_all_attributes(obs: List[dict]) -> List[str]:
 def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bool = True,
                             total: Optional[float] = None, sorting: Union[None, str, Iterable] = "ka",
                             min_column_widths: Tuple[int, int, int] = (1, 1, 1),
-                            compress_below: Optional[float] = None, column_separator: str = "  ") -> list:
+                            compress_below: Optional[float] = None, column_separator: str = " | ") -> list:
     """
     Pretty-prints the contents of a dictionary.
     :param d: The dictionary to assess.
@@ -347,7 +347,7 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
     :param compress_below: Items in d whose values are less than compress_below will be compressed into a single
     "(other)" entry at the bottom of the table (unless the sum of these items is 0).  Default None, which compresses no
     items.
-    :param column_separator: The string which separates the printed columns.  Default '  ' (two spaces).
+    :param column_separator: The string which separates the printed columns.  Default ' | '.
     :return: None.  The results are printed in three columns: key, value, percentage (if do_percent).  The columns are
     automatically sized according to their contents.  If d contains no keys, nothing is printed.
     :raises TypeError: If sorting is a non-iterable non-string.
