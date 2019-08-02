@@ -28,7 +28,7 @@ plt.savefig("img/S018_Jan2017-May2019_global_GLOBE_timeseries_dust_observations.
 
 ax = plotters.make_pc_fig()
 plotters.plot_ob_scatter(obs, ax, c="brown", s=40)
-plotters.plot_ob_scatter(obs, ax, c="brown", s=16000, alpha=0.03)
+plotters.plot_ob_scatter(obs, ax, c="brown", s=1600, alpha=0.02)
 
 ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
              "Locations of observations reporting dust",
