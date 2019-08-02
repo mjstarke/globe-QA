@@ -116,14 +116,14 @@ for loop in loops:
     for a in np.arange(-0.5, 5.6, 1.0):
         ax.axvline(a, color="#aaaaaa")
 
-#################################################
-ax.set_xlabel("Total cloud cover category")
-ax.set_xticks(np.arange(6))
-ax.set_xticklabels(["none", "few", "isolated", "scattered", "broken", "overcast + obscured"])
-ax.set_ylabel("Proportion")
-ax.set_yticklabels(["{:.0%}".format(tick) for tick in ax.get_yticks()])
-ax.legend(artists, ["GLOBE", "GEOS", "Aqua", "Terra", "Geostationaries", "Standard deviation"], loc="upper center")
-ax.grid(axis="y")
+    #################################################
+    ax.set_xlabel("Cloud cover category")
+    ax.set_xticks(np.arange(6))
+    ax.set_xticklabels(["none", "few", "isolated", "scattered", "broken", "overcast + obscured"])
+    ax.set_ylabel("Proportion of all values from source")
+    ax.set_yticklabels(["{:.0%}".format(tick) for tick in ax.get_yticks()])
+    ax.legend(artists, ["GLOBE", "GEOS", "Aqua", "Terra", "Geostationaries", "Standard deviation"], loc="upper center")
+    ax.grid(axis="y")
 
     ax.set_title("{} global GLOBE\nDistribution of cloud cover".format(date_range))
     plt.tight_layout()
