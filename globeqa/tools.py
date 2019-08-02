@@ -329,7 +329,7 @@ def find_all_attributes(obs: List[dict]) -> List[str]:
 def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bool = True,
                             total: Optional[float] = None, sorting: Union[None, str, Iterable] = "ka",
                             min_column_widths: Tuple[int, int, int] = (1, 1, 1),
-                            compress_below: Optional[float] = None) -> list:
+                            compress_below: Optional[float] = None, column_separator: str = "  ") -> list:
     """
     Pretty-prints the contents of a dictionary.
     :param d: The dictionary to assess.
@@ -347,8 +347,9 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
     :param compress_below: Items in d whose values are less than compress_below will be compressed into a single
     "(other)" entry at the bottom of the table (unless the sum of these items is 0).  Default None, which compresses no
     items.
+    :param column_separator: The string which separates the printed columns.  Default '  ' (two spaces).
     :return: None.  The results are printed in three columns: key, value, percentage (if do_percent).  The columns are
-    automatically sized so that two spaces exist between them.  If d contains no keys, nothing is printed.
+    automatically sized according to their contents.  If d contains no keys, nothing is printed.
     :raises TypeError: If sorting is a non-iterable non-string.
     :raises ValueError: If min_column_widths does not have length 3.
     :raises ValueError: If any element of min_column_widths is less than 1.
@@ -427,8 +428,8 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
     column3_width = max(max(len(a) for a in column3), min_column_widths[2])
 
     # Create the format string with appropriate column width.
-    fmt = "{:A}  {:>B}  {:C}".replace("A", str(column1_width)).replace("B", str(column2_width)).replace(
-        "C", str(column3_width))
+    fmt = "{:A}S{:>B}S{:C}".replace("A", str(column1_width)).replace("B", str(column2_width)).replace(
+        "C", str(column3_width)).replace("S", column_separator)
 
     # Print each row.
     for a in range(len(column1)):
