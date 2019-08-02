@@ -30,7 +30,7 @@ ax = plotters.make_pc_fig()
 plotters.plot_ob_scatter(obs, ax, c="brown", s=40)
 plotters.plot_ob_scatter(obs, ax, c="brown", s=16000, alpha=0.03)
 
-ax.title("Jan 2017 - May 2019 global GLOBE"
-         "Locations of observations reporting dust")
+ax.set_title("Jan 2017 - May 2019 global GLOBE"
+             "Locations of observations reporting dust")
 plt.tight_layout()
 plt.savefig("img/S018_Jan2017-May2019_global_GLOBE_scattermap_dust_observations.png")
