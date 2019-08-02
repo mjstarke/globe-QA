@@ -95,16 +95,16 @@ for loop in loops:
 
         artists = []
 
-        artists.append(ax.bar(np.arange(6) - 0.3, pop_tally_globe, color=std_colors["GLOBE"], width=0.15))
-        artists.append(ax.bar(np.arange(6) - 0.15, pop_tally_geos, color=std_colors["GEOS"], width=0.15))
-        artists.append(ax.bar(np.arange(6) + 0.0, pop_tally_aquaterra, color=std_colors["AquaTerra"], width=0.15))
-        artists.append(ax.bar(np.arange(6) + 0.15, pop_tally_geostationary, color=std_colors[geostationary_satellite], width=0.15))
+        artists.append(ax.bar(np.arange(6) - 0.225, pop_tally_globe, color=std_colors["GLOBE"], width=0.15))
+        artists.append(ax.bar(np.arange(6) - 0.075, pop_tally_geos, color=std_colors["GEOS"], width=0.15))
+        artists.append(ax.bar(np.arange(6) + 0.075, pop_tally_aquaterra, color=std_colors["AquaTerra"], width=0.15))
+        artists.append(ax.bar(np.arange(6) + 0.225, pop_tally_geostationary, color=std_colors[geostationary_satellite], width=0.15))
 
         #################################################
-        ax.errorbar(np.arange(6) - 0.3, pop_tally_globe, sample_globe_sem, fmt="none", capsize=5, ecolor="black")
-        ax.errorbar(np.arange(6) - 0.15, pop_tally_geos, sample_geos_sem, fmt="none", capsize=5, ecolor="black")
-        ax.errorbar(np.arange(6) + 0.0, pop_tally_aquaterra, sample_aquaterra_sem, fmt="none", capsize=5, ecolor="black")
-        artists.append(ax.errorbar(np.arange(6) + 0.15, pop_tally_geostationary, sample_geostationary_sem, fmt="none", capsize=5, ecolor="black"))
+        ax.errorbar(np.arange(6) - 0.225, pop_tally_globe, sample_globe_sem, fmt="none", capsize=5, ecolor="black")
+        ax.errorbar(np.arange(6) - 0.075, pop_tally_geos, sample_geos_sem, fmt="none", capsize=5, ecolor="black")
+        ax.errorbar(np.arange(6) + 0.075, pop_tally_aquaterra, sample_aquaterra_sem, fmt="none", capsize=5, ecolor="black")
+        artists.append(ax.errorbar(np.arange(6) + 0.225, pop_tally_geostationary, sample_geostationary_sem, fmt="none", capsize=5, ecolor="black"))
 
         #################################################
         for a in np.arange(-0.5, 5.6, 1.0):
