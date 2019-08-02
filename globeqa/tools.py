@@ -351,6 +351,7 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
     :return: None.  The results are printed in three columns: key, value, percentage (if do_percent).  The columns are
     automatically sized according to their contents.  If d contains no keys, nothing is printed.
     :raises TypeError: If sorting is a non-iterable non-string.
+    :raises TypeError: If print_total or print_percent is true, but some values in the dictionary are not numeric.
     :raises ValueError: If min_column_widths does not have length 3.
     :raises ValueError: If any element of min_column_widths is less than 1.
     :raises ValueError: If sorting is an invalid string.
@@ -393,7 +394,10 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
 
     # Use explicitly set total if available; otherwise, calculate total.
     if (total is None) and (print_percent or print_total):
-        total = sum(d[key] for key in keys)
+        try:
+            total = sum(d[key] for key in keys)
+        except TypeError:
+            raise TypeError("Total and percentages cannot be calculated with non-numeric values in the dictionary.")
 
     # If total is zero, we can't do percentage calculations.
     if print_percent and (total == 0):
