@@ -119,7 +119,10 @@ for loop in loops:
         ax.legend(artists, ["GLOBE", "GEOS", "Aqua + Terra", geostationary_satellite, "Standard error"], loc="upper center")
         ax.grid(axis="y")
 
+        ax.set_title("{} global GLOBE, GEOS, Aqua, Terra, {}\nCloud cover for all observations matched with {} and "
+                     "either Aqua or Terra".format(date_range, geostationary_satellite, geostationary_satellite))
         plt.tight_layout()
-        plt.show()
+        plt.savefig("img/S020_{}_global_GLOBEvsGEOSvsAquaTerravs{}_histogram_cloud_cover.png".format(
+            date_range.replace(" ", ""), geostationary_satellite))
 
 
