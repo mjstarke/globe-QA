@@ -7,6 +7,7 @@ latitude_bin_width = 1.0  # degrees
 # Parse data
 obs_all = tools.parse_csv(fpSC_Dec)
 obs_all.extend(tools.parse_csv(fpSC_2018))
+tools.patch_obs(obs_all, "geos_coincident.csv", "tcc_geos", float)
 # obs_all = [ob for ob in obs_all if ob.is_from_observer]  # B403a and B404a
 
 category_to_midpoint = dict(
@@ -34,21 +35,6 @@ for loop in [[Dataset(fpGEOS_Dec), Dataset(fpGEOS_Jan), "Dec 2017 - Jan 2018"],
     # Filter obs to only those which occur in the CDF's timeframe.
     obs = tools.filter_by_datetime(obs, earliest=cdf_start, latest=cdf_end)
 
-    # Get GEOS coincident for each observation.
-    for ob in tqdm(obs, desc="Finding GEOS coincident output for all observations"):
-        try:
-            i = tools.find_closest_gridbox(cdf1, ob.measured_dt, ob.lat, ob.lon)
-            ob.tcc_geos = float(cdf1["CLDTOT"][i])
-        except IndexError:
-            try:
-                i = tools.find_closest_gridbox(cdf2, ob.measured_dt, ob.lat, ob.lon)
-                ob.tcc_geos = float(cdf2["CLDTOT"][i])
-            except IndexError:
-                pass
-
-    # Filter out any obs that do not have GEOS coincident output.
-    obs = [ob for ob in obs if "tcc_geos" in dir(ob)]
-
     lats = np.arange(-90., 90.1, latitude_bin_width)
 
     sample_average_histograms = []
@@ -59,7 +45,7 @@ for loop in [[Dataset(fpGEOS_Dec), Dataset(fpGEOS_Jan), "Dec 2017 - Jan 2018"],
 
         # Construct lists used for scattering.
         y = [ob.lat for ob in sample]
-        geos = np.array([ob.tcc_geos for ob in sample])
+        geos = np.array([ob["tcc_geos"] for ob in sample])
         globe = np.array([category_to_midpoint[ob.tcc] for ob in sample])
         diff = globe - geos
 
@@ -71,7 +57,7 @@ for loop in [[Dataset(fpGEOS_Dec), Dataset(fpGEOS_Jan), "Dec 2017 - Jan 2018"],
     # Calculate population average difference.
     pop_x = [ob.lon for ob in obs]
     pop_y = [ob.lat for ob in obs]
-    pop_geos = np.array([ob.tcc_geos for ob in obs])
+    pop_geos = np.array([ob["tcc_geos"] for ob in obs])
     pop_globe = np.array([category_to_midpoint[ob.tcc] for ob in obs])
     pop_diff = pop_globe - pop_geos
     pop_counting_histogram, _ = np.histogram(pop_y, lats)
