@@ -69,19 +69,19 @@ for loop in [[Dataset(fpGEOS_Dec), Dataset(fpGEOS_Jan), "Dec 2017 - Jan 2018"],
     diff_average_histogram_sem = diff_average_histogram_stdev / np.sqrt(diff_average_histogram_nonzero_samples)
 
     # Plot mean difference.
-    ax = plotters.make_pc_fig()
+    ax = plotters.make_pc_fig(figsize=(15, 9))
     ax.barh(lats[:-1], pop_average_histogram * 100., latitude_bin_width, align="edge",
             xerr=diff_average_histogram_sem * 100,
             color=["red" if val > 0 else "blue" for val in pop_average_histogram])
     ax.set_xticks(np.arange(-100., 101., 25.))
     ax.set_xticklabels(np.arange(-1., 1.01, .25), fontdict={'fontsize': 18})
-    ax.set_xlabel("Average discrepancy")
+    ax.set_xlabel("Average discrepancy", fontdict={'fontsize': 18})
     ax.grid(axis="x", c="black")
 
     ax.set_title("{} global GLOBE - GEOS\n"
                  "Average discrepancy between GLOBE and GEOS in {}-degree latitude bins\n"
                  "Standard errors estimated with {} random no-replacement samples of {} observations each"
-                 "".format(date_range, latitude_bin_width, num_samples, len(sample)))
+                 "".format(date_range, latitude_bin_width, num_samples, len(sample)), fontdict={'fontsize': 18})
     plt.tight_layout()
     plt.savefig("img/S021_{}_global_GLOBEvsGEOS_bar_average_discrepancy_vs_latitude.png".format(
         date_range.replace(" ", "")))
