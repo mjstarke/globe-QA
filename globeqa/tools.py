@@ -43,7 +43,7 @@ def parse_csv(fp: str, count: int = 1e30, protocol: Optional[str] = "sky_conditi
     return observations
 
 
-def download_from_api(protocols: List[str], start: date, end: Optional[date] = None,
+def download_from_api(protocols: List[str], start: Union[date, datetime], end: Optional[Union[date, datetime]] = None,
                       download_dest: str = "%P_%S_%E.json", check_existing: bool = True) -> str:
     """
     Downloads from the GLOBE API.
@@ -514,7 +514,8 @@ def filter_by_hour(obs: List[Observation], hours: List[int]) -> List[Observation
     return [ob for ob in obs if ob.measured_dt.hour in hours]
 
 
-def process_one_day(download_folder: str = "", download_file: str = "SC_LC_MHM_TH__%S.json", day: date = None):
+def process_one_day(download_folder: str = "", download_file: str = "SC_LC_MHM_TH__%S.json",
+                    day: Optional[Union[date, datetime]] = None):
     """
     Downloads, parses, and quality-checks one day's observations.
     :param download_folder: The folder to download the JSON file to.  Default "" (current working directory).
