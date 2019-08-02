@@ -1,5 +1,7 @@
 from scratch_vars import *
 
+sample_count = 1000
+
 obs = tools.parse_csv(fpSC_Dec)
 obs.extend(tools.parse_csv(fpSC_2018))
 obs = [ob for ob in obs if ob.tcc is not None]
@@ -129,6 +131,6 @@ for loop in loops:
               loc="upper center")
     ax.grid(axis="y")
 
-    ax.set_title("{} global GLOBE\nDistribution of cloud cover".format(date_range))
+    ax.set_title("{} global GLOBE, GEOS, Aqua, Terra, Geostationaries\nDistribution of cloud cover".format(date_range))
     plt.tight_layout()
-    plt.savefig("img/S019_{}_global_GLOBE_scattermap_dust_observations.png".format(date_range.replace(" ", "")))
+    plt.savefig("img/S019_{}_global_GLOBEvsGEOSvsAquavsTerravsGeostationaries_histogram_cloud_cover.png".format(date_range.replace(" ", "")))
