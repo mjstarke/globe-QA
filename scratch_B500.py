@@ -11,7 +11,8 @@ def rebin(a, factor):
     """
     # Determine how many values in each dimension must be chopped off for the rebin to work.  For instance, 7x7 cannot
     # be rebinned with factor 2, so we must chop it to 6x6.  The number of values chopped in each dimension is exactly
-    # the modulo of the size of that dimension over the rebin factor.
+    # the modulo of the size of that dimension over the rebin factor (i.e. the size of each dimension must be some
+    # multiple of the rebin factor).
     y_end = -(a.shape[1] % factor)
     x_end = -(a.shape[2] % factor)
     # We cannot use -0 as an endpoint.  Replace it with None.
