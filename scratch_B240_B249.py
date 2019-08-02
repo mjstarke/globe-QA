@@ -32,6 +32,8 @@ for loop in loops:
 
         cats = {"none": 0, "few": 1, "isolated": 2, "scattered": 3, "broken": 4, "overcast": 5, "obscured": 5}
 
+        pop_obscured = sum(1 for ob in obs if ob.tcc == "obscured")
+
         #################################################
         # Prepare population tally.
         pop_tally_globe = np.zeros(6)
@@ -45,6 +47,7 @@ for loop in loops:
             pop_tally_aquaterra[cats[ob.tcc_aquaterra_cat]] += 1
             pop_tally_geostationary[cats[ob.tcc_geo_cat]] += 1
         # Divide by total for proportions.
+        pop_obscured /= pop_tally_globe.sum()
         pop_tally_globe /= pop_tally_globe.sum()
         pop_tally_geos /= pop_tally_geos.sum()
         pop_tally_aquaterra /= pop_tally_aquaterra.sum()
@@ -99,6 +102,7 @@ for loop in loops:
         artists.append(ax.bar(np.arange(6) - 0.075, pop_tally_geos, color=std_colors["GEOS"], width=0.15))
         artists.append(ax.bar(np.arange(6) + 0.075, pop_tally_aquaterra, color=std_colors["AquaTerra"], width=0.15))
         artists.append(ax.bar(np.arange(6) + 0.225, pop_tally_geostationary, color=std_colors[geostationary_satellite], width=0.15))
+        artists.append(ax.bar(4.775, pop_obscured, color="#555555", hatch="//", width=0.15))
 
         #################################################
         ax.errorbar(np.arange(6) - 0.225, pop_tally_globe, sample_globe_sem, fmt="none", capsize=5, ecolor="black")
@@ -116,7 +120,8 @@ for loop in loops:
         ax.set_xticklabels(["none", "few", "isolated", "scattered", "broken", "overcast + obscured"])
         ax.set_ylabel("Proportion of all values from source")
         ax.set_yticklabels(["{:.0%}".format(tick) for tick in ax.get_yticks()])
-        ax.legend(artists, ["GLOBE", "GEOS", "Aqua + Terra", geostationary_satellite, "Standard error"], loc="upper center")
+        ax.legend(artists, ["GLOBE", "GEOS", "Aqua + Terra", geostationary_satellite,
+                            "Obscured observations", "Standard error"], loc="upper center")
         ax.grid(axis="y")
 
         ax.set_title("{} global GLOBE, GEOS, Aqua, Terra, {}\n"
