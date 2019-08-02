@@ -125,5 +125,6 @@ ax.set_yticklabels(["{:.0%}".format(tick) for tick in ax.get_yticks()])
 ax.legend(artists, ["GLOBE", "GEOS", "Aqua", "Terra", "Geostationaries", "Standard deviation"], loc="upper center")
 ax.grid(axis="y")
 
-plt.tight_layout()
-plt.show()
+    ax.set_title("{} global GLOBE\nDistribution of cloud cover".format(date_range))
+    plt.tight_layout()
+    plt.savefig("img/S019_{}_global_GLOBE_scattermap_dust_observations.png".format(date_range.replace(" ", "")))
