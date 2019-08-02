@@ -72,6 +72,7 @@ for loop in loops:
     pop_terra_tally = [sum(1 for ob in filtered_obs if ob.tcc_terra_cat == category) for category in geos_categories]
     pop_geo_tally = [sum(1 for ob in filtered_obs if ob.tcc_geo_cat == category) for category in geos_categories]
 
+    pop_obscured = pop_globe_tally[-1]
     pop_globe_tally[-2] += pop_globe_tally[-1]
     pop_globe_tally = pop_globe_tally[:-1]
 
@@ -81,6 +82,7 @@ for loop in loops:
     pop_terra_tally = np.array(pop_terra_tally)
     pop_geo_tally = np.array(pop_geo_tally)
 
+    pop_obscured /= pop_globe_tally.sum()
     pop_globe_tally = pop_globe_tally / pop_globe_tally.sum()
     pop_geos_tally = pop_geos_tally / pop_geos_tally.sum()
     pop_aqua_tally = pop_aqua_tally / pop_aqua_tally.sum()
@@ -104,6 +106,7 @@ for loop in loops:
     artists.append(ax.bar(np.arange(6) + 0.0, pop_aqua_tally, color="#6666ff", width=0.15))
     artists.append(ax.bar(np.arange(6) + 0.15, pop_terra_tally, color="#55ff00", width=0.15))
     artists.append(ax.bar(np.arange(6) + 0.3, pop_geo_tally, color="grey", width=0.15))
+    artists.append(ax.bar(4.7, pop_obscured, color="#555555", hatch="//", width=0.15))
 
     #################################################
     ax.errorbar(np.arange(6) - 0.3, pop_globe_tally, globe_sem, fmt="none", capsize=5, ecolor="black")
@@ -119,10 +122,11 @@ for loop in loops:
     #################################################
     ax.set_xlabel("Cloud cover category")
     ax.set_xticks(np.arange(6))
-    ax.set_xticklabels(["none", "few", "isolated", "scattered", "broken", "overcast + obscured"])
+    ax.set_xticklabels(["none", "few", "isolated", "scattered", "broken", "overcast"])
     ax.set_ylabel("Proportion of all values from source")
     ax.set_yticklabels(["{:.0%}".format(tick) for tick in ax.get_yticks()])
-    ax.legend(artists, ["GLOBE", "GEOS", "Aqua", "Terra", "Geostationaries", "Standard error"], loc="upper center")
+    ax.legend(artists, ["GLOBE", "GEOS", "Aqua", "Terra", "Geostationaries", "Obscured observations", "Standard error"],
+              loc="upper center")
     ax.grid(axis="y")
 
     ax.set_title("{} global GLOBE\nDistribution of cloud cover".format(date_range))
