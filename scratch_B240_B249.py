@@ -114,13 +114,14 @@ for loop in loops:
         ax.set_xlabel("Total cloud cover category")
         ax.set_xticks(np.arange(6))
         ax.set_xticklabels(["none", "few", "isolated", "scattered", "broken", "overcast + obscured"])
-        ax.set_ylabel("Proportion")
+        ax.set_ylabel("Proportion of all values from source")
         ax.set_yticklabels(["{:.0%}".format(tick) for tick in ax.get_yticks()])
         ax.legend(artists, ["GLOBE", "GEOS", "Aqua + Terra", geostationary_satellite, "Standard error"], loc="upper center")
         ax.grid(axis="y")
 
-        ax.set_title("{} global GLOBE, GEOS, Aqua, Terra, {}\nCloud cover for all observations matched with {} and "
-                     "either Aqua or Terra".format(date_range, geostationary_satellite, geostationary_satellite))
+        ax.set_title("{} global GLOBE, GEOS, Aqua, Terra, {}\n"
+                     "Cloud cover for all observations matched with {} and either Aqua or Terra\n"
+                     "({} observations)".format(date_range, geostationary_satellite, geostationary_satellite, len(obs)))
         plt.tight_layout()
         plt.savefig("img/S020_{}_global_GLOBEvsGEOSvsAquaTerravs{}_histogram_cloud_cover.png".format(
             date_range.replace(" ", ""), geostationary_satellite))
