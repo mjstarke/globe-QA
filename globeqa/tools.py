@@ -608,10 +608,11 @@ def patch_obs(obs: List[Observation], fp: str, attribute: str, processor: Callab
             pass
 
 
-def pretty_print_observation(ob: Observation):
+def pretty_print_observation(ob: Observation, **kwargs):
     """
     Pretty-prints the properties of an observation.
     :param ob: The observation to examine.
+    :param kwargs: kwargs are passed to pretty_print_dictionary().
     :return: None.  The properties of the observation are printed (see pretty_print_dictionary()).
     """
-    pretty_print_dictionary(ob._raw, False, False, column_separator="  |  ")
+    pretty_print_dictionary(ob._raw, False, False, **kwargs)
