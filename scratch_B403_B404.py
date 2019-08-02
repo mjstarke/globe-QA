@@ -20,12 +20,12 @@ category_to_midpoint = dict(
     obscured=1.00
 )
 
-for cdf_set in [[Dataset(fpGEOS_Dec), Dataset(fpGEOS_Jan)],
-                [Dataset(fpGEOS_Jun), Dataset(fpGEOS_Jul)]]:
+for loop in [[Dataset(fpGEOS_Dec), Dataset(fpGEOS_Jan), "Dec 2017 - Jan 2018"],
+             [Dataset(fpGEOS_Jun), Dataset(fpGEOS_Jul), "Jun 2018 - Jul 2018"]]:
     # Filter out obs that have no TCC.
     obs = [ob for ob in obs_all if ob.tcc is not None]
 
-    cdf1, cdf2 = cdf_set
+    cdf1, cdf2, date_range = loop
 
     # Determine the start and end dates of the CDF.
     cdf_start = tools.get_cdf_datetime(cdf1, 0) - timedelta(minutes=30)
@@ -89,5 +89,13 @@ for cdf_set in [[Dataset(fpGEOS_Dec), Dataset(fpGEOS_Jan)],
             color=["red" if val > 0 else "blue" for val in pop_average_histogram])
     ax.set_xticks(np.arange(-100., 101., 25.))
     ax.set_xticklabels(np.arange(-1., 1.01, .25), fontdict={'fontsize': 18})
+    ax.set_xlabel("Average discrepancy")
     ax.grid(axis="x", c="black")
+
+    ax.set_title("{} global GLOBE - GEOS\n"
+                 "Average discrepancy between GLOBE and GEOS in {}-degree latitude bins\n"
+                 "Standard errors estimated with {} random no-replacement samples of {} observations each"
+                 "".format(date_range, latitude_bin_width, num_samples, len(sample)))
     plt.tight_layout()
+    plt.savefig("img/S021_{}_global_GLOBEvsGEOS_bar_average_discrepancy_vs_latitude.png".format(
+        date_range.replace(" ", "")))
