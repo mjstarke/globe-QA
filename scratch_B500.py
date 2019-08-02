@@ -73,7 +73,7 @@ for a in np.arange(-0.5, 5.6, 1.0):
 #################################################
 ax.set_xlabel("Total cloud cover category")
 ax.set_xticks(np.arange(6))
-ax.set_xticklabels(["none", "few", "isolated", "scattered", "broken", "overcast + obscured"])
+ax.set_xticklabels(["none", "few", "isolated", "scattered", "broken", "overcast"])
 ax.set_ylabel("Proportion")
 ax.set_yticklabels(["{:.1%}".format(tick) for tick in ax.get_yticks()])
 ax.legend(artists, ["3km", "15km", "30km", "45km", "60km"], loc="upper center")
