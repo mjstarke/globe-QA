@@ -1,3 +1,5 @@
+# DEPRECATED: This script is superseded by figure_S019.
+
 from scratch_vars import *
 
 obs = tools.parse_csv(fpSC_2018)

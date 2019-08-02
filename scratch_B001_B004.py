@@ -1,3 +1,5 @@
+# DEPRECATED: This script is superseded by figure_S016.
+
 from scratch_vars import *
 
 # Settings

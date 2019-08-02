@@ -1,3 +1,5 @@
+# DEPRECATED: This script is superseded by figure_S017.
+
 from scratch_vars import *
 
 sample_count = 1000

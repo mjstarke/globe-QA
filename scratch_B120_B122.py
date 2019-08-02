@@ -1,3 +1,5 @@
+# DEPRECATED: This script is superseded partially by figure_S017.
+
 from scratch_vars import *
 
 globe_categories = [None, "none", "few", "isolated", "scattered", "broken", "overcast", "obscured"]
