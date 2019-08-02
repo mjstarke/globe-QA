@@ -385,7 +385,7 @@ def pretty_print_dictionary(d: dict, print_percent: bool = True, print_total: bo
         keys = sorting
 
     # Use explicitly set total if available; otherwise, calculate total.
-    if total is None:
+    if (total is None) and (print_percent or print_total):
         total = sum(d[key] for key in keys)
 
     # If total is zero, we can't do percentage calculations.
