@@ -59,8 +59,10 @@ ax = plotters.plot_stacked_bars(
 ax.set_xticks(range(len(flags)))
 ax.set_xticklabels(sorted(flags2.keys()))
 ax.set_xlabel("Flag")
-ax.set_ylabel("Count")
+ax.set_ylabel("Proportion")
 ax.set_xlim(-0.7, 18)  # Make space for the legend.
+ax.set_yticks([0.0, 0.2, 0.4, 0.6, 0.8, 1.0])
+ax.set_yticklabels(["0%", "20%", "40%", "60%", "80%", "100%"])
 
 ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
              "Proportional frequency of quality control flags")
