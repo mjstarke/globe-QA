@@ -8,11 +8,7 @@ vals = {"0 photos": 0, "1 photo": 0, "2 photos": 0, "3 photos": 0, "4 photos": 0
 # For each observation...
 for ob in tqdm(obs, desc="Sifting observations"):
     # Count how many photos are included.
-    photos = 0
-    for direction in ["North", "East", "South", "West", "Upward", "Downward"]:
-        photos += 1 if ob.soft_get(direction + "PhotoUrl") is not None else 0
-
-    ob.photos = photos
+    photos = len(ob.photo_urls)
 
     vals["{} photo{}".format(photos, "s" if photos != 1 else "")] += 1
 
