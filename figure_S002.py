@@ -4,6 +4,7 @@ obs = tools.parse_json(fpSC)
 
 # Prepare dict to collect plotted values.
 vals = {"0 photos": 0, "1 photo": 0, "2 photos": 0, "3 photos": 0, "4 photos": 0, "5 photos": 0, "6 photos": 0}
+vals_2 = {"North": 0, "East": 0, "South": 0, "West": 0, "Upward": 0, "Downward": 0}
 
 # For each observation...
 for ob in tqdm(obs, desc="Sifting observations"):
@@ -11,6 +12,12 @@ for ob in tqdm(obs, desc="Sifting observations"):
     photos = len(ob.photo_urls)
 
     vals["{} photo{}".format(photos, "s" if photos != 1 else "")] += 1
+
+    if photos == 5:
+        for direction in vals_2.keys():
+            if direction not in ob.photo_urls.keys():
+                vals_2[direction] += 1
+
 
 # Find total number of observations for calculating percentages for slice labels.
 total = sum(vals[k] for k in vals)
@@ -26,3 +33,19 @@ plt.tight_layout()
 plt.savefig("img/S002_Jan2017-May2019_global_GLOBE-SC_pie_concurrent_photos_no_legend.png")
 ax.legend()
 plt.savefig("img/S002_Jan2017-May2019_global_GLOBE-SC_pie_concurrent_photos.png")
+
+
+total = sum(vals_2[k] for k in vals_2)
+
+fig = plt.figure(figsize=(6, 6))
+ax = fig.add_subplot(111)
+ax.pie([vals_2[k] for k in vals_2], labels=["{} ({:.2%})".format(k, v / total) for k, v in vals_2.items()],
+       labeldistance=None)
+
+ax.set_title("Jan 2017 - May 2019 / Global / GLOBE clouds\n"
+             "Direction omitted when 5 photos are taken")
+
+plt.tight_layout()
+plt.savefig("img/S002_Jan2017-May2019_global_GLOBE-SC_pie_missing_sixth_photo_no_legend.png")
+ax.legend()
+plt.savefig("img/S002_Jan2017-May2019_global_GLOBE-SC_pie_missing_sixth_photo.png")
