@@ -23,8 +23,10 @@ fig = plt.figure(figsize=(6, 6))
 ax = fig.add_subplot(111)
 ax.pie([vals[k] for k in vals], labels=["{} ({:.2%})".format(k, v / total) for k, v in vals.items()],
        labeldistance=None, colors=["#dddddd", "#bbccbb", "#99bb99", "#77aa77", "#559988", "#338899", "#1177aa"])
-ax.legend()
-ax.set_title("Jan 2017 - May 2019 global GLOBE\nNumber of photos in each observation")
+
+ax.set_title("Jan 2017 - May 2019 / Global / GLOBE clouds\nNumber of photos in each observation")
 
 plt.tight_layout()
-plt.savefig("img/S002_Jan2017-May2019_global_GLOBE_pie_concurrent_photos.png")
+plt.savefig("img/S002_Jan2017-May2019_global_GLOBE-SC_pie_concurrent_photos_no_legend.png")
+ax.legend()
+plt.savefig("img/S002_Jan2017-May2019_global_GLOBE-SC_pie_concurrent_photos.png")
