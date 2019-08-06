@@ -25,13 +25,13 @@ artists = [
     ax.axvline(18*60, ls="-.", lw=2, c="black"),
 ]
 
+ax.set_title("Jan 2017 - May 2019 / Global / GLOBE clouds\n"
+             "Temporal distribution of observations")
+
+plt.tight_layout()
+plt.savefig("img/S013_Jan2017-May2019_global_GLOBE-SC_histogram_temporal.png")
 ax.legend(artists, ["Observations at 0000Z",
                     "Noon India Standard Time",
                     "Noon Central European Time",
                     "Noon Central Standard Time"], loc="upper left")
-
-ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
-             "Temporal distribution of GLOBE observations")
-
-plt.tight_layout()
-plt.savefig("img/S013_Jan2017-May2019_global_GLOBE_histogram_temporal.png")
+plt.savefig("img/S013_Jan2017-May2019_global_GLOBE-SC_histogram_temporal_no_legend.png")
