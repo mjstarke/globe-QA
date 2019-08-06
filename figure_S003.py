@@ -14,8 +14,10 @@ ax.pie([vals[k] for k in keys],  # Slices ordered by cloud cover category.
        labels=["{} ({:.2%})".format(k, vals[k] / total) for k in keys],
        labeldistance=None,  # Disables automatic labelling outside of legend.
        colors=["#aaaaff", "#8888ff", "#7777dd", "#6666bb", "#555599", "#444477", "#333366"])
-ax.legend()
-ax.set_title("Jan 2017 - May 2019 global GLOBE\nFrequency of each cloud cover category")
+
+ax.set_title("Jan 2017 - May 2019 / Global / GLOBE Clouds\nFrequency of each cloud cover category")
 
 plt.tight_layout()
-plt.savefig("img/S003_Jan2017-May2019_global_GLOBE_pie_cloud_cover.png")
+plt.savefig("img/S003_Jan2017-May2019_global_GLOBE-SC_pie_cloud_cover.png")
+ax.legend()
+plt.savefig("img/S003_Jan2017-May2019_global_GLOBE-SC_pie_cloud_cover_no_legend.png")
