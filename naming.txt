@@ -7,7 +7,11 @@ and should have titles formatted according to:
     DATES / REGION / SOURCE
     LONG_DESCRIPTION
 
-where:
+Each variable should be separated from others by underscores, but should not themselves contain underscores - that is,
+    filename.split("_")
+should return a tuple corresponding to (SCRIPT, DATES, REGION, SOURCE, TYPE, DESCRIPTION).
+
+Variables have the following meanings:
 
     SCRIPT is a reference to the script that created the image.  For instance, S007 refers to figure_S007.py.  Examples:
         S001
@@ -47,11 +51,10 @@ where:
         cloud-cover-vs-resolution
         cloud-cover
 
-    LONG_DESCRIPTION is a more complete description of the figure.  May include number of observations and parameters
-    for confidence interval generation.  Examples (corresponding to the DESCRIPTION examples):
+    LONG_DESCRIPTION is a more complete description of the figure.  Examples (corresponding to the DESCRIPTION
+    examples):
         Frequency of quality control flags
         Distribution of cloud cover at various rebinned resolutions
             Cloud cover for all observations matched with GOES-16 and either Aqua or Terra
             (162 observations)
-            Standard errors estimated with 1000 random no-replacement samples of 8 observations each
 
