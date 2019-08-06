@@ -23,8 +23,8 @@ ax.set_xlabel("Elevation (meters)")
 ax.set_ylabel("Count")
 ax.grid(axis="both")
 
-ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
+ax.set_title("Jan 2017 - May 2019 / Global / GLOBE Clouds\n"
              "Elevation of observations lying outside the range -300m to 6000m")
 
 plt.tight_layout()
-plt.savefig("img/S008_Jan2017-May2019_global_GLOBE_histogram_elevation.png")
+plt.savefig("img/S008_Jan2017-May2019_global_GLOBE-SC_histogram_elevation.png")
