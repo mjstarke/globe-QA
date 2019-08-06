@@ -33,6 +33,8 @@ fig = plt.figure(figsize=(10, 3.5))
 ax = fig.add_subplot(111)
 ax.bar(dates[:-1], ts)
 ax.set_xlim(graph_start_date, graph_end_date)
+ax.set_xlabel("Date (UTC)")
+ax.set_ylabel("Dust observations per day")
 ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
              "Number of observations reporting dust per day")
 plt.tight_layout()
