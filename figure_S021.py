@@ -78,10 +78,9 @@ for loop in [[Dataset(fpGEOS_Dec), Dataset(fpGEOS_Jan), "Dec 2017 - Jan 2018"],
     ax.set_xlabel("Average discrepancy", fontdict={'fontsize': 18})
     ax.grid(axis="x", c="black")
 
-    ax.set_title("{} global GLOBE - GEOS\n"
-                 "Average discrepancy between GLOBE and GEOS cloud cover in {}-degree latitude bins\n"
-                 "Standard errors estimated with {} random no-replacement samples of {} observations each"
-                 "".format(date_range, latitude_bin_width, num_samples, len(sample)), fontdict={'fontsize': 18})
+    ax.set_title("{} / Global / GLOBE Clouds minus GEOS\n"
+                 "Average discrepancy in cloud cover in {}-degree latitude bins"
+                 "".format(date_range, latitude_bin_width), fontdict={'fontsize': 18})
     plt.tight_layout()
     plt.savefig("img/S021_{}_global_GLOBE-SCvsGEOS_bar_average-discrepancy-vs-latitude.png".format(
         date_range.replace(" ", "")))

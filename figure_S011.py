@@ -33,8 +33,8 @@ pcmcb = plt.colorbar(pcm, ticks=np.log10(ticks), fraction=0.04)
 pcmcb.set_ticklabels(ticks)
 pcmcb.ax.tick_params(labelsize=18)
 
-ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
-             "Distribution of GLOBE sky_conditions observations over water given 1:50m NaturalEarth geometry",
+ax.set_title("Jan 2017 - May 2019 / Global / GLOBE Clouds\n"
+             "Distribution of observations over water given 1:50m NaturalEarth geometry",
              fontdict={"fontsize": 18})
 
 plt.tight_layout()

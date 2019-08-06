@@ -21,7 +21,7 @@ ax.set_yticklabels(minor_ticks, minor=True)
 ax.grid(which="major", axis="y")
 ax.set_xlabel("Concurrent obscurations")
 ax.set_ylabel("Number of observations")
-ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
+ax.set_title("Jan 2017 - May 2019 / Global / GLOBE Clouds\n"
              "Number of obscurations for all observations with 'obscured' cloud cover")
 
 plt.tight_layout()

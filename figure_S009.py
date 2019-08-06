@@ -15,7 +15,7 @@ for source in sources:
     artists.append((dot, bubble))
 
 ax.legend(artists, sources, fontsize=18)
-ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
+ax.set_title("Jan 2017 - May 2019 / Global / GLOBE Clouds\n"
              "Locations of observations whose elevations lie outside the range -300m to 6000m",
              fontdict={"fontsize": 18})
 plt.tight_layout()

@@ -70,7 +70,7 @@ ax = plotters.plot_annotated_heatmap(population_winter, geos_labels, globe_label
                                      figsize=(6, 8))
 ax.set_xlabel("GEOS total cloud cover")
 ax.set_ylabel("GLOBE total cloud cover")
-ax.set_title("Dec 2017 - Jan 2018 global GLOBE vs GEOS\n"
+ax.set_title("Dec 2017 - Jan 2018 / Global / GLOBE Clouds vs GEOS\n"
              "Total cloud cover")
 plt.tight_layout()
 plt.savefig("img/S017_Dec2017-Jan2018_global_GLOBE-SCvGEOS_coincidence_total-cloud-cover.png")
@@ -90,7 +90,7 @@ ax = plotters.plot_annotated_heatmap(columnwise_mean_winter, geos_labels, globe_
                                      figsize=(6, 8), labels=columnwise_labels_winter)
 ax.set_xlabel("GEOS total cloud cover")
 ax.set_ylabel("GLOBE total cloud cover")
-ax.set_title("Dec 2017 - Jan 2018 global GLOBE vs GEOS\n"
+ax.set_title("Dec 2017 - Jan 2018 / Global / GLOBE Clouds vs GEOS\n"
              "Total cloud cover (columnwise proportions)")
 plt.tight_layout()
 plt.savefig("img/S017_Dec2017-Jan2018_global_GLOBE-SCvGEOS_coincidence_total-cloud-cover-columnwise.png")
@@ -109,7 +109,7 @@ ax = plotters.plot_annotated_heatmap(rowwise_mean_winter, geos_labels, globe_lab
                                      figsize=(6, 8), labels=rowwise_labels_winter)
 ax.set_xlabel("GEOS total cloud cover")
 ax.set_ylabel("GLOBE total cloud cover")
-ax.set_title("Dec 2017 - Jan 2018 global GLOBE vs GEOS\n"
+ax.set_title("Dec 2017 - Jan 2018 / Global / GLOBE Clouds vs GEOS\n"
              "Total cloud cover (rowwise proportions)")
 plt.tight_layout()
 plt.savefig("img/S017_Dec2017-Jan2018_global_GLOBE-SCvGEOS_coincidence_total-cloud-cover-rowwise.png")
@@ -120,7 +120,7 @@ ax = plotters.plot_annotated_heatmap(population_summer, geos_labels, globe_label
                                      figsize=(6, 8))
 ax.set_xlabel("GEOS total cloud cover")
 ax.set_ylabel("GLOBE total cloud cover")
-ax.set_title("Jun 2018 - Jul 2018 global GLOBE vs GEOS\n"
+ax.set_title("Jun 2018 - Jul 2018 / Global / GLOBE Clouds vs GEOS\n"
              "Total cloud cover")
 plt.tight_layout()
 plt.savefig("img/S017_Jun2018-Jul2018_global_GLOBE-SCvGEOS_coincidence_total-cloud-cover.png")
@@ -140,7 +140,7 @@ ax = plotters.plot_annotated_heatmap(columnwise_mean_summer, geos_labels, globe_
                                      figsize=(6, 8), labels=columnwise_labels_summer)
 ax.set_xlabel("GEOS total cloud cover")
 ax.set_ylabel("GLOBE total cloud cover")
-ax.set_title("Jun 2018 - Jul 2018 global GLOBE vs GEOS\n"
+ax.set_title("Jun 2018 - Jul 2018 / Global / GLOBE Clouds vs GEOS\n"
              "Total cloud cover (columnwise proportions)")
 plt.tight_layout()
 plt.savefig("img/S017_Jun2018-Jul2018_global_GLOBE-SCvGEOS_coincidence_total-cloud-cover-columnwise.png")
@@ -159,7 +159,7 @@ ax = plotters.plot_annotated_heatmap(rowwise_mean_summer, geos_labels, globe_lab
                                      figsize=(6, 8), labels=rowwise_labels_summer)
 ax.set_xlabel("GEOS total cloud cover")
 ax.set_ylabel("GLOBE total cloud cover")
-ax.set_title("Jun 2018 - Jul 2018 global GLOBE vs GEOS\n"
+ax.set_title("Jun 2018 - Jul 2018 / Global / GLOBE Clouds vs GEOS\n"
              "Total cloud cover (rowwise proportions)")
 plt.tight_layout()
 plt.savefig("img/S017_Jun2018-Jul2018_global_GLOBE-SCvGEOS_coincidence_total-cloud-cover-rowwise.png")
@@ -171,7 +171,7 @@ ax = plotters.plot_annotated_heatmap(population_summer - population_winter, geos
 ax.set_xlabel("GEOS total cloud cover")
 ax.set_ylabel("GLOBE total cloud cover")
 ax.set_title("(Jun 2018 - Jul 2018) minus (Dec 2017 - Jan 2018)\n"
-             "global GLOBE vs GEOS\n"
+             "Global / GLOBE Clouds vs GEOS\n"
              "Total cloud cover")
 plt.tight_layout()
 plt.savefig("img/S017_Jun2018-Jul2018minusDec2018-Jan2018_global_GLOBE-SCvGEOS_coincidence_total-cloud-cover.png")
@@ -191,7 +191,7 @@ ax = plotters.plot_annotated_heatmap(columnwise_mean_diff, geos_labels, globe_la
 ax.set_xlabel("GEOS total cloud cover")
 ax.set_ylabel("GLOBE total cloud cover")
 ax.set_title("(Jun 2018 - Jul 2018) minus (Dec 2017 - Jan 2018)\n"
-             "global GLOBE vs GEOS\n"
+             "Global / GLOBE Clouds vs GEOS\n"
              "Total cloud cover (columnwise proportions)")
 plt.tight_layout()
 plt.savefig("img/S017_Jun2018-Jul2018minusDec2018-Jan2018_global_GLOBE-SCvGEOS_coincidence_total-cloud-cover-columnwise"
@@ -213,7 +213,7 @@ ax = plotters.plot_annotated_heatmap(rowwise_mean_diff, geos_labels, globe_label
 ax.set_xlabel("GEOS total cloud cover")
 ax.set_ylabel("GLOBE total cloud cover")
 ax.set_title("(Jun 2018 - Jul 2018) minus (Dec 2017 - Jan 2018)\n"
-             "global GLOBE vs GEOS\n"
+             "Global / GLOBE Clouds vs GEOS\n"
              "Total cloud cover (rowwise proportions)")
 plt.tight_layout()
 plt.savefig("img/S017_Jun2018-Jul2018minusDec2018-Jan2018_global_GLOBE-SCvGEOS_coincidence_total-cloud-cover-rowwise.png")

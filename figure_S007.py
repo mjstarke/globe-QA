@@ -24,7 +24,7 @@ ax.grid(axis="y")
 ax.text(date(2017, 8, 26), 1080, "North\nAmerican\nEclipse")
 ax.text(date(2018, 5, 5), 1080, "NASA GLOBE\nClouds Data\nChallenge")
 
-ax.set_title("Jan 2017 - May 2019 / Global / GLOBE clouds\n"
+ax.set_title("Jan 2017 - May 2019 / Global / GLOBE Clouds\n"
              "Number of observations per day")
 
 plt.tight_layout()

@@ -40,7 +40,8 @@ ax.pie(vals,
        labels=["{} ({:.2%})".format(k, v / total) for k, v in zip(labels, vals)],
        labeldistance=None)  # This removes the labels from the slices.
 ax.legend()
-ax.set_title("Jan 2018 - Dec 2018 global GLOBE\nFrequency of satellite matches")
+ax.set_title("Jan 2018 - Dec 2018 / Global / GLOBE Clouds\n"
+             "Frequency of satellite matches")
 
 plt.tight_layout()
 plt.savefig("img/S004_Jan2018-Dec2018_global_GLOBE_pie_satellite-matches.png")

@@ -31,8 +31,8 @@ artists = [
 
 ax.legend(artists, ["land_covers", "tree_heights", "mosquito_habitat_mapper"], loc="lower left", fontsize=18)
 
-ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
-             "Locations of GLOBE observations over water given 1:50m NaturalEarth geometry",
+ax.set_title("Jan 2017 - May 2019 / Global / GLOBE Land Cover, Mosquito Habitat Mapper, Tree Height\n"
+             "Locations of observations over water given 1:50m NaturalEarth geometry",
              fontdict={"fontsize": 18})
 
 plt.tight_layout()

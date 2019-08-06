@@ -17,7 +17,8 @@ ax.pie([vals[k] for k in keys],
        labels=["{} ({:.2%})".format(k, vals[k] / total) for k in keys],
        labeldistance=None,  # This removes the labels from the pie slices.
        colors=[source_color[k] for k in keys])
-ax.set_title("Jan 2017 - May 2019 / Global / GLOBE clouds\nSources of observations")
+ax.set_title("Jan 2017 - May 2019 / Global / GLOBE Clouds\n"
+             "Sources of observations")
 
 plt.tight_layout()
 plt.savefig("img/S005_Jan2019-May2019_global_GLOBE-SC_pie_data-sources-no-legend.png")

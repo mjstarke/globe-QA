@@ -124,12 +124,10 @@ for loop in loops:
                             "Obscured observations", "Standard error"], loc="upper center")
         ax.grid(axis="y")
 
-        ax.set_title("{} global GLOBE, GEOS, Aqua, Terra, {}\n"
+        ax.set_title("{} / Global / GLOBE Clouds, GEOS, Aqua, Terra, {}\n"
                      "Cloud cover for all observations matched with {} and either Aqua or Terra\n"
-                     "({} observations)\n"
-                     "Standard errors estimated with {} random no-replacement samples of {} observations each"
-                     "".format(date_range, geostationary_satellite, geostationary_satellite, len(obs), num_samples,
-                               len(sample)))
+                     "({} observations)"
+                     "".format(date_range, geostationary_satellite, geostationary_satellite, len(obs)))
         plt.tight_layout()
         plt.savefig("img/S020_{}_global_GLOBE-SCvsGEOSvsAquaTerravs{}_histogram_cloud-cover.png".format(
             date_range.replace(" ", ""), geostationary_satellite))

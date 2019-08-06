@@ -5,7 +5,6 @@ num_samples = 1000
 lons = np.arange(-180, 180.01, 1.25)
 lats = np.arange(-90., 90.1, 1.00)
 
-
 # Parse data
 obs_all = tools.parse_csv(fpSC_Dec)
 obs_all.extend(tools.parse_csv(fpSC_2018))
@@ -32,7 +31,6 @@ for loop in loops:
     sample_average_heatmaps = []
 
     for _ in tqdm(range(num_samples), desc="Sampling observations"):
-
         sample = np.random.choice(obs, int(len(obs) / 20), False)
 
         # Construct lists used for scattering.
@@ -87,11 +85,11 @@ for loop in loops:
     ax.set_ylim(15, 62)
     pcm = ax.pcolormesh(xx, yy, pop_average_heatmap.T, cmap="bwr", vmin=-1.0, vmax=1.0)
 
-    ax.set_title(date_range + " regional GLOBE minus GEOS\n"
-                 "Average cloud cover discrepancy",
+    ax.set_title(date_range + " / CONUS, Europe + Middle East / GLOBE Clouds minus GEOS\n"
+                              "Average cloud cover discrepancy",
                  fontdict={"fontsize": 18})
 
-    ax = fig.add_axes([0.86, 0.02, 0.12, 0.96])
+    ax = fig.add_axes([0.86, 0.02, 0.12, 0.92])
     for s in ["left", "top", "right", "bottom"]:
         ax.spines[s].set_visible(False)
     ax.set_xticks([])
@@ -102,7 +100,6 @@ for loop in loops:
     plt.tight_layout()
     plt.savefig("img/S016_{}_CONUS-Europe-MiddleEast_GLOBE-SCvGEOS_heatmap_average-discrepancy.png".format(
         date_range.replace(" ", "")))
-
 
     # Plot SEM difference.
     fig = plt.figure(figsize=(10.5, 9))
@@ -122,11 +119,11 @@ for loop in loops:
     ax.set_ylim(15, 62)
     pcm = ax.pcolormesh(xx, yy, average_heatmap_sem.T, cmap="Greens", vmin=0.0, vmax=0.05)
 
-    ax.set_title(date_range + " regional GLOBE minus GEOS\n"
-                 "Standard error of the average cloud cover discrepancy",
+    ax.set_title(date_range + " / CONUS, Europe + Middle East / GLOBE Clouds minus GEOS\n"
+                              "Standard error of the average cloud cover discrepancy",
                  fontdict={"fontsize": 18})
 
-    ax = fig.add_axes([0.86, 0.02, 0.12, 0.96])
+    ax = fig.add_axes([0.86, 0.02, 0.12, 0.92])
     for s in ["left", "top", "right", "bottom"]:
         ax.spines[s].set_visible(False)
     ax.set_xticks([])

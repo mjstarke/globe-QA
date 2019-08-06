@@ -25,7 +25,7 @@ artists = [
     ax.axvline(18*60, ls="-.", lw=2, c="black"),
 ]
 
-ax.set_title("Jan 2017 - May 2019 / Global / GLOBE clouds\n"
+ax.set_title("Jan 2017 - May 2019 / Global / GLOBE Clouds\n"
              "Temporal distribution of observations")
 
 plt.tight_layout()
