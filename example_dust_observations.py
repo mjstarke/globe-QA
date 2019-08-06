@@ -3,9 +3,9 @@ from globeqa import plotters, tools
 import matplotlib.pyplot as plt
 import numpy as np
 
-# Set endpoints of data to collect - in this case, the last week (including today).
+# Set endpoints of data to collect - in this case, the last 30 days (including today).
 # We need both endpoints as date and datetime objects because, obviously, the two types cannot be compared.
-graph_start_date = datetime.today().date() - timedelta(days=6)
+graph_start_date = datetime.today().date() - timedelta(days=29)
 graph_end_date = datetime.today().date()
 graph_start_datetime = datetime.combine(graph_start_date, datetime.min.time())
 graph_end_datetime = datetime.combine(graph_end_date, datetime.max.time())
