@@ -131,7 +131,7 @@ for loop in loops:
                      "".format(date_range, geostationary_satellite, geostationary_satellite, len(obs), num_samples,
                                len(sample)))
         plt.tight_layout()
-        plt.savefig("img/S020_{}_global_GLOBEvsGEOSvsAquaTerravs{}_histogram_cloud_cover.png".format(
+        plt.savefig("img/S020_{}_global_GLOBE-SCvsGEOSvsAquaTerravs{}_histogram_cloud-cover.png".format(
             date_range.replace(" ", ""), geostationary_satellite))
 
 

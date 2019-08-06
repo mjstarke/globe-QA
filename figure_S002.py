@@ -30,9 +30,9 @@ ax.pie([vals[k] for k in vals], labels=["{} ({:.2%})".format(k, v / total) for k
 ax.set_title("Jan 2017 - May 2019 / Global / GLOBE clouds\nNumber of photos in each observation")
 
 plt.tight_layout()
-plt.savefig("img/S002_Jan2017-May2019_global_GLOBE-SC_pie_concurrent_photos_no_legend.png")
+plt.savefig("img/S002_Jan2017-May2019_global_GLOBE-SC_pie_concurrent-photos-no-legend.png")
 ax.legend()
-plt.savefig("img/S002_Jan2017-May2019_global_GLOBE-SC_pie_concurrent_photos.png")
+plt.savefig("img/S002_Jan2017-May2019_global_GLOBE-SC_pie_concurrent-photos.png")
 
 
 total = sum(vals_2[k] for k in vals_2)
@@ -46,6 +46,6 @@ ax.set_title("Jan 2017 - May 2019 / Global / GLOBE clouds\n"
              "Direction omitted when 5 photos are taken")
 
 plt.tight_layout()
-plt.savefig("img/S002_Jan2017-May2019_global_GLOBE-SC_pie_missing_sixth_photo_no_legend.png")
+plt.savefig("img/S002_Jan2017-May2019_global_GLOBE-SC_pie_missing-sixth-photo-no-legend.png")
 ax.legend()
 plt.savefig("img/S002_Jan2017-May2019_global_GLOBE-SC_pie_missing_sixth_photo.png")

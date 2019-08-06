@@ -83,5 +83,5 @@ for loop in [[Dataset(fpGEOS_Dec), Dataset(fpGEOS_Jan), "Dec 2017 - Jan 2018"],
                  "Standard errors estimated with {} random no-replacement samples of {} observations each"
                  "".format(date_range, latitude_bin_width, num_samples, len(sample)), fontdict={'fontsize': 18})
     plt.tight_layout()
-    plt.savefig("img/S021_{}_global_GLOBEvsGEOS_bar_average_discrepancy_vs_latitude.png".format(
+    plt.savefig("img/S021_{}_global_GLOBE-SCvsGEOS_bar_average-discrepancy-vs-latitude.png".format(
         date_range.replace(" ", "")))

@@ -43,4 +43,4 @@ ax.legend()
 ax.set_title("Jan 2018 - Dec 2018 global GLOBE\nFrequency of satellite matches")
 
 plt.tight_layout()
-plt.savefig("img/S004_Jan2018-Dec2018_global_GLOBE_pie_satellite_matches.png")
+plt.savefig("img/S004_Jan2018-Dec2018_global_GLOBE_pie_satellite-matches.png")

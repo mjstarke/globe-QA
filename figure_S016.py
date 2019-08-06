@@ -100,7 +100,8 @@ for loop in loops:
     cb.ax.tick_params(labelsize=18)
 
     plt.tight_layout()
-    plt.savefig("img/S016_{}_regional_GLOBEvGEOS_heatmap_average_discrepancy.png".format(date_range.replace(" ", "")))
+    plt.savefig("img/S016_{}_CONUS-Europe-MiddleEast_GLOBE-SCvGEOS_heatmap_average-discrepancy.png".format(
+        date_range.replace(" ", "")))
 
 
     # Plot SEM difference.
@@ -134,5 +135,5 @@ for loop in loops:
     cb.ax.tick_params(labelsize=18)
 
     plt.tight_layout()
-    plt.savefig("img/S016_{}_regional_GLOBEvGEOS_heatmap_stderr_average_discrepancy.png".format(date_range.replace(" ", "")))
-
+    plt.savefig("img/S016_{}_CONUS-Europe-MiddleEast_GLOBE-SCvGEOS_heatmap_stderr-average-discrepancy.png".format(
+        date_range.replace(" ", "")))

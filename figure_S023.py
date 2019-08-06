@@ -33,4 +33,4 @@ ax.add_feature(states_provinces, edgecolor="#444444", linewidth=1)
 
 ax.set_title("Comparison of GEOS output resolution (orange grid)\nand 40-km satellite averaging radius (cyan circle)")
 plt.tight_layout()
-plt.savefig("img/S023_none_none_none_schematic_resolution_comparison.png")
+plt.savefig("img/S023_none_none_none_schematic_resolution-comparison.png")

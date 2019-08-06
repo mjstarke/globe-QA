@@ -36,4 +36,4 @@ ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
              fontdict={"fontsize": 18})
 
 plt.tight_layout()
-plt.savefig("img/S010_Jan2017-May2019_global_GLOBE_heatmap_observation_distribution.png")
+plt.savefig("img/S010_Jan2017-May2019_global_GLOBE-SC_heatmap_observation-distribution.png")

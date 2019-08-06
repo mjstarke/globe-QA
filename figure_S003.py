@@ -18,6 +18,6 @@ ax.pie([vals[k] for k in keys],  # Slices ordered by cloud cover category.
 ax.set_title("Jan 2017 - May 2019 / Global / GLOBE Clouds\nFrequency of each cloud cover category")
 
 plt.tight_layout()
-plt.savefig("img/S003_Jan2017-May2019_global_GLOBE-SC_pie_cloud_cover.png")
+plt.savefig("img/S003_Jan2017-May2019_global_GLOBE-SC_pie_cloud-cover-no-legend.png")
 ax.legend()
-plt.savefig("img/S003_Jan2017-May2019_global_GLOBE-SC_pie_cloud_cover_no_legend.png")
+plt.savefig("img/S003_Jan2017-May2019_global_GLOBE-SC_pie_cloud-cover.png")

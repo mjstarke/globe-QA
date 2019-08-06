@@ -38,4 +38,4 @@ ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
              fontdict={"fontsize": 18})
 
 plt.tight_layout()
-plt.savefig("img/S011_Jan2017-May2019_global_GLOBE_heatmap_observations_over_water.png")
+plt.savefig("img/S011_Jan2017-May2019_global_GLOBE-SC_heatmap_observations-over-water.png")

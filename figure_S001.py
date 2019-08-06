@@ -25,4 +25,4 @@ ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
              "Number of obscurations for all observations with 'obscured' cloud cover")
 
 plt.tight_layout()
-plt.savefig("img/S001_Jan2017-May2019_global_GLOBE_bar_concurrent_obscurations.png")
+plt.savefig("img/S001_Jan2017-May2019_global_GLOBE-SC_bar_concurrent-obscurations.png")

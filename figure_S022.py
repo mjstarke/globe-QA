@@ -83,4 +83,4 @@ ax.grid(axis="y")
 ax.set_title("01 - 05 Aug 2016 CONUS GEOS\n"
              "Distribution of cloud cover at various rebinned resolutions")
 plt.tight_layout()
-plt.savefig("img/S022_01Aug2016-05Aug2016_CONUS_GEOS_cloud_cover_vs_resolution.png")
+plt.savefig("img/S022_01Aug2016-05Aug2016_CONUS_GEOS-3km_bar_cloud-cover-vs-resolution.png")

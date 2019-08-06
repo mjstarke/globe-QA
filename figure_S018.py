@@ -23,7 +23,7 @@ ax.set_xlim(graph_start, graph_end)
 ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
              "Number of observations reporting dust per day")
 plt.tight_layout()
-plt.savefig("img/S018_Jan2017-May2019_global_GLOBE_timeseries_dust_observations.png")
+plt.savefig("img/S018_Jan2017-May2019_global_GLOBE-SC_timeseries_dust-observations.png")
 
 
 ax = plotters.make_pc_fig()
@@ -34,4 +34,4 @@ ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
              "Locations of observations reporting dust",
              fontdict={"fontsize": 18})
 plt.tight_layout()
-plt.savefig("img/S018_Jan2017-May2019_global_GLOBE_scattermap_dust_observations.png")
+plt.savefig("img/S018_Jan2017-May2019_global_GLOBE-SC_scattermap_dust-observations.png")

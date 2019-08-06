@@ -1,0 +1,57 @@
+All figures should be named according to the format:
+
+    SCRIPT_DATES_REGION_SOURCE_TYPE_DESCRIPTION.png
+
+and should have titles formatted according to:
+
+    DATES / REGION / SOURCE
+    LONG_DESCRIPTION
+
+where:
+
+    SCRIPT is a reference to the script that created the image.  For instance, S007 refers to figure_S007.py.  Examples:
+        S001
+        S002
+        ...
+
+    DATES is the range of dates for which the figure is valid.  The start date need not include the day unless the range
+    does not begin on the first of that month, and the end date need not include the day unless the range does not end
+    on the last day of that month.  Months should be given by 3-letter abbreviations.  Examples:
+        Jan2017-May2019
+        Dec2017-Jan2018
+        01Aug2016-05Aug2016
+
+    REGION is the geographic area for which the figure is valid.  Examples:
+        global
+        CONUS-Europe-MiddleEast
+        none
+
+    SOURCE is the source of the data presented in the figure.  Examples:
+        GLOBE-SC          (sky conditions)
+        GLOBE-LC-MHM-TH   (land covers, mosquito habitat mapper, and tree heights)
+        GLOBEvGEOS        (GLOBE compared to [vs] GEOS)
+        GLOBEvGEOSvAquaTerravHIMWARI-8
+
+    TYPE is the type of figure.  Examples:
+        bar               (non-histogram)
+        coincidence       (pseudo-2D histogram)
+        heatmap
+        histogram
+        pie
+        scattermap
+        schematic
+        timeseries
+
+    DESCRIPTION is a short sequence of keywords describing the figure generally.  Examples:
+        flag-frequency
+        cloud-cover-vs-resolution
+        cloud-cover
+
+    LONG_DESCRIPTION is a more complete description of the figure.  May include number of observations and parameters
+    for confidence interval generation.  Examples (corresponding to the DESCRIPTION examples):
+        Frequency of quality control flags
+        Distribution of cloud cover at various rebinned resolutions
+            Cloud cover for all observations matched with GOES-16 and either Aqua or Terra
+            (162 observations)
+            Standard errors estimated with 1000 random no-replacement samples of 8 observations each
+

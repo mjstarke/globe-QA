@@ -20,7 +20,7 @@ ax.set_ylabel("GLOBE total cloud cover")
 ax.set_title("Jan 2018 - Dec 2018 global GLOBE\n"
              "GLOBE vs Aqua total cloud cover")
 plt.tight_layout()
-plt.savefig("img/S014_Jan2018-Dec2018_global_GLOBEvAqua_coincidence_cloud_cover.png")
+plt.savefig("img/S014_Jan2018-Dec2018_global_GLOBE-SCvAqua_coincidence_cloud-cover.png")
 
 ax = plotters.plot_annotated_heatmap(data / data.sum(axis=0, keepdims=True), satellite_labels, globe_labels, text_formatter="{:.2%}", figsize=(6, 7), text_color_threshold=0.5)
 ax.set_xlabel("Aqua total cloud cover")
@@ -28,7 +28,7 @@ ax.set_ylabel("GLOBE total cloud cover")
 ax.set_title("Jan 2018 - Dec 2018 global GLOBE\n"
              "GLOBE vs Aqua total cloud cover (rowwise proportions)")
 plt.tight_layout()
-plt.savefig("img/S014_Jan2018-Dec2018_global_GLOBEvAqua_coincidence_cloud_cover_rowwise.png")
+plt.savefig("img/S014_Jan2018-Dec2018_global_GLOBE-SCvAqua_coincidence_cloud-cover-rowwise.png")
 
 ax = plotters.plot_annotated_heatmap(data / data.sum(axis=1, keepdims=True), satellite_labels, globe_labels, text_formatter="{:.2%}", figsize=(6, 7), text_color_threshold=0.5)
 ax.set_xlabel("Aqua total cloud cover")
@@ -36,7 +36,7 @@ ax.set_ylabel("GLOBE total cloud cover")
 ax.set_title("Jan 2018 - Dec 2018 global GLOBE\n"
              "GLOBE vs Aqua total cloud cover (columnwise proportions)")
 plt.tight_layout()
-plt.savefig("img/S014_Jan2018-Dec2018_global_GLOBEvAqua_coincidence_cloud_cover_columnwise.png")
+plt.savefig("img/S014_Jan2018-Dec2018_global_GLOBE-SCvAqua_coincidence_cloud-cover-columnwise.png")
 
 
 data = np.zeros((6, 8))
@@ -51,7 +51,7 @@ ax.set_ylabel("GLOBE total cloud cover")
 ax.set_title("Jan 2018 - Dec 2018 global GLOBE\n"
              "GLOBE vs Terra total cloud cover")
 plt.tight_layout()
-plt.savefig("img/S014_Jan2018-Dec2018_global_GLOBEvTerra_coincidence_cloud_cover.png")
+plt.savefig("img/S014_Jan2018-Dec2018_global_GLOBE-SCvTerra_coincidence_cloud-cover.png")
 
 ax = plotters.plot_annotated_heatmap(data / data.sum(axis=0, keepdims=True), satellite_labels, globe_labels, text_formatter="{:.2%}", figsize=(6, 7), text_color_threshold=0.5)
 ax.set_xlabel("Terra total cloud cover")
@@ -59,7 +59,7 @@ ax.set_ylabel("GLOBE total cloud cover")
 ax.set_title("Jan 2018 - Dec 2018 global GLOBE\n"
              "GLOBE vs Terra total cloud cover (rowwise proportions)")
 plt.tight_layout()
-plt.savefig("img/S014_Jan2018-Dec2018_global_GLOBEvTerra_coincidence_cloud_cover_rowwise.png")
+plt.savefig("img/S014_Jan2018-Dec2018_global_GLOBE-SCvTerra_coincidence_cloud-cover-rowwise.png")
 
 ax = plotters.plot_annotated_heatmap(data / data.sum(axis=1, keepdims=True), satellite_labels, globe_labels, text_formatter="{:.2%}", figsize=(6, 7), text_color_threshold=0.5)
 ax.set_xlabel("Terra total cloud cover")
@@ -67,7 +67,7 @@ ax.set_ylabel("GLOBE total cloud cover")
 ax.set_title("Jan 2018 - Dec 2018 global GLOBE\n"
              "GLOBE vs Terra total cloud cover (columnwise proportions)")
 plt.tight_layout()
-plt.savefig("img/S014_Jan2018-Dec2018_global_GLOBEvTerra_coincidence_cloud_cover_columnwise.png")
+plt.savefig("img/S014_Jan2018-Dec2018_global_GLOBE-SCvTerra_coincidence_cloud-cover-columnwise.png")
 
 
 data = np.zeros((6, 8))
@@ -82,7 +82,7 @@ ax.set_ylabel("GLOBE total cloud cover")
 ax.set_title("Jan 2018 - Dec 2018 global GLOBE\n"
              "GLOBE vs geostationary total cloud cover")
 plt.tight_layout()
-plt.savefig("img/S014_Jan2018-Dec2018_global_GLOBEvGeostationary_coincidence_cloud_cover.png")
+plt.savefig("img/S014_Jan2018-Dec2018_global_GLOBE-SCvGeostationary_coincidence_cloud-cover.png")
 
 ax = plotters.plot_annotated_heatmap(data / data.sum(axis=0, keepdims=True), satellite_labels, globe_labels, text_formatter="{:.2%}", figsize=(6, 7), text_color_threshold=0.5)
 ax.set_xlabel("GEO total cloud cover")
@@ -90,7 +90,7 @@ ax.set_ylabel("GLOBE total cloud cover")
 ax.set_title("Jan 2018 - Dec 2018 global GLOBE\n"
              "GLOBE vs geostationary total cloud cover (rowwise proportions)")
 plt.tight_layout()
-plt.savefig("img/S014_Jan2018-Dec2018_global_GLOBEvGeostationary_coincidence_cloud_cover_rowwise.png")
+plt.savefig("img/S014_Jan2018-Dec2018_global_GLOBE-SCvGeostationary_coincidence_cloud-cover-rowwise.png")
 
 ax = plotters.plot_annotated_heatmap(data / data.sum(axis=1, keepdims=True), satellite_labels, globe_labels, text_formatter="{:.2%}", figsize=(6, 7), text_color_threshold=0.5)
 ax.set_xlabel("GEO total cloud cover")
@@ -98,4 +98,4 @@ ax.set_ylabel("GLOBE total cloud cover")
 ax.set_title("Jan 2018 - Dec 2018 global GLOBE\n"
              "GLOBE vs geostationary total cloud cover (columnwise proportions)")
 plt.tight_layout()
-plt.savefig("img/S014_Jan2018-Dec2018_global_GLOBEvGeostationary_coincidence_cloud_cover_columnwise.png")
+plt.savefig("img/S014_Jan2018-Dec2018_global_GLOBE-SCvGeostationary_coincidence_cloud-cover-columnwise.png")

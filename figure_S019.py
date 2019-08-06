@@ -133,4 +133,5 @@ for loop in loops:
 
     ax.set_title("{} global GLOBE, GEOS, Aqua, Terra, Geostationaries\nDistribution of cloud cover".format(date_range))
     plt.tight_layout()
-    plt.savefig("img/S019_{}_global_GLOBEvsGEOSvsAquavsTerravsGeostationaries_histogram_cloud_cover.png".format(date_range.replace(" ", "")))
+    plt.savefig("img/S019_{}_global_GLOBE-SCvsGEOSvsAquavsTerravsGeostationaries_histogram_cloud-cover.png".format(
+        date_range.replace(" ", "")))

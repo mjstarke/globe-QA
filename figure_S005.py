@@ -20,6 +20,6 @@ ax.pie([vals[k] for k in keys],
 ax.set_title("Jan 2017 - May 2019 / Global / GLOBE clouds\nSources of observations")
 
 plt.tight_layout()
-plt.savefig("img/S005_Jan2019-May2019_global_GLOBE_pie_data_sources.png")
+plt.savefig("img/S005_Jan2019-May2019_global_GLOBE-SC_pie_data-sources-no-legend.png")
 ax.legend()
-plt.savefig("img/S005_Jan2019-May2019_global_GLOBE-SC_pie_data_sources_no_legend.png")
+plt.savefig("img/S005_Jan2019-May2019_global_GLOBE-SC_pie_data-sources.png")
