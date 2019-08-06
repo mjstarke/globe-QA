@@ -35,8 +35,7 @@ ax.bar(dates[:-1], ts)
 ax.set_xlim(graph_start_date, graph_end_date)
 ax.set_xlabel("Date (UTC)")
 ax.set_ylabel("Dust observations per day")
-ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
-             "Number of observations reporting dust per day")
+ax.set_title("Number of observations reporting dust per day")
 plt.tight_layout()
 plt.show()
 
@@ -45,8 +44,7 @@ plt.show()
 ax = plotters.make_pc_fig()
 plotters.plot_ob_scatter(obs, ax, c="brown", s=40)
 plotters.plot_ob_scatter(obs, ax, c="brown", s=1600, alpha=0.02)
-ax.set_title("Jan 2017 - May 2019 global GLOBE\n"
-             "Locations of observations reporting dust",
+ax.set_title("Locations of observations reporting dust",
              fontdict={"fontsize": 18})
 plt.tight_layout()
 plt.show()
