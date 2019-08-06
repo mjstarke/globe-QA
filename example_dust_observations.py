@@ -32,7 +32,7 @@ ts = np.histogram([ob.measured_dt for ob in obs], dates)[0]
 fig = plt.figure(figsize=(10, 3.5))
 ax = fig.add_subplot(111)
 ax.bar(dates[:-1], ts)
-ax.set_xlim(graph_start_date, graph_end_date)
+ax.set_xlim(graph_start_datetime - timedelta(days=0.5), graph_end_datetime + timedelta(days=0.5))
 ax.set_xlabel("Date (UTC)")
 ax.set_ylabel("Dust observations per day")
 ax.set_title("Number of observations reporting dust per day")
