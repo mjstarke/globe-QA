@@ -55,6 +55,5 @@ Variables have the following meanings:
     examples):
         Frequency of quality control flags
         Distribution of cloud cover at various rebinned resolutions
-            Cloud cover for all observations matched with GOES-16 and either Aqua or Terra
-            (162 observations)
+        Cloud cover for all observations matched with GOES-16 and either Aqua or Terra (162 observations)
 
