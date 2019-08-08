@@ -1,6 +1,7 @@
 from figure_common import *
 
-obs = tools.parse_json(fpSC)
+fp = tools.download_from_api(["sky_conditions"], datetime(2017, 1, 1), datetime(2019, 5, 31))
+obs = tools.parse_json(fp)
 
 # Create a list of dates from 2017 Jan 01 through 2019 May 31.
 day = date(2017, 1, 1)

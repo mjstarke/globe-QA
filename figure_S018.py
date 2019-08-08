@@ -3,7 +3,8 @@ from figure_common import *
 graph_start = datetime(2017, 1, 1)
 graph_end = datetime(2019, 5, 31)
 
-obs = tools.parse_json(fpSC)
+fp = tools.download_from_api(["sky_conditions"], datetime(2017, 1, 1), datetime(2019, 5, 31))
+obs = tools.parse_json(fp)
 obs = [ob for ob in obs if "Dust" in ob]
 
 dates = []

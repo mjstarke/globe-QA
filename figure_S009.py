@@ -1,6 +1,7 @@
 from figure_common import *
 
-obs = tools.parse_json(fpSC)
+fp = tools.download_from_api(["sky_conditions"], datetime(2017, 1, 1), datetime(2019, 5, 31))
+obs = tools.parse_json(fp)
 obs = [ob for ob in obs if not (-300 <= ob.elevation <= 6000)]
 
 ax = plotters.make_pc_fig(figsize=(15.5, 9))

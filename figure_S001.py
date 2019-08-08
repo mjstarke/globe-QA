@@ -1,6 +1,7 @@
 from figure_common import *
 
-obs = tools.parse_json(fpSC)
+fp = tools.download_from_api(["sky_conditions"], datetime(2017, 1, 1), datetime(2019, 5, 31))
+obs = tools.parse_json(fp)
 
 # Histogram observations by number of obscurations.
 histo, xedges = np.histogram([len(ob.obscurations) for ob in obs if ob.tcc == "obscured"], bins=np.arange(-0.5, 11.5, 1.))

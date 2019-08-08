@@ -2,7 +2,8 @@ from figure_common import *
 
 
 # Get obs and filter to only those outside of the reasonable elevation range.
-obs = tools.parse_json(fpSC)
+fp = tools.download_from_api(["sky_conditions"], datetime(2017, 1, 1), datetime(2019, 5, 31))
+obs = tools.parse_json(fp)
 obs = [ob for ob in obs if not (-300 <= ob.elevation <= 6000)]
 
 sources = ["GLOBE Observer App", "GLOBE Data Entry App", "GLOBE Data Entry Web Forms"]

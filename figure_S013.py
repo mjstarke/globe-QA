@@ -1,6 +1,7 @@
 from figure_common import *
 
-obs = tools.parse_json(fpSC)
+fp = tools.download_from_api(["sky_conditions"], datetime(2017, 1, 1), datetime(2019, 5, 31))
+obs = tools.parse_json(fp)
 
 times = [60 * ob.measured_dt.hour + ob.measured_dt.minute for ob in obs]
 

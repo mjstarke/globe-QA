@@ -1,7 +1,8 @@
 from globeqa import *
 from figure_common import *
 
-obs = tools.parse_json(fpSC)
+fp = tools.download_from_api(["sky_conditions"], datetime(2017, 1, 1), datetime(2019, 5, 31))
+obs = tools.parse_json(fp)
 tools.do_quality_check(obs)
 obsER = tools.filter_by_flag(obs, {"ER": True})
 
