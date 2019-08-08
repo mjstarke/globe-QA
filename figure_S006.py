@@ -20,7 +20,9 @@ source_counts = dict()
 # This dictionary will contain a list of all the counts for a given flag from each source.
 # Since the key for a given source may not exist, we check specifically for that and set to 0 when
 # a key doesn't exist.
-for source_name in source_names:
+for source_name in ['GLOBE Observer App', 'GLOBE Data Entry Web Forms', 'GLOBE Data Entry App',
+                    'GLOBE Data Entry Site Definition', 'GLOBE Email Data Entry', 'GLOBE EMDE SCOOL',
+                    'GLOBE Data Entry Legacy']:
     source_counts[source_name] = [
         flags2[flag][source_name] if source_name in flags2[flag] else 0 for flag in sorted(flags2.keys())
     ]

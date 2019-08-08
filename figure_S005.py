@@ -5,9 +5,8 @@ obs = tools.parse_json(fpSC)
 # Find frequency of all values for DataSource.
 vals = tools.find_all_values(obs, "DataSource")
 # Fix the order of the keys for later.
-keys = source_names
-# Remove Site Definition since that only applies to land covers.
-keys.remove('GLOBE Data Entry Site Definition')
+keys = ['GLOBE Observer App', 'GLOBE Data Entry Web Forms', 'GLOBE Data Entry App', 'GLOBE Email Data Entry',
+        'GLOBE EMDE SCOOL', 'GLOBE Data Entry Legacy']
 
 total = sum(vals[k] for k in vals)
 

@@ -52,16 +52,6 @@ fpGEOS_Jun = "/Users/mjstarke/Documents/GLOBE_B/x0037.CLDTOT.201806.nc4"
 fpGEOS_Jul = "/Users/mjstarke/Documents/GLOBE_B/x0037.CLDTOT.201807.nc4"
 fpGEOS_Aug = "/Users/mjstarke/Documents/GLOBE_B/x0037.CLDTOT.201808.nc4"
 
-source_color = {
-    "GLOBE Observer App": "purple",
-    "GLOBE Data Entry Web Forms": "#40e0d0",
-    "GLOBE Data Entry App": "#0055ee",
-    "GLOBE Data Entry Site Definition": "#44ff44",
-    "GLOBE Email Data Entry": "#ff4444",
-    "GLOBE EMDE SCOOL": "#555555",
-    "GLOBE Data Entry Legacy": "#ffff00",
-}
-
 std_colors = {
     "GLOBE Observer App": "purple",
     "GLOBE Data Entry Web Forms": "#40e0d0",
@@ -82,8 +72,6 @@ std_colors = {
     "METEOSAT-10": "#cc4444",
     "METEOSAT-11": "#cc4444",
 }
-
-source_names = list(source_color.keys())
 
 category_to_midpoint = dict(
     none=0.00,
