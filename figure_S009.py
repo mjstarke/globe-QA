@@ -10,8 +10,8 @@ artists = []
 
 for source in sources:
     theseObs = [ob for ob in obs if ob["DataSource"] == source]
-    dot = plotters.plot_ob_scatter(theseObs, ax, s=40, marker=".", color=source_color[source])
-    bubble = plotters.plot_ob_scatter(theseObs, ax, s=1600, marker=".", color=source_color[source], alpha=0.02)
+    dot = plotters.plot_ob_scatter(theseObs, ax, s=40, marker=".", color=std_colors[source])
+    bubble = plotters.plot_ob_scatter(theseObs, ax, s=1600, marker=".", color=std_colors[source], alpha=0.02)
     artists.append((dot, bubble))
 
 ax.legend(artists, sources, fontsize=18)

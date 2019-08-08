@@ -16,7 +16,7 @@ for source in sources:
     histo, bin_lefts = np.histogram(minutes, np.arange(0, 61, 1))
 
     artists.append(
-        ax.bar(bin_lefts[:-1], histo, align="edge", width=1, color=source_color[source], bottom=bottom)
+        ax.bar(bin_lefts[:-1], histo, align="edge", width=1, color=std_colors[source], bottom=bottom)
     )
 
     bottom += histo

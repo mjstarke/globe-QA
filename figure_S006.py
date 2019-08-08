@@ -31,7 +31,7 @@ ax = plotters.plot_stacked_bars(
     x=range(len(flags)),
     ys=y_array,
     labels=[k for k in source_counts],
-    colors=[source_color[k] for k in source_counts],
+    colors=[std_colors[k] for k in source_counts],
     figsize=(8, 6)
 )
 
@@ -52,7 +52,7 @@ ax = plotters.plot_stacked_bars(
     x=range(len(flags)),
     ys=y_array / np.sum(y_array, axis=0),  # Division by sum makes it proportionwise.
     labels=[k for k in source_counts],
-    colors=[source_color[k] for k in source_counts],
+    colors=[std_colors[k] for k in source_counts],
     figsize=(10, 6)
 )
 

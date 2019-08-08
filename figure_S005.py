@@ -16,7 +16,7 @@ ax = fig.add_subplot(111)
 ax.pie([vals[k] for k in keys],
        labels=["{} ({:.2%})".format(k, vals[k] / total) for k in keys],
        labeldistance=None,  # This removes the labels from the pie slices.
-       colors=[source_color[k] for k in keys])
+       colors=[std_colors[k] for k in keys])
 ax.set_title("Jan 2017 - May 2019 / Global / GLOBE Clouds\n"
              "Sources of observations")
 

@@ -17,7 +17,7 @@ for source in sources:
     histograms.append(histogram)
     bar_lefts = bin_lefts[:-1] if bar_lefts is None else bar_lefts
 
-ax = plotters.plot_stacked_bars(bar_lefts, histograms, sources, [source_color[source] for source in sources], width=250,
+ax = plotters.plot_stacked_bars(bar_lefts, histograms, sources, [std_colors[source] for source in sources], width=250,
                                 align="edge")
 ax.set_xlabel("Elevation (meters)")
 ax.set_ylabel("Count")

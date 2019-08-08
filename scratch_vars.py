@@ -63,6 +63,13 @@ source_color = {
 }
 
 std_colors = {
+    "GLOBE Observer App": "purple",
+    "GLOBE Data Entry Web Forms": "#40e0d0",
+    "GLOBE Data Entry App": "#0055ee",
+    "GLOBE Data Entry Site Definition": "#44ff44",
+    "GLOBE Email Data Entry": "#ff4444",
+    "GLOBE EMDE SCOOL": "#555555",
+    "GLOBE Data Entry Legacy": "#ffff00",
     "GLOBE": "purple",
     "GEOS": "orange",
     "Aqua": "#6666ff",
