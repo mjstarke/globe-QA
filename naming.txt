@@ -24,6 +24,7 @@ Variables have the following meanings:
         Jan2017-May2019
         Dec2017-Jan2018
         01Aug2016-05Aug2016
+        Jun2018-Jul2018minusDec2017-Jan2018    (difference between timeframes)
 
     REGION is the geographic area for which the figure is valid.  Examples:
         global
@@ -31,10 +32,11 @@ Variables have the following meanings:
         none
 
     SOURCE is the source of the data presented in the figure.  Examples:
-        GLOBE-SC          (sky conditions)
-        GLOBE-LC-MHM-TH   (land covers, mosquito habitat mapper, and tree heights)
-        GLOBEvGEOS        (GLOBE compared to [vs] GEOS)
-        GLOBEvGEOSvAquaTerravHIMWARI-8
+        GLOBE-SC                         (sky conditions)
+        GLOBE-LC-MHM-TH                  (land covers, mosquito habitat mapper, and tree heights)
+        GLOBEvGEOS                       (GLOBE compared to GEOS)
+        GLOBEvGEOSvAquaTerravHIMWARI-8   (GLOBE, GEOS, Aqua+Terra, and HIMAWARI-8)
+        GLOBE-GO-SC                      (sky conditions only from GLOBE Observer)
 
     TYPE is the type of figure.  Examples:
         bar               (non-histogram)
