@@ -1,4 +1,4 @@
-from scratch_vars import *
+from figure_common import *
 
 sample_count = 1000
 

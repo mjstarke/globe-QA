@@ -1,6 +1,6 @@
 # DEPRECATED: This script is superseded by figure_S016.
 
-from scratch_vars import *
+from figure_common import *
 
 # Settings
 csv_path = '/Users/mjstarke/Documents/GLOBE_B/GLOBE_Cloud_2018.csv'

@@ -1,4 +1,4 @@
-from scratch_vars import *
+from figure_common import *
 
 
 # Get obs and filter to only those outside of the reasonable elevation range.

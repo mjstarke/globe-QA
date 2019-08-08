@@ -1,7 +1,7 @@
 # DEPRECATED: This script produces figures with no statistical significance, as it attempts to compare the domains of
 # different geostationaries.
 
-from scratch_vars import *
+from figure_common import *
 
 obs = tools.parse_csv(fpSC_Dec)
 obs.extend(tools.parse_csv(fpSC_2018))

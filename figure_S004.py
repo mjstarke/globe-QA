@@ -1,4 +1,4 @@
-from scratch_vars import *
+from figure_common import *
 
 obs = tools.parse_csv(fpSC_2018)
 

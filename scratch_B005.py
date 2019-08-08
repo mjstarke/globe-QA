@@ -1,6 +1,6 @@
 # DEPRECATED: This script is superseded by figure_S019.
 
-from scratch_vars import *
+from figure_common import *
 
 # Read in data.
 cdf = Dataset(fpGEOS_Jan)

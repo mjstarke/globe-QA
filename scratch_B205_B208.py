@@ -1,4 +1,4 @@
-from scratch_vars import *
+from figure_common import *
 
 # Settings
 season = ["winter", "summer"][1]

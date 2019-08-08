@@ -1,4 +1,4 @@
-from scratch_vars import *
+from figure_common import *
 import matplotlib.patches as mpatches
 
 plt.figure(figsize=(6, 6))

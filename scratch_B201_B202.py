@@ -1,6 +1,6 @@
 # DEPRECATED: This script is superseded by figure_S019.
 
-from scratch_vars import *
+from figure_common import *
 
 obs = tools.parse_csv(fpSC_2018)
 cdf_Jan = Dataset(fpGEOS_Jan)

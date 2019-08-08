@@ -1,4 +1,4 @@
-from scratch_vars import *
+from figure_common import *
 
 graph_start = datetime(2017, 1, 1)
 graph_end = datetime(2019, 5, 31)

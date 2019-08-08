@@ -1,4 +1,4 @@
-from scratch_vars import *
+from figure_common import *
 
 path = tools.download_from_api(["sky_conditions"], date(2017, 1, 1), date(2019, 7, 11))
 obs = tools.parse_json(path)

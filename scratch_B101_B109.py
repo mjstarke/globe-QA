@@ -1,6 +1,6 @@
 # DEPRECATED: This script is superseded by figure_S017.
 
-from scratch_vars import *
+from figure_common import *
 
 globe_categories = [None, "none", "few", "isolated", "scattered", "broken", "overcast", "obscured"]
 globe_labels = ["null", "none", "few", "isolated", "scattered", "broken", "overcast", "obscured"]

@@ -1,5 +1,5 @@
 from globeqa import *
-from scratch_vars import *
+from figure_common import *
 
 obs = tools.parse_json(fpSC)
 tools.do_quality_check(obs)

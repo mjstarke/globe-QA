@@ -1,4 +1,4 @@
-from scratch_vars import *
+from figure_common import *
 
 obs = tools.parse_json("/Users/mjstarke/PycharmProjects/GLOBE/globeqa/examples/"
                        "land_covers__mosquito_habitat_mapper__tree_heights_20170101_20190531.json")

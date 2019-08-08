@@ -1,4 +1,4 @@
-from scratch_vars import *
+from figure_common import *
 
 obs = tools.parse_json(fpSC)
 obs = [ob for ob in obs if not (-300 <= ob.elevation <= 6000)]
