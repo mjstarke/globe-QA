@@ -6,8 +6,8 @@ region = ["CONUS", "Europe"][1]
 sample_count = 1000
 
 # Result of settings
-cdf1 = Dataset(fpGEOS_Dec) if season == "winter" else Dataset(fpGEOS_Jun)
-cdf2 = Dataset(fpGEOS_Jan) if season == "winter" else Dataset(fpGEOS_Jul)
+cdf1 = Dataset(fp_GEOS_Dec) if season == "winter" else Dataset(fp_GEOS_Jun)
+cdf2 = Dataset(fp_GEOS_Jan) if season == "winter" else Dataset(fp_GEOS_Jul)
 min_lon = {"CONUS": -126, "Europe": -22}[region]
 max_lon = {"CONUS": -69, "Europe": 72}[region]
 min_lat = {"CONUS": 23, "Europe": 15}[region]
@@ -16,8 +16,8 @@ sat_1 = {"CONUS": "GOES-15", "Europe": "METEOSAT-8"}[region]
 sat_2 = {"CONUS": "GOES-16", "Europe": "METEOSAT-10" if season == "winter" else "METEOSAT-11"}[region]
 
 
-obs = tools.parse_csv(fpSC_Dec)
-obs.extend(tools.parse_csv(fpSC_2018))
+obs = tools.parse_csv(fp_obs_with_satellite_matches_2017_Dec)
+obs.extend(tools.parse_csv(fp_obs_with_satellite_matches_2018))
 
 filtered_obs = [ob for ob in obs if ob.tcc is not None]
 filtered_obs = tools.filter_by_datetime(

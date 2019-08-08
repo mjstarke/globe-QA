@@ -1,14 +1,14 @@
 from figure_common import *
 
 
-obs = tools.parse_csv(fpSC_Dec)
-obs.extend(tools.parse_csv(fpSC_2018))
-cdf1 = Dataset(fpGEOS_Dec)
-cdf2 = Dataset(fpGEOS_Jan)
-cdf3 = Dataset(fpGEOS_Feb)
-cdf4 = Dataset(fpGEOS_Jun)
-cdf5 = Dataset(fpGEOS_Jul)
-cdf6 = Dataset(fpGEOS_Aug)
+obs = tools.parse_csv(fp_obs_with_satellite_matches_2017_Dec)
+obs.extend(tools.parse_csv(fp_obs_with_satellite_matches_2018))
+cdf1 = Dataset(fp_GEOS_Dec)
+cdf2 = Dataset(fp_GEOS_Jan)
+cdf3 = Dataset(fp_GEOS_Feb)
+cdf4 = Dataset(fp_GEOS_Jun)
+cdf5 = Dataset(fp_GEOS_Jul)
+cdf6 = Dataset(fp_GEOS_Aug)
 
 for cdf in [cdf1, cdf2, cdf3, cdf4, cdf5, cdf6]:
     filtered_obs = tools.filter_by_datetime_cdf(obs, cdf, timedelta(minutes=30))

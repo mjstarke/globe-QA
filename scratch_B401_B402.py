@@ -5,7 +5,7 @@ num_samples = 1000
 latitude_bin_width = 1.0  # degrees
 
 # Parse data
-obs_all = tools.parse_csv(fpSC_2018)
+obs_all = tools.parse_csv(fp_obs_with_satellite_matches_2018)
 
 category_to_midpoint = dict(
     none=0.00,
@@ -18,7 +18,7 @@ category_to_midpoint = dict(
     obscured=1.00
 )
 
-for cdf in [Dataset(fpGEOS_Jan), Dataset(fpGEOS_Jul)]:
+for cdf in [Dataset(fp_GEOS_Jan), Dataset(fp_GEOS_Jul)]:
     # Filter out obs that have no TCC.
     obs = [ob for ob in obs_all if ob.tcc is not None]
 

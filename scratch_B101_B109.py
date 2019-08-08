@@ -7,11 +7,11 @@ globe_labels = ["null", "none", "few", "isolated", "scattered", "broken", "overc
 geos_categories = ["none", "few", "isolated", "scattered", "broken", "overcast"]
 geos_labels = ["none", "few", "isolated", "scattered", "broken", "overcast"]
 
-obs = tools.parse_csv(fpSC_2018)
+obs = tools.parse_csv(fp_obs_with_satellite_matches_2018)
 
 
 ########################################################################################################################
-cdf_jan = Dataset(fpGEOS_Jan)
+cdf_jan = Dataset(fp_GEOS_Jan)
 obs_jan = tools.filter_by_datetime(obs,
                                    earliest=tools.get_cdf_datetime(cdf_jan, 0) - timedelta(minutes=30),
                                    latest=tools.get_cdf_datetime(cdf_jan, -1) + timedelta(minutes=30))
@@ -50,7 +50,7 @@ plt.tight_layout()
 
 
 ########################################################################################################################
-cdf_jul = Dataset(fpGEOS_Jul)
+cdf_jul = Dataset(fp_GEOS_Jul)
 obs_jul = tools.filter_by_datetime(obs,
                                    earliest=tools.get_cdf_datetime(cdf_jul, 0) - timedelta(minutes=30),
                                    latest=tools.get_cdf_datetime(cdf_jul, -1) + timedelta(minutes=30))

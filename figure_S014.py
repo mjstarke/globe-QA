@@ -1,6 +1,6 @@
 from figure_common import *
 
-obs = tools.parse_csv(fpSC_2018)
+obs = tools.parse_csv(fp_obs_with_satellite_matches_2018)
 
 globe_categories = [None, "none", "few", "isolated", "scattered", "broken", "overcast", "obscured"]
 globe_labels = ["null", "none", "few", "isolated", "scattered", "broken", "overcast", "obscured"]

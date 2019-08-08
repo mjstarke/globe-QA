@@ -48,19 +48,19 @@ if _disable_tqdm:
 # Satellite matches between GLOBE observations and Aqua, Terra, and geostationary satellites.
 # Available upon request:
 # TODO
-fpSC_2018 = "GLOBE_Cloud_2018.csv"
-fpSC_Dec = "GLOBE_cloudDec2017.csv"
+fp_obs_with_satellite_matches_2018 = "GLOBE_Cloud_2018.csv"
+fp_obs_with_satellite_matches_2017_Dec = "GLOBE_cloudDec2017.csv"
 
 # Goddard Earth Observing System (GEOS) total cloud cover output.
 # Available upon request:
 # Nathan Arnold
 # nathan.arnold@nasa.gov
-fpGEOS_Dec = "x0037.CLDTOT.201712.nc4"
-fpGEOS_Jan = "x0037.CLDTOT.201801.nc4"
-fpGEOS_Feb = "x0037.CLDTOT.201802.nc4"
-fpGEOS_Jun = "x0037.CLDTOT.201806.nc4"
-fpGEOS_Jul = "x0037.CLDTOT.201807.nc4"
-fpGEOS_Aug = "x0037.CLDTOT.201808.nc4"
+fp_GEOS_Dec = "x0037.CLDTOT.201712.nc4"
+fp_GEOS_Jan = "x0037.CLDTOT.201801.nc4"
+fp_GEOS_Feb = "x0037.CLDTOT.201802.nc4"
+fp_GEOS_Jun = "x0037.CLDTOT.201806.nc4"
+fp_GEOS_Jul = "x0037.CLDTOT.201807.nc4"
+fp_GEOS_Aug = "x0037.CLDTOT.201808.nc4"
 
 # Set of common colors for consistency between graphs.
 std_colors = {

@@ -2,8 +2,8 @@
 
 from figure_common import *
 
-obs = tools.parse_csv(fpSC_2018)
-cdf = Dataset(fpGEOS_Jan)
+obs = tools.parse_csv(fp_obs_with_satellite_matches_2018)
+cdf = Dataset(fp_GEOS_Jan)
 
 print("--- Filtering obs by datetime...")
 obs = tools.filter_by_datetime_cdf(obs, cdf, timedelta(minutes=30))

@@ -2,9 +2,9 @@
 
 from figure_common import *
 
-obs = tools.parse_csv(fpSC_2018)
-cdf_Jan = Dataset(fpGEOS_Jan)
-cdf_Jul = Dataset(fpGEOS_Jul)
+obs = tools.parse_csv(fp_obs_with_satellite_matches_2018)
+cdf_Jan = Dataset(fp_GEOS_Jan)
+cdf_Jul = Dataset(fp_GEOS_Jul)
 sample_count = 1000
 
 for cdf in [cdf_Jan, cdf_Jul]:

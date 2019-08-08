@@ -1,6 +1,6 @@
 from figure_common import *
 
-obs = tools.parse_csv(fpSC_2018)
+obs = tools.parse_csv(fp_obs_with_satellite_matches_2018)
 
 none = 0
 aqua = 0

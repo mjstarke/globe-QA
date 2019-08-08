@@ -6,11 +6,11 @@ lons = np.arange(-180, 180.01, 1.25)
 lats = np.arange(-90., 90.1, 1.00)
 
 # Parse data
-obs_all = tools.parse_csv(fpSC_Dec)
-obs_all.extend(tools.parse_csv(fpSC_2018))
+obs_all = tools.parse_csv(fp_obs_with_satellite_matches_2017_Dec)
+obs_all.extend(tools.parse_csv(fp_obs_with_satellite_matches_2018))
 loops = [
-    [Dataset(fpGEOS_Dec), Dataset(fpGEOS_Jan), "Dec 2017 - Jan 2018"],
-    [Dataset(fpGEOS_Jun), Dataset(fpGEOS_Jul), "Jun 2018 - Jul 2018"],
+    [Dataset(fp_GEOS_Dec), Dataset(fp_GEOS_Jan), "Dec 2017 - Jan 2018"],
+    [Dataset(fp_GEOS_Jun), Dataset(fp_GEOS_Jul), "Jun 2018 - Jul 2018"],
 ]
 
 for loop in loops:

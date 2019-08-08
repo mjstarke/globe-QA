@@ -3,9 +3,9 @@
 
 from figure_common import *
 
-obs = tools.parse_csv(fpSC_Dec)
-obs.extend(tools.parse_csv(fpSC_2018))
-cdf1, cdf2 = Dataset(fpGEOS_Dec), Dataset(fpGEOS_Jan)  # B211
+obs = tools.parse_csv(fp_obs_with_satellite_matches_2017_Dec)
+obs.extend(tools.parse_csv(fp_obs_with_satellite_matches_2018))
+cdf1, cdf2 = Dataset(fp_GEOS_Dec), Dataset(fp_GEOS_Jan)  # B211
 # cdf1, cdf2 = Dataset(fpGEOS_Jun), Dataset(fpGEOS_Jul)  # B212
 sample_count = 1000
 

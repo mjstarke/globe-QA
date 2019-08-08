@@ -1,9 +1,9 @@
 from figure_common import *
 
-obs = tools.parse_csv(fpSC_Dec)
-obs.extend(tools.parse_csv(fpSC_2018))
+obs = tools.parse_csv(fp_obs_with_satellite_matches_2017_Dec)
+obs.extend(tools.parse_csv(fp_obs_with_satellite_matches_2018))
 # cdf1, cdf2 = Dataset(fpGEOS_Dec), Dataset(fpGEOS_Jan)  # B220 - B223
-cdf1, cdf2 = Dataset(fpGEOS_Jun), Dataset(fpGEOS_Jul)  # B224 - B227
+cdf1, cdf2 = Dataset(fp_GEOS_Jun), Dataset(fp_GEOS_Jul)  # B224 - B227
 sample_count = 1000
 
 filtered_obs = [ob for ob in obs if ob.tcc is not None]

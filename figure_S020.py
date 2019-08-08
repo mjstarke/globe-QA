@@ -2,14 +2,14 @@ from figure_common import *
 
 num_samples = 1000
 
-unfiltered_obs = tools.parse_csv(fpSC_Dec)
-unfiltered_obs.extend(tools.parse_csv(fpSC_2018))
+unfiltered_obs = tools.parse_csv(fp_obs_with_satellite_matches_2017_Dec)
+unfiltered_obs.extend(tools.parse_csv(fp_obs_with_satellite_matches_2018))
 tools.patch_obs(unfiltered_obs, "geos_coincident_cat.csv", "tcc_geos_cat")
 
 loops = [
-    (Dataset(fpGEOS_Dec), Dataset(fpGEOS_Jan), "Dec 2017 - Jan 2018",
+    (Dataset(fp_GEOS_Dec), Dataset(fp_GEOS_Jan), "Dec 2017 - Jan 2018",
      ["GOES-15", "GOES-16", "METEOSAT-8", "METEOSAT-10", "HIMAWARI-8"]),
-    (Dataset(fpGEOS_Jun), Dataset(fpGEOS_Jul), "Jun 2018 - Jul 2018",
+    (Dataset(fp_GEOS_Jun), Dataset(fp_GEOS_Jul), "Jun 2018 - Jul 2018",
      ["GOES-15", "GOES-16", "METEOSAT-8", "METEOSAT-11", "HIMAWARI-8"])
 ]
 

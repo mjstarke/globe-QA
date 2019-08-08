@@ -9,8 +9,8 @@ globe_labels = ["null", "none", "few", "isolated", "scattered", "broken", "overc
 geos_categories = ["none", "few", "isolated", "scattered", "broken", "overcast"]
 geos_labels = ["none", "few", "isolated", "scattered", "broken", "overcast"]
 
-obs = tools.parse_csv(fpSC_2018)
-cdf = Dataset(fpGEOS_Jan)
+obs = tools.parse_csv(fp_obs_with_satellite_matches_2018)
+cdf = Dataset(fp_GEOS_Jan)
 
 obs = tools.filter_by_datetime(obs,
                                earliest=tools.get_cdf_datetime(cdf, 0) - timedelta(minutes=30),

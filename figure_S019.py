@@ -2,14 +2,14 @@ from figure_common import *
 
 sample_count = 1000
 
-obs = tools.parse_csv(fpSC_Dec)
-obs.extend(tools.parse_csv(fpSC_2018))
+obs = tools.parse_csv(fp_obs_with_satellite_matches_2017_Dec)
+obs.extend(tools.parse_csv(fp_obs_with_satellite_matches_2018))
 obs = [ob for ob in obs if ob.tcc is not None]
 tools.patch_obs(obs, "geos_coincident_cat.csv", "tcc_geos_cat")
 
 loops = [
-    [Dataset(fpGEOS_Dec), Dataset(fpGEOS_Jan), "Dec 2017 - Jan 2018"],
-    [Dataset(fpGEOS_Jun), Dataset(fpGEOS_Jul), "Jun 2018 - Jul 2018"],
+    [Dataset(fp_GEOS_Dec), Dataset(fp_GEOS_Jan), "Dec 2017 - Jan 2018"],
+    [Dataset(fp_GEOS_Jun), Dataset(fp_GEOS_Jul), "Jun 2018 - Jul 2018"],
 ]
 
 for loop in loops:
