@@ -1,3 +1,8 @@
+"""
+Code common to all figure scripts.
+"""
+
+
 import cartopy.crs as ccrs
 from cartopy.feature import NaturalEarthFeature
 from cartopy.feature.nightshade import Nightshade
@@ -21,8 +26,7 @@ from tqdm import tqdm
 from typing import Dict, Iterable, List, Optional, Tuple, Union
 from urllib.request import urlopen
 
-# If True, tqdm will not be imported.  Instead, a fake tqdm class to wrap the iterable is created so that the rest of
-# the code doesn't have to change.  desc kwargs passed to tqdm will be printed instead.
+# If True, tqdm will be overwritten by a hollow iterator.  This effectively disables tqdm.
 _disable_tqdm = False
 
 if _disable_tqdm:
@@ -37,22 +41,26 @@ if _disable_tqdm:
         def __iter__(self):
             return iter(self.iterable)
 
-fpSC_2018 = "/Users/mjstarke/Documents/GLOBE_B/GLOBE_Cloud_2018.csv"
-fpSC_Dec = "/Users/mjstarke/Documents/GLOBE_B/GLOBE_cloudDec2017.csv"
-fpSC = "/Users/mjstarke/Documents/GLOBE_A/sky_conditions_20170101_20190531.json"
-fpLC = "/Users/mjstarke/Documents/GLOBE_A/land_covers_20181001_20190531.json"
-fpMM = "/Users/mjstarke/Documents/GLOBE_A/mosquito_habitat_mapper_20170501_20190531.json"
-fpTH = "/Users/mjstarke/Documents/GLOBE_A/tree_heights_20190323_20190531.json"
-fpGEOS_Jan_3_hourly = "/Users/mjstarke/Documents/GLOBE_B/G5GMAO.cldtt.201801.nc4"
+# Satellite matches between GLOBE observations and Aqua, Terra, and geostationary satellites.
+# Available upon request:
+# TODO
+fpSC_2018 = "GLOBE_Cloud_2018.csv"
+fpSC_Dec = "GLOBE_cloudDec2017.csv"
 
-fpGEOS_Dec = "/Users/mjstarke/Documents/GLOBE_B/x0037.CLDTOT.201712.nc4"
-fpGEOS_Jan = "/Users/mjstarke/Documents/GLOBE_B/x0037.CLDTOT.201801.nc4"
-fpGEOS_Feb = "/Users/mjstarke/Documents/GLOBE_B/x0037.CLDTOT.201802.nc4"
-fpGEOS_Jun = "/Users/mjstarke/Documents/GLOBE_B/x0037.CLDTOT.201806.nc4"
-fpGEOS_Jul = "/Users/mjstarke/Documents/GLOBE_B/x0037.CLDTOT.201807.nc4"
-fpGEOS_Aug = "/Users/mjstarke/Documents/GLOBE_B/x0037.CLDTOT.201808.nc4"
+# Goddard Earth Observing System (GEOS) total cloud cover output.
+# Available upon request:
+# Nathan Arnold
+# nathan.arnold@nasa.gov
+fpGEOS_Dec = "x0037.CLDTOT.201712.nc4"
+fpGEOS_Jan = "x0037.CLDTOT.201801.nc4"
+fpGEOS_Feb = "x0037.CLDTOT.201802.nc4"
+fpGEOS_Jun = "x0037.CLDTOT.201806.nc4"
+fpGEOS_Jul = "x0037.CLDTOT.201807.nc4"
+fpGEOS_Aug = "x0037.CLDTOT.201808.nc4"
 
+# Set of common colors for consistency between graphs.
 std_colors = {
+    # Colors for comparisons between DataSources:
     "GLOBE Observer App": "purple",
     "GLOBE Data Entry Web Forms": "#40e0d0",
     "GLOBE Data Entry App": "#0055ee",
@@ -60,6 +68,8 @@ std_colors = {
     "GLOBE Email Data Entry": "#ff4444",
     "GLOBE EMDE SCOOL": "#555555",
     "GLOBE Data Entry Legacy": "#ffff00",
+
+    # Colors for comparisons between GLOBE, GEOS, and satellites:
     "GLOBE": "purple",
     "GEOS": "orange",
     "Aqua": "#6666ff",
@@ -73,6 +83,7 @@ std_colors = {
     "METEOSAT-11": "#cc4444",
 }
 
+# Converts a GLOBE cloud cover category to a real number (the midpoint of the category's range).
 category_to_midpoint = dict(
     none=0.00,
     clear=0.05,
