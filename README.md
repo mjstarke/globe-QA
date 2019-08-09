@@ -16,6 +16,12 @@ will give downloaded files a standard name (which can be adjusted with the `down
 and, by default, if a file by that name already exists, the download will not be
 attempted - instead, the local file is used.
 
+## tqdm usage
+[tqdm](https://github.com/tqdm/tqdm) is used to print progress bars from many of the functions in `tools.py`.
+By default, it is enabled.  If you would like to turn it off for a given function, you can pass
+`tqdm=figure_common.quiet` as a kwarg.
+You can also pass `tqdm=figure_common.simple`, which will print only the description.
+
 ## Quality checker
 The `Observation` class has a method `check_for_flags()` that can be used to quality
 check itself.  This method can be called on a list by using
