@@ -104,10 +104,16 @@ def parse_json(fp: str) -> List[Observation]:
     :returns: The features of the JSON.
     """
     print("--  Reading JSON from {}...".format(fp))
-    with open(fp, "r") as f:
-        g = f.read()
-        print("--  Interpreting file as JSON...")
-        raw = json.loads(g)
+    try:
+        with open(fp, "r") as f:
+            g = f.read()
+            print("--  Interpreting file as JSON...")
+            raw = json.loads(g)
+    except UnicodeDecodeError:
+        with open(fp, "r", encoding="utf8") as f:
+            g = f.read()
+            print("--  Interpreting file as JSON...")
+            raw = json.loads(g)
 
     ret = []
     for o in tqdm(range(len(raw["features"])), desc="Parsing JSON as observations"):
