@@ -14,12 +14,13 @@ from typing import List, Dict, Optional, Union, Tuple, Iterable, Callable, Any
 from urllib.request import urlopen
 
 
-def parse_csv(fp: str, count: int = 1e30, protocol: Optional[str] = "sky_conditions") -> List[Observation]:
+def parse_csv(fp: str, count: int = 1e30, protocol: Optional[str] = "sky_conditions", tqdm=tqdm) -> List[Observation]:
     """
     Parse a CSV file containing GLOBE observations.
     :param fp: The path to the CSV file.
     :param count: The maximum number of observations to parse.  Default 1e30.
     :param protocol: The protocol that the CSV file comes from.  Default 'sky_conditions'.
+    :param tqdm: The wrapper around for-loops in this function.  Default tqdm, which will print a progress bar.
     :return: The observations.
     """
 
@@ -97,7 +98,7 @@ def download_from_api(protocols: List[str], start: Union[date, datetime], end: O
     return download_dest
 
 
-def parse_json(fp: str) -> List[Observation]:
+def parse_json(fp: str, tqdm=tqdm) -> List[Observation]:
     """
     Parses a JSON file and returns its features converted to observations.
     :param fp: The path to the JSON file.
@@ -144,7 +145,7 @@ def get_flag_counts(obs: List[Observation]) -> Dict[str, int]:
     return flag_counts
 
 
-def filter_by_flag(obs: List[Observation], specs: Union[bool, Dict[str, bool]] = True) -> List[Observation]:
+def filter_by_flag(obs: List[Observation], specs: Union[bool, Dict[str, bool]] = True, tqdm=tqdm) -> List[Observation]:
     """
     Filters a list of observations by whether it has particular flags.
     :param obs: The observations to filter.
@@ -153,6 +154,7 @@ def filter_by_flag(obs: List[Observation], specs: Union[bool, Dict[str, bool]] =
     For instance, {"DX"=True, "ER"=False} means that the observation must have the DX flag and must not have the ER
     flag.  Alternatively, specs can be True, meaning that at least one flag must be present, or False, meaning that all
     flags must be absent.  Default True.
+    :param tqdm: The wrapper around for-loops in this function.  Default tqdm, which will print a progress bar.
     :return: The filtered observations.
     :raises TypeError: If specs is neither a string or a dict of string=bool pairs.
     """
@@ -285,21 +287,23 @@ def prepare_earth_geometry(geometry_resolution: str = "50m"):
     return land
 
 
-def do_quality_check(obs: List[Observation], land=None):
+def do_quality_check(obs: List[Observation], land=None, tqdm=tqdm):
     """
     Perform quality checks on the observations.
     :param obs: The observations.
     :param land: The PreparedGeometry for land checking.  If None, land check will not be performed.
+    :param tqdm: The wrapper around for-loops in this function.  Default tqdm, which will print a progress bar.
     """
     for o in tqdm(range(len(obs)), desc="Performing quality check"):
         obs[o].check_for_flags(land)
 
 
-def find_all_values(obs: List[Observation], attribute: str) -> Dict[str, int]:
+def find_all_values(obs: List[Observation], attribute: str, tqdm=tqdm) -> Dict[str, int]:
     """
     Finds all possible values for a given attribute in the observations.
     :param obs: The observations.
     :param attribute: The attribute to find values for.
+    :param tqdm: The wrapper around for-loops in this function.  Default tqdm, which will print a progress bar.
     :return: A dictionary of (value, count) pairs, each indicating that the given attribute had the value 'value' count
     times in the observations.  If an observation does not have a particular attribute, it contributes nothing to this
     returned dictionary.
@@ -317,10 +321,11 @@ def find_all_values(obs: List[Observation], attribute: str) -> Dict[str, int]:
     return ret
 
 
-def find_all_attributes(obs: List[dict]) -> List[str]:
+def find_all_attributes(obs: List[dict], tqdm=tqdm) -> List[str]:
     """
     Generates a sorted list of all attributes that occur at least once in the observations.
     :param obs: The observations.
+    :param tqdm: The wrapper around for-loops in this function.  Default tqdm, which will print a progress bar.
     :return: A sorted list of all attributes that occur at least once in the observations.
     """
     all_keys = []
@@ -476,7 +481,8 @@ def bin_cloud_fraction(fraction: float, clip: bool = False) -> str:
 
 
 def filter_by_datetime(obs: List[Observation], earliest: Optional[datetime] = datetime.min,
-                       latest: Optional[datetime] = datetime.max, assume_chronology: bool = False) -> List[Observation]:
+                       latest: Optional[datetime] = datetime.max, assume_chronology: bool = False,
+                       tqdm=tqdm) -> List[Observation]:
     """
     Filters a list of observations to a certain datetime range, assuming chronology of the observations.
     :param obs: The observations.
@@ -486,6 +492,7 @@ def filter_by_datetime(obs: List[Observation], earliest: Optional[datetime] = da
     with a datetime equal to latest will NOT be included.  Default datetime.max, which filters out no observations.
     :param assume_chronology: Whether the observations are in ascending chronological order.  If set to True when the
     observations are NOT in strictly chronological order, arbitrary returns will result.  Default False.
+    :param tqdm: The wrapper around for-loops in this function.  Default tqdm, which will print a progress bar.
     :return: The observations that passed the filter.
     :raises ValueError: If earliest is after latest.
     """
@@ -582,7 +589,8 @@ def filter_by_datetime_cdf(obs: List[Observation], cdf: Dataset, buffer: timedel
     return [ob for ob in obs if earliest <= ob.measured_dt < latest]
 
 
-def patch_obs(obs: List[Observation], fp: str, attribute: str, processor: Callable[[str], Any] = lambda v: v):
+def patch_obs(obs: List[Observation], fp: str, attribute: str, processor: Callable[[str], Any] = lambda v: v,
+              tqdm=tqdm):
     """
     Applies a patch to the observations.  The patch is a CSV file whose first column is either to observation ID or
     number (whichever is present in the obs), and the second column is the value associated with that observation.
@@ -591,6 +599,7 @@ def patch_obs(obs: List[Observation], fp: str, attribute: str, processor: Callab
     :param attribute: The attribute to store the value to for each observation.
     :param processor: The function used to process incoming values; i.e., float or int (as otherwise all values are
     strings).  Default lambda v: v, which performs no processing.
+    :param tqdm: The wrapper around for-loops in this function.  Default tqdm, which will print a progress bar.
     :return: None.  Observations are modified in-place.  If the following patch file is used:
         299023,foo
         928302,bar
