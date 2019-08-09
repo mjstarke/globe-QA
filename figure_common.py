@@ -26,24 +26,25 @@ from tqdm import tqdm
 from typing import Dict, Iterable, List, Optional, Tuple, Union
 from urllib.request import urlopen
 
-# If True, tqdm will be overwritten by a hollow iterator.  This effectively disables tqdm.
-_disable_tqdm = False
 
-# If _disable_tqdm is True and _print_desc is True, then the description passed to tqdm will still be printed.
-_print_desc = False
+class simple:
+    def __init__(self, iterable, *args, **kwargs):
+        self.iterable = iterable
+        if len(args) > 0:
+            print(args[0] + "...")
+        elif "desc" in kwargs:
+            print(kwargs["desc"] + "...")
 
-if _disable_tqdm:
-    class tqdm:
-        def __init__(self, iterable, *args, **kwargs):
-            self.iterable = iterable
-            if _print_desc:
-                if len(args) > 0:
-                    print(args[0] + "...")
-                elif "desc" in kwargs:
-                    print(kwargs["desc"] + "...")
+    def __iter__(self):
+        return iter(self.iterable)
 
-        def __iter__(self):
-            return iter(self.iterable)
+
+class quiet:
+    def __init__(self, iterable, *_, **__):
+        self.iterable = iterable
+
+    def __iter__(self):
+        return iter(self.iterable)
 
 # Satellite matches between GLOBE observations and Aqua, Terra, and geostationary satellites.
 # Available upon request:
