@@ -1,17 +1,14 @@
-from cartopy.feature.nightshade import Nightshade
-from datetime import date, datetime, timedelta
-from matplotlib.cm import get_cmap
-import matplotlib.pyplot as plt
-from netCDF4 import Dataset
-import numpy as np
-from globeqa import plotters, tools
-from tqdm import tqdm
+from figure_common import *
+
+frame_numbers = range(5)
+observation_time_window = timedelta(minutes=60)
+
+fp = tools.download_from_api(["sky_conditions"], date(2017, 12, 1), date(2017, 12, 31))
+obs_all = tools.parse_json(fp)
+cdf = Dataset(fp_GEOS_Dec)
 
 
-for t in tqdm(range(50), desc="Plotting GGCs"):
-    path = tools.download_from_api(["sky_conditions"], date(2017, 12, 1), date(2017, 12, 31))
-    obs = tools.parse_json(path)
-    cdf = Dataset("/Users/mjstarke/Documents/GLOBE_B/x0037.CLDTOT.201712.nc4")
+for t in tqdm(frame_numbers, desc="Plotting GGCs"):
 
     # Set figure size and create an axis with a Plate-Carrée projection.
     ax = plotters.make_pc_fig()
@@ -29,8 +26,8 @@ for t in tqdm(range(50), desc="Plotting GGCs"):
 
     # Determine the beginning and end of the window for observations to be plotted.
     window_center = tools.get_cdf_datetime(cdf, t)
-    window_start = window_center - timedelta(minutes=30)
-    window_end = window_center + timedelta(minutes=30)
+    window_start = window_center - (observation_time_window / 2)
+    window_end = window_center + (observation_time_window / 2)
 
     # Create a dictionary to contain points to plot and how to plot them (marker and value for color).
 
@@ -56,7 +53,7 @@ for t in tqdm(range(50), desc="Plotting GGCs"):
     }
 
     # Filter observations to only those which lie in the one-hour window surrounding the output time.
-    obs = tools.filter_by_datetime(obs, window_start, window_end, assume_chronology=False)
+    obs = tools.filter_by_datetime(obs_all, window_start, window_end, assume_chronology=False)
 
     # Look through each observation.
     for ob in tqdm(obs, desc="Collecting observations"):
