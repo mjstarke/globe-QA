@@ -14,7 +14,7 @@ Cartopy == 0.17.0
 Shapely == 1.6.4.post1
 
 # scratch_sun_position.py: 2,3,4
-astropy == 3.2.1
+# astropy == 3.2.1
 
 # animator.py: 1
 imageio == 2.5.0
