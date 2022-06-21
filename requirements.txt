@@ -42,7 +42,7 @@ netCDF4 == 1.4.2
 # scratch_ggc_x0037.py: 6
 # scratch_timseries.py: 5
 # scratch_vars.py: 11
-numpy == 1.16.4
+numpy == 1.22.0
 
 # animator.py: 3
 # globeqa/examples/geographic_heatmap.py: 5
